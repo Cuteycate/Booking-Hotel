@@ -1,0 +1,311 @@
+body {
+  min-height: 100vh;
+  padding-bottom: 50px;
+  overflow-x: hidden;
+}
+.card {
+  opacity: 0.9;
+}
+.navbar {
+  padding: 0;
+}
+
+.navbar .navbar-nav .nav-link {
+  padding: 1em;
+}
+
+.navbar .navbar-nav .nav-item {
+  position: relative;
+}
+
+.navbar .navbar-nav .nav-item::after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  content: '';
+  background-color: rgb(169, 77, 123);
+  width: 0;
+  margin: 0 auto;
+  height: 4px;
+  transition: all 0.5s;
+}
+
+.navbar .navbar-nav .nav-item:hover::after {
+  width: 100%;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: rgb(25, 24, 24);
+}
+
+.navbar-dark .navbar-brand {
+  color: rgb(25, 24, 24);
+}
+
+@media screen and (min-width: 992px) {
+  .navbar {
+    padding: 0;
+  }
+
+  .navbar .navbar-nav .nav-link {
+    padding: 1em 0;
+  }
+
+  .navbar .navbar-nav .nav-item {
+    margin: 0 1em;
+  }
+}
+
+/* Hotel custom color */
+.btn-hotel {
+  background-color: rgb(169, 77, 123);
+  color: #fff;
+}
+
+.btn-hotel:hover {
+  background-color: rgb(137, 127, 132);
+  color: #fff;
+  transition: 0.7s;
+  outline-color: transparent;
+  outline-style: solid;
+}
+
+.hotel-color {
+  color: rgb(169, 77, 123);
+}
+
+.room-price {
+  color: darkgoldenrod;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: medium;
+}
+
+.vertical-rule {
+  border-left: 0.5px solid black;
+  height: 100vh;
+}
+
+.parallax {
+  background-image: url("./assets/images/PenaconyHotelRoom.png");
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 50vh;
+}
+
+.header {
+  position: relative;
+  height: 150px;
+  background-size: cover;
+  background-image: url("./assets/images/hotel_Lobby.png");
+  background-position: center center;
+}
+
+.header-title {
+  color: #fff;
+  font-size: 4rem;
+  align-content: center;
+}
+
+.parallax {
+  margin-top: 50px;
+  color: white;
+  text-shadow: 2px 2px black;
+}
+
+.animated {
+  animation-duration: 1s;
+}
+
+.animated-texts h1 {
+  animation: fadeInDown 1s ease-in-out;
+}
+
+.animated-texts p,
+h1,
+h2 {
+  animation: fadeInUp 1s ease-in-out;
+}
+
+@keyframes bounceIn {
+  from,
+  20%,
+  40%,
+  60%,
+  80%,
+  to {
+    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    transform: translate3d(0, 0, 0);
+  }
+
+  40%,
+  60% {
+    animation-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060);
+    transform: translate3d(0, -30px, 0);
+  }
+
+  70% {
+    animation-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060);
+    transform: translate3d(0, -15px, 0);
+  }
+
+  90% {
+    transform: translate3d(0, -4px, 0);
+  }
+}
+
+.bounceIn {
+  animation-name: bounceIn;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -50%, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 50%, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Header overlay */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.overlay-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  justify-content: flex-start;
+}
+
+/* The header banner */
+.header-banner {
+  background-image: url("./assets/images/The_Reverie_29.jpg");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  height: 80vh;
+}
+
+.header-banner {
+  position: relative;
+  height: 500px;
+}
+
+@media only screen and (max-width: 768px) {
+  .header-banner h1 {
+    font-size: 20px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .header-banner h1 {
+    font-size: 16px;
+  }
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #f5f5f5;
+  height: 60px;
+  text-align: center;
+}
+
+.active > .page-link,
+.page-link.active {
+  z-index: 0;
+  color: var(--bs-pagination-active-color);
+  background-color: var(--bs-pagination-active-bg);
+  border-color: var(--bs-pagination-active-border-color);
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0rem;
+  text-align: left;
+}
+
+.navbar-nav .dropdown-menu {
+  max-width: 250px; /* Set a maximum width for the dropdown */
+  overflow-x: hidden; /* Hide horizontal overflow */
+}
+
+.navbar-nav .dropdown-menu .dropdown-item {
+  white-space: nowrap; /* Prevent text wrapping */
+}
+.custom-carousel-control-prev,
+.custom-carousel-control-next {
+  position: absolute;
+  top: 50%;
+  width: 4rem;
+  height: 4rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  transform: translateY(-0%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  color: white;
+}
+
+.custom-carousel-control-prev {
+  left: -2rem;
+}
+
+.custom-carousel-control-next {
+  right: -2rem;
+}
+
+.custom-carousel-control-prev:hover,
+.custom-carousel-control-next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+}
+.carousel-control-next, .carousel-control-prev {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 0;
+  padding: 0;
+  color: #fff;
+  text-align: center;
+  background: 0 0;
+  border: 0;
+  opacity: .5;
+  transition: opacity .15s ease;
+}
+
