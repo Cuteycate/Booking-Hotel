@@ -7,19 +7,22 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "set HTTPS=true&&react-scripts start"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
+    "@react-oauth/google": "^0.12.1",
     "axios": "^1.5.0",
     "bootstrap": "^5.3.3",
     "date-fns": "^2.30.0",
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.4",
-    "react": "^18.2.0",
+    "react": "^18.3.1",
     "react-bootstrap": "^2.8.0",
     "react-date-range": "^1.4.0",
-    "react-dom": "^18.2.0",
+    "react-dom": "^18.3.1",
+    "react-facebook-login": "^4.1.1",
     "react-icons": "^4.12.0",
     "react-router-dom": "^6.23.1"
   },

@@ -25,7 +25,9 @@ public class UserService implements IUserService {
         {
             throw new UserAlreadyExistsException("Email đã từng lập tài khoản");
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if(user.getPassword()!= null) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         Role userRole = roleRepository.findByName("ROLE_USER").get();
         user.setRoles(Collections.singletonList(userRole));
         return userRepository.save(user);

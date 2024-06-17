@@ -180,6 +180,34 @@ export async function loginUser(login) {
 		return null
 	}
 }
+//login user with google
+export const loginWithGoogle = async (googleToken) => {
+    try {
+        const response = await api.post('/auth/google', { token: googleToken });
+        if (response.data) {
+            return response.data;
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+};
+export const loginWithFacebook = async (facebookToken) => {
+    try {
+      const response = await api.post('/auth/facebook', { token: facebookToken });
+      if (response.data) {
+        return response.data;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+
 //Lấy Profile
 export async function getUserProfile(userId, token) {
 	try {
