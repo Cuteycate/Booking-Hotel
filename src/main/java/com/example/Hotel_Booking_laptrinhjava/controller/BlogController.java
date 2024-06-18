@@ -1,6 +1,5 @@
 package com.example.Hotel_Booking_laptrinhjava.controller;
 
-import com.example.Hotel_Booking_laptrinhjava.exception.ResourceNotFoundException;
 import com.example.Hotel_Booking_laptrinhjava.model.Blog;
 import com.example.Hotel_Booking_laptrinhjava.response.BlogResponse;
 import com.example.Hotel_Booking_laptrinhjava.service.BlogService;
@@ -13,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -28,27 +27,25 @@ public class BlogController {
                                                    @RequestParam("content") String content,
                                                    @RequestParam("summary") String summary,
                                                    @RequestParam("photo") MultipartFile photo,
-                                                   @RequestParam("userId") Long userId) throws IOException, SQLException {
-        Blog blog = blogService.createBlog(title, content, summary, photo, userId);
-        BlogResponse blogResponse = convertToResponse(blog);
+                                                   @RequestParam("userId") Long userId,
+                                                   @RequestParam("categoryIds") Set<Long> categoryIds) throws IOException, SQLException {
+        Blog blog = blogService.createBlog(title, content, summary, photo, userId, categoryIds);
+        BlogResponse blogResponse = blogService.getBlogByIdWithCategories(blog.getId());
         return ResponseEntity.ok(blogResponse);
     }
 
     @GetMapping("/all-blogs")
     public ResponseEntity<List<BlogResponse>> getAllBlogs() {
-        List<Blog> blogs = blogService.getAllBlogs();
-        List<BlogResponse> blogResponses = blogs.stream()
-                .map(this::convertToResponse)
+        List<BlogResponse> blogResponses = blogService.getAllBlogs().stream()
+                .map(blog -> blogService.getBlogByIdWithCategories(blog.getId()))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(blogResponses);
     }
 
     @GetMapping("/blog/{id}")
-    public ResponseEntity<BlogResponse> getBlogById(@PathVariable Long id) throws SQLException {
-        Optional<Blog> blogOptional = blogService.getBlogById(id);
-        Blog blog = blogOptional.orElseThrow(() -> new ResourceNotFoundException("Blog not found"));
-        BlogResponse blogResponse = convertToResponse(blog);
+    public ResponseEntity<BlogResponse> getBlogById(@PathVariable Long id) {
+        BlogResponse blogResponse = blogService.getBlogByIdWithCategories(id);
         return ResponseEntity.ok(blogResponse);
     }
 
@@ -58,9 +55,10 @@ public class BlogController {
                                                    @RequestParam(required = false) String title,
                                                    @RequestParam(required = false) String content,
                                                    @RequestParam(required = false) String summary,
-                                                   @RequestParam(required = false) MultipartFile photo) throws IOException, SQLException {
-        Blog blog = blogService.updateBlog(id, title, content, summary, photo);
-        BlogResponse blogResponse = convertToResponse(blog);
+                                                   @RequestParam(required = false) MultipartFile photo,
+                                                   @RequestParam(required = false) Set<Long> categoryIds) throws IOException, SQLException {
+        Blog blog = blogService.updateBlog(id, title, content, summary, photo, categoryIds);
+        BlogResponse blogResponse = blogService.getBlogByIdWithCategories(blog.getId());
         return ResponseEntity.ok(blogResponse);
     }
 
@@ -70,18 +68,4 @@ public class BlogController {
         blogService.deleteBlog(id);
         return ResponseEntity.noContent().build();
     }
-
-    private BlogResponse convertToResponse(Blog blog) {
-        return new BlogResponse(
-                blog.getId(),
-                blog.getTitle(),
-                blog.getContent(),
-                blog.getSummary(),
-                blog.getCreatedAt(),
-                blog.getUpdatedAt(),
-                blog.getPhoto(),
-                blog.getUser()
-        );
-    }
-
 }

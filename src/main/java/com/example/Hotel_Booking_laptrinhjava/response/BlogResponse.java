@@ -1,15 +1,16 @@
 package com.example.Hotel_Booking_laptrinhjava.response;
 
+import com.example.Hotel_Booking_laptrinhjava.model.BlogCategory;
+import com.example.Hotel_Booking_laptrinhjava.model.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.codec.binary.Base64;
 
-import com.example.Hotel_Booking_laptrinhjava.model.User;
-
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -21,21 +22,23 @@ public class BlogResponse {
     private LocalDate createdAt;
     private LocalDate updatedAt;
     private String photo;
-    private String authorFullName; // Instead of authorName
+    private String authorFullName;
+    private Set<CategoryResponse> categories;
 
-    // Constructor
-    public BlogResponse(Long id, String title, String content, String summary, LocalDate createdAt, LocalDate updatedAt, Blob photo, User user) {
+    public BlogResponse(Long id, String title, String content, String summary, LocalDate createdAt, LocalDate updatedAt, Blob photo, User user, Set<BlogCategory> categories) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.summary = summary;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.photo = encodeBlob(photo); // Encode Blob to Base64 String
+        this.photo = encodeBlob(photo);
         this.authorFullName = user.getFirstName() + " " + user.getLastName();
+        this.categories = categories.stream()
+                .map(category -> new CategoryResponse(category.getId(), category.getName()))
+                .collect(Collectors.toSet());
     }
 
-    // Helper method to encode Blob to Base64 String
     private String encodeBlob(Blob blob) {
         if (blob != null) {
             try {

@@ -9,7 +9,7 @@ export const AuthContext = createContext({
 
 export const AuthProvider = ({ children }) => {
 	const [user, setUser] = useState(null)
-
+	//Đặt UserID UserRole Token vào LocalStorage để có thể dễ dàng kiểm tra + sử dụng
 	const handleLogin = (token) => {
 		const decodedUser = jwt_decode(token)
 		localStorage.setItem("userId", decodedUser.sub)
@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
 		localStorage.setItem("token", token)
 		setUser(decodedUser)
 	}
-
+	//xóa bỏ localstorage khi log out
 	const handleLogout = () => {
 		localStorage.removeItem("userId")
 		localStorage.removeItem("userRole")

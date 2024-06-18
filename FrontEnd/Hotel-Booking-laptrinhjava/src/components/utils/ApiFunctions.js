@@ -255,3 +255,119 @@ export async function getBookingsByUserId(userId, token) {
 		throw new Error("Failed to fetch bookings")
 	}
 }
+//Lấy tất cả các BlogCategories
+export async function getAllBlogCategories() {
+    try {
+        const result = await api.get("/blog-categories/all");
+        return result.data;
+    } catch (error) {
+        throw new Error("Có lỗi khi lấy Categories");
+    }
+}
+
+//Thêm Blog Category
+export async function addBlogCategory(name) {
+    const formData = new FormData();
+    formData.append("name", name);
+    try {
+        const result = await api.post("/blog-categories/add", formData, {
+            headers: getHeader()
+        })
+        return result.data;
+    } catch (error) {
+        throw new Error("Error adding blog category");
+    }
+}
+//Cập nhật BlogCategories
+export async function updateBlogCategory(id, name) {
+    const formData = new FormData();
+    formData.append("name", name);
+
+    try {
+        const result = await api.put(`/blog-categories/update/${id}`, formData, {
+            headers: getHeader()
+        })
+        return result.data;
+    } catch (error) {
+        throw new Error("Error updating blog category");
+    }
+}
+//Xóa Blog Category
+export async function deleteBlogCategory(id) {
+    try {
+        const result = await api.delete(`/blog-categories/delete/${id}`, {
+            headers: getHeader(),
+        });
+        return result.data;
+    } catch (error) {
+        throw new Error("Error deleting blog category");
+    }
+}
+//Lấy tất cả Blogs
+export async function getAllBlogs() {
+    try {
+        const response = await api.get("/blogs/all-blogs");
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response.data.message || 'Error fetching blogs');
+    }
+}
+//Xóa Blogs
+export async function deleteBlog(blogId) {
+    try {
+        await api.delete(`/blogs/blog/delete/${blogId}`, {
+            headers: getHeader()
+        });
+        return '';
+    } catch (error) {
+        throw new Error(error.response.data.message || 'Error deleting blog');
+    }
+}
+//Thêm Blogs
+export async function addBlog(blog) {
+    const formData = new FormData();
+    formData.append('title', blog.title);
+    formData.append('content', blog.content);
+    formData.append('summary', blog.summary);
+    formData.append('photo', blog.photo);
+    formData.append('userId', blog.userId);
+    formData.append('categoryIds', blog.categoryIds);
+
+    try {
+        const response = await api.post('/blogs/add/new-blog', formData, {
+            headers: getHeader()
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response.data.message || 'Error adding blog');
+    }
+}
+export async function updateBlog(blog) {
+    const formData = new FormData();
+    formData.append('title', blog.title);
+    formData.append('content', blog.content);
+    formData.append('summary', blog.summary);
+    formData.append('photo', blog.photo);
+    formData.append('categoryIds', blog.categoryIds);
+
+    try {
+        const response = await api.put(`/blogs/blog/update/${blog.id}`, formData, {
+            headers: getHeader()
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response.data.message || 'Error updating blog');
+    }
+}
+//Lấy blog theo Id
+export async function getBlogById(id) {
+    try {
+        const response = await api.get(`/blogs/blog/${id}`, {
+            headers: getHeader()
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response.data.message || 'Error fetching blog');
+    }
+}
+

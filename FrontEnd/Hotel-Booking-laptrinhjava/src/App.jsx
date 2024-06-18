@@ -22,6 +22,10 @@ import Profile from "./components/auth/Profile";
 import Logout from "./components/auth/Logout";
 import { AuthProvider } from "./components/auth/AuthProvider";
 import RequireAuth from "./components/auth/RequireAuth";
+import BlogCategoriesListing from "./components/BlogCategory/BlogCategoriesListing";
+import BlogListing from "./components/Blog/BlogListing";
+import AddBlog from "./components/Blog/AddBlog";
+import UpdateBlog from './components/Blog/UpdateBlog';
 function App() {
 	return (
 		<AuthProvider>
@@ -42,13 +46,15 @@ function App() {
 								</RequireAuth>
 							}
 						/>
+						<Route path="/blog-categories" element={<BlogCategoriesListing />} />
+						<Route path="/blog-listing" element={<BlogListing />} />
+						<Route path="/add-blog" element={<AddBlog />} />
+						<Route path="/edit-blog/:id" element={<UpdateBlog/>} />
 						<Route path="/browse-all-rooms" element={<RoomListing />} />
-
 						<Route path="/admin" element={<Admin />} />
 						<Route path="/booking-success" element={<BookingSuccess />} />
 						<Route path="/existing-bookings" element={<Bookings />} />
 						<Route path="/find-booking" element={<FindBooking />} />
-
 						<Route path="/login" element={<Login />} />
 						<Route path="/register" element={<Registration />} />
 
