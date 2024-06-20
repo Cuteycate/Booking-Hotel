@@ -21,12 +21,23 @@ const UpdateBlog = () => {
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [userData, setUserData] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetchUserDetails();
-        fetchCategories();
-        fetchBlogDetails();
-    }, []);
+        const fetchData = async () => {
+            try {
+                await fetchUserDetails();
+                await fetchCategories();
+                await fetchBlogDetails();
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [id]);
 
     const fetchUserDetails = async () => {
         const userId = localStorage.getItem("userId");
@@ -113,8 +124,8 @@ const UpdateBlog = () => {
         }, 3000);
     };
 
-    if (!userData) {
-        return <p>Loading user data...</p>; // Render loading state while fetching user data
+    if (loading) {
+        return <p>Loading...</p>; // Render loading state while fetching data
     }
 
     return (

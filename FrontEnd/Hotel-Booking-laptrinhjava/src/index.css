@@ -94,7 +94,14 @@ body {
   background-size: cover;
   height: 50vh;
 }
-
+.parallax-blog {
+  background-image: url("./assets/images/BlogParallax.jpg");
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 70vh;
+}
 .header {
   position: relative;
   height: 150px;
@@ -212,6 +219,7 @@ h2 {
   height: 80vh;
 }
 
+
 .header-banner {
   position: relative;
   height: 500px;
@@ -308,4 +316,64 @@ h2 {
   opacity: .5;
   transition: opacity .15s ease;
 }
+.badge {
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+  background-color: #28a745;
+  color: white;
+  border-radius: 0.25rem;
+  text-decoration: none;
+}
+
+.badge:hover {
+  background-color: #218838;
+  text-decoration: none;
+  color: white;
+}
+.sidebar {
+  position: sticky;
+  top: 20px;
+}
+
+.text-decoration-none {
+  text-decoration: none !important;
+}
+
+.badge {
+  margin-right: 5px;
+}
+.blog-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+.card-title,
+.card-summary {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Limit to 2 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 2.8em;
+    max-height: 2.8em;
+}
+.white-text {
+  color: white;
+}
+.black-text {
+  color: black;
+}
+
+.sidebar .card-title,
+.sidebar .card-subtitle,
+.sidebar .card-text {
+  color: black;
+}
+
+
+
+
+
+
 

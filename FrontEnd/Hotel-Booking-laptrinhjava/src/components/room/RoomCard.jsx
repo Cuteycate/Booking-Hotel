@@ -12,7 +12,7 @@ const RoomCard = ({room}) => {
                     variant='top'
                     src={`data:image/png;base64,${room.photo}`}
                     alt='Room Photo'
-                    style={{width:"200%",maxWidth: "100px", height : "auto"}}/>
+                    style={{width:"200%",maxWidth: "100px"  , height : "auto"}}/>
                 </Link>
                 </div>
                 <div className='flex-grow-1 ml-3 px-5'>

@@ -1,0 +1,51 @@
+.blog-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto; /* Optional: Center the images */
+}
+
+.sidebar .sidebar-image {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.summary-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 2.6em; /* Adjust this based on line height to show exactly 2 lines */
+    line-height: 1.3em; /* Adjust this line height to match the design */
+}
+
+.title-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 150px;
+    width: 100%;
+    
+}
+
+.sidebar-card .row {
+    flex: 1;
+    align-items: center;
+}

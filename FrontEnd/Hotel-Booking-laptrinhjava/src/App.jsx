@@ -26,6 +26,8 @@ import BlogCategoriesListing from "./components/BlogCategory/BlogCategoriesListi
 import BlogListing from "./components/Blog/BlogListing";
 import AddBlog from "./components/Blog/AddBlog";
 import UpdateBlog from './components/Blog/UpdateBlog';
+import BlogView from "./components/Blog/BlogView";
+import BlogList from "./components/Blog/BlogList";
 function App() {
 	return (
 		<AuthProvider>
@@ -50,7 +52,9 @@ function App() {
 						<Route path="/blog-listing" element={<BlogListing />} />
 						<Route path="/add-blog" element={<AddBlog />} />
 						<Route path="/edit-blog/:id" element={<UpdateBlog/>} />
+						<Route path="/view-blog/:id" element={<BlogView/>} />
 						<Route path="/browse-all-rooms" element={<RoomListing />} />
+						<Route path="/blogs" element={<BlogList/>} />
 						<Route path="/admin" element={<Admin />} />
 						<Route path="/booking-success" element={<BookingSuccess />} />
 						<Route path="/existing-bookings" element={<Bookings />} />
@@ -60,6 +64,7 @@ function App() {
 
 						<Route path="/profile" element={<Profile />} />
 						<Route path="/logout" element={<Logout />} />
+						
 					</Routes>
 				</Router>
 				<Footer />

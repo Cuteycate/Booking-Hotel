@@ -60,7 +60,7 @@ public class RoleService implements IRoleService{
     @Override
     public User assignRoleToUser(Long userId, Long roleId) {
         Optional<User> user = userRepository.findById(userId);
-        Optional<Role>  role = roleRepository.findById(roleId);
+        Optional<Role> role = roleRepository.findById(roleId);
         if (user.isPresent() && user.get().getRoles().contains(role.get())){
             throw new UserAlreadyExistsException(
                     user.get().getFirstName()+ " Đã được cắp quyền" + role.get().getName());

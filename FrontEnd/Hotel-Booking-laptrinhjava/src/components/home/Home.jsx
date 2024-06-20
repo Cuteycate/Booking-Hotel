@@ -5,6 +5,7 @@ import Parallax from "../common/Parallax"
 import RoomCarousel from "../common/RoomCarousel"
 import { useLocation } from "react-router-dom"
 import RoomSearch from "../common/RoomSearch"
+import BlogCarousel from "../common/BlogCarousel"
 const Home = () => {
 	const location = useLocation()
 
@@ -17,7 +18,7 @@ const Home = () => {
 				<RoomSearch/>
 				<RoomCarousel />
 				<Parallax />
-				<RoomCarousel />
+				<BlogCarousel />
 				<HotelService />
 				<Parallax />
 				<RoomCarousel />

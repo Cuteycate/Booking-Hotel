@@ -87,7 +87,6 @@ const BlogListing = () => {
                                 <tr className="text-center">
                                     <th>ID</th>
                                     <th>Title</th>
-                                    <th>Summary</th>
                                     <th>Author</th>
                                     <th>Categories</th>
                                     <th>Created At</th>
@@ -101,7 +100,6 @@ const BlogListing = () => {
                                         <tr key={blog.id} className="text-center">
                                             <td>{blog.id}</td>
                                             <td>{blog.title}</td>
-                                            <td>{blog.summary}</td>
                                             <td>{blog.authorFullName}</td>
                                             <td>
                                                 {Array.isArray(blog.categories) && blog.categories.length > 0 ? (
@@ -117,16 +115,14 @@ const BlogListing = () => {
                                             <td>{new Date(blog.createdAt).toLocaleDateString()}</td>
                                             <td>{new Date(blog.updatedAt).toLocaleDateString()}</td>
                                             <td>
-                                                <Link to={`/edit-blog/${blog.id}`} className="gap-2">
-                                                    <span className="btn btn-info btn-sm">
-                                                        <FaEye />
-                                                    </span>
-                                                    <span className="btn btn-warning btn-sm ml-5">
-                                                        <FaEdit />
-                                                    </span>
+                                                <Link to={`/view-blog/${blog.id}`} className="btn btn-info btn-sm me-2">
+                                                    <FaEye />
+                                                </Link>
+                                                <Link to={`/edit-blog/${blog.id}`} className="btn btn-warning btn-sm me-2">
+                                                    <FaEdit />
                                                 </Link>
                                                 <button
-                                                    className="btn btn-danger btn-sm ml-5"
+                                                    className="btn btn-danger btn-sm"
                                                     onClick={() => handleDelete(blog.id)}>
                                                     <FaTrashAlt />
                                                 </button>

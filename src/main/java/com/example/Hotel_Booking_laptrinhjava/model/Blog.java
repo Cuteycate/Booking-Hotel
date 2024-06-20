@@ -21,6 +21,7 @@ public class Blog {
     private String title;
     @Column(columnDefinition = "TEXT")
     private String content;
+    @Column(columnDefinition = "TEXT")
     private String summary;
     private LocalDate createdAt;
     private LocalDate updatedAt;
