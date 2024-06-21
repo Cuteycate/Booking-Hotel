@@ -17,7 +17,7 @@ const BookingSummary = ({roomId, booking, payment, isFormValid, onConfirm }) => 
 			setIsProcessingPayment(true)
 			const orderInfo = `Booking for ${booking.guestFullName} from ${checkInDate.format("MMM Do YYYY")} to ${checkOutDate.format("MMM Do YYYY")}`
 			const encodedGuestFullName = encodeURIComponent(booking.guestFullName);
-			const returnUrl = `${window.location.origin}/booking-success?roomId=${roomId}&guestFullName=${encodedGuestFullName}&guestEmail=${booking.guestEmail}&checkInDate=${booking.checkInDate}&checkOutDate=${booking.checkOutDate}&numOfAdults=${booking.numOfAdults}&numOfChildren=${booking.numOfChildren}`; // URl Return 
+			const returnUrl = `${window.location.origin}/booking-success?roomId=${roomId}&guestFullName=${encodedGuestFullName}&guestEmail=${booking.guestEmail}&checkInDate=${booking.checkInDate}&checkOutDate=${booking.checkOutDate}&numOfAdults=${booking.numOfAdults}&numOfChildren=${booking.numofChildren}`; // URl Return 
 			const vnpayUrl = await Payment(payment, orderInfo, returnUrl)
 			setIsBookingConfirmed(true)		
 			if (vnpayUrl) {

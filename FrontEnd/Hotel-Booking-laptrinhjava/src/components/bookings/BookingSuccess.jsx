@@ -52,8 +52,8 @@ const BookingSuccess = () => {
 
   const handleFormSubmit = async (roomId, bookingData) => {
     try {    
-      const response = await bookRoom(roomId, bookingData);
-      console.log("Current booking state:", bookingData);
+      const response = await bookRoom(roomId, bookingData);  
+      console.log("Current booking state:",bookingData); 
       setConfirmationCode(response);
     } catch (error) {
       console.error("Failed to save booking:", error);
