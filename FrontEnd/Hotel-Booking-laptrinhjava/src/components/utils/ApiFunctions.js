@@ -85,6 +85,8 @@ export async function bookRoom(roomId, booking)
 {
     try{
         const response = await api.post(`/bookings/room/${roomId}/booking`,booking)
+        console.log("Current booking state:",booking);
+        console.log("Current booking state:",response.data);
         return response.data
     }catch(error)
     {

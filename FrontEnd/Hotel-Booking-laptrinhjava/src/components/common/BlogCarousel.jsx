@@ -12,7 +12,9 @@ const BlogCarousel = () => {
         setIsLoading(true);
         getAllBlogs()
             .then((data) => {
-                setBlogs(data);
+                // Sort blogs from newest to oldest by createdAt
+                const sortedBlogs = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                setBlogs(sortedBlogs);
                 setIsLoading(false);
             })
             .catch((error) => {
@@ -30,7 +32,7 @@ const BlogCarousel = () => {
 
     return (
         <section className="bg-light mb-5 mt-5 shadow">
-            <Link to={"/browse-all-blogs"} className="blog-color d-block mb-3 text-decoration-none">
+            <Link to={"/blogs"} className="blog-color d-block mb-3 text-decoration-none">
                 Browse all blogs
             </Link>
 
@@ -55,7 +57,7 @@ const BlogCarousel = () => {
                                                     style={{ height: "200px" }}
                                                 />
                                                 <Card.Body className="d-flex flex-column">
-                                                    <Card.Title className="blog-title">{blog.title}</Card.Title>
+                                                    <Card.Title className="blog-title card-title-hover">{blog.title}</Card.Title>
                                                     <Card.Subtitle className="mb-2 text-muted">
                                                         <i>{new Date(blog.createdAt).toLocaleDateString()}</i>
                                                     </Card.Subtitle>

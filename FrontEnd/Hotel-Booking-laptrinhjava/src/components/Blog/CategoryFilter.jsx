@@ -71,7 +71,7 @@ const CategoryFilter = ({ data, setFilteredData }) => {
                 {uniqueCategories.map((category, index) => (
                     <Card
                         key={index}
-                        className={`m-1 ${selectedCategories.includes(category) || category === selectedCategories[0] ? 'bg-primary text-white' : 'bg-light'}`}
+                        className={`m-1 category-card ${selectedCategories.includes(category) || category === selectedCategories[0] ? 'bg-primary text-white' : 'bg-light'}`}
                         onClick={() => handleCheckboxChange(category)}
                         style={{ cursor: 'pointer', minWidth: '120px' }}
                     >

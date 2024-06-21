@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getBlogById, getAllBlogs } from '../utils/ApiFunctions';
-import { Card, Col, Row } from 'react-bootstrap';
-import './BlogView.css';
+import { Card, Col, Row, Button } from 'react-bootstrap';
+import './BlogView.css'; // Add this line to import the CSS file
 import BlogCarousel from '../common/BlogCarousel';
+import {
+    FacebookShareButton,
+    FacebookIcon,
+    TwitterShareButton,
+    TwitterIcon,
+    LinkedinShareButton,
+    LinkedinIcon,
+    WhatsappShareButton,
+    WhatsappIcon
+} from 'react-share';
 
 const BlogView = () => {
     const { id } = useParams();
@@ -47,7 +57,7 @@ const BlogView = () => {
     }, [blog]);
 
     useEffect(() => {
-        // Scroll to the top of the page whenever blog or newestBlogs change
+        // Scroll to the top of the page after clicking a new blog
         window.scrollTo(0, 0);
     }, [blog, newestBlogs]);
 
@@ -57,7 +67,11 @@ const BlogView = () => {
 
     const handleCategoryClick = (categoryId) => {
         navigate(`/blogs?category=${categoryId}`);
-        // No need to reload the page here
+    };
+
+    const copyLinkToClipboard = () => {
+        navigator.clipboard.writeText(window.location.href);
+        alert("Link copied to clipboard!");
     };
 
     return (
@@ -66,7 +80,7 @@ const BlogView = () => {
             <Row>
                 <Col md={8}>
                     <section className="p-4">
-                        <h1>{blog.title}</h1>
+                        <h1 className="card-title-hover">{blog.title}</h1>
                         <p>
                             <small>
                                 <strong>Author:</strong> {blog.authorFullName} | <strong>Created Date:</strong> {new Date(blog.createdAt).toLocaleDateString()}
@@ -86,7 +100,7 @@ const BlogView = () => {
                                     <span 
                                         key={index} 
                                         onClick={() => handleCategoryClick(category.categoryId)} 
-                                        className="badge bg-success me-1" 
+                                        className="badge bg-success me-1 category-badge" 
                                         style={{ cursor: 'pointer' }}
                                     >
                                         {category.categoryName}
@@ -95,6 +109,23 @@ const BlogView = () => {
                             ) : (
                                 <p>No categories</p>
                             )}
+                        </div>
+                        <hr />
+                        <h4>Share this post</h4>
+                        <div className="d-flex align-items-center">
+                            <FacebookShareButton url={window.location.href} quote={blog.title}>
+                                <FacebookIcon size={32} round />
+                            </FacebookShareButton>
+                            <TwitterShareButton url={window.location.href} title={blog.title}>
+                                <TwitterIcon size={32} round />
+                            </TwitterShareButton>
+                            <LinkedinShareButton url={window.location.href} summary={blog.summary}>
+                                <LinkedinIcon size={32} round />
+                            </LinkedinShareButton>
+                            <WhatsappShareButton url={window.location.href} title={blog.title}>
+                                <WhatsappIcon size={32} round />
+                            </WhatsappShareButton>
+                            <Button variant="secondary" className="ms-2" onClick={copyLinkToClipboard}>Copy Link</Button>
                         </div>
                     </section>
                 </Col>
@@ -112,7 +143,7 @@ const BlogView = () => {
                                         </Col>
                                         <Col xs={8}>
                                             <Card.Body>
-                                                <Card.Title className="title-text">{newBlog.title}</Card.Title>
+                                                <Card.Title className="title-text card-title-hover">{newBlog.title}</Card.Title>
                                                 <Card.Subtitle className="mb-2 text-muted">
                                                     {new Date(newBlog.createdAt).toLocaleDateString()}
                                                 </Card.Subtitle>

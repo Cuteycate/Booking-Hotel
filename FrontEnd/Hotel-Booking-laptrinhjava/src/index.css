@@ -100,7 +100,7 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 70vh;
+  height: 60vh;
 }
 .header {
   position: relative;
@@ -370,6 +370,28 @@ h2 {
 .sidebar .card-text {
   color: black;
 }
+
+.blog-card:hover .card-title {
+  text-decoration: underline;
+  color: rgb(169, 77, 123);
+}
+.hotel-color-hover {
+  color: rgb(169, 77, 123);
+}
+
+.card-title-hover:hover {
+  color: rgb(169, 77, 123);
+  text-decoration: underline;
+}
+
+.card-title-hover {
+  transition: color 0.3s, text-decoration 0.3s;
+}
+.category-card:hover {
+  background-color: #007bff;
+  color: rgb(169, 77, 123);
+}
+
 
 
 

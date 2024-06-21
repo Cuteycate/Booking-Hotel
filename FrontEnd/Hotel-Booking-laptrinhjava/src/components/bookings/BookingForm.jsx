@@ -16,7 +16,7 @@ const BookingForm = () => {
         checkInDate: "",
         checkOutDate: "",
         numOfAdults: "",
-        numOfChildren: ""
+        numofChildren: ""
     });
     
 
@@ -52,7 +52,7 @@ const BookingForm = () => {
 
     const isGuestCountValid = () => {
         const adultCount = parseInt(booking.numOfAdults);
-        const childrenCount = parseInt(booking.numOfChildren);
+        const childrenCount = parseInt(booking.numofChildren);
         const totalCount = adultCount + childrenCount;
         return totalCount >= 1 && adultCount >= 1;
     };
@@ -205,15 +205,15 @@ const BookingForm = () => {
                                         </Form.Control.Feedback>
                                     </div>
                                     <div className="col-6">
-                                        <Form.Label htmlFor="numOfChildren" className="hotel-color">
+                                        <Form.Label htmlFor="numofChildren" className="hotel-color">
                                             Trẻ Em
                                         </Form.Label>
                                         <FormControl
                                             required
                                             type="number"
-                                            id="numOfChildren"
-                                            name="numOfChildren"
-                                            value={booking.numOfChildren}
+                                            id="numofChildren"
+                                            name="numofChildren"
+                                            value={booking.numofChildren}
                                             placeholder="0"
                                             min={0}
                                             onChange={handleInputChange}

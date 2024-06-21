@@ -49,3 +49,19 @@
     flex: 1;
     align-items: center;
 }
+.sidebar-card .card-title-hover:hover {
+    color: rgb(169, 77, 123); /* Change to hotel color */
+    text-decoration: underline; /* Underline on hover */
+  }
+  
+  .sidebar-card .card-title-hover {
+    transition: color 0.3s, text-decoration 0.3s;
+  }
+.card-title-hover:hover {
+    text-decoration: underline;
+}
+
+.category-badge:hover {
+    background-color: #0056b3;
+}
+
