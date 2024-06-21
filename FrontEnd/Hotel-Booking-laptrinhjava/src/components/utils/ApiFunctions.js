@@ -26,6 +26,36 @@ export async function addRoom(photo,roomType,roomPrice)
     else
         return false;
 }
+
+//Thanh Toan Payment
+export async function Payment(amount, orderInfo, returnUrl) {
+	try {
+		const formData = new FormData()
+		formData.append("amount", amount)
+		formData.append("orderInfo", orderInfo)
+		formData.append("returnUrl", returnUrl) // Add return URL
+
+		const response = await api.post("/payment/submitOrder", formData, {
+			headers: getHeader()
+		})
+		return response.data // Assuming this is the VNPAY URL
+	} catch (error) {
+		throw new Error(`Error Payment room availability: ${error.message}`)
+	}
+}
+
+
+
+export async function RetrunPayment() {
+    try {
+        const response = await api.get("/payment/vnpay-payment"); 
+        return response.data;
+    } catch (error) {
+        throw new Error(`Error Return Payment: ${error.message}`);
+    }
+}
+
+
 // Lấy tất cả loại phòng trong database
 export async function getRoomTypes() {
 	try {
@@ -34,6 +64,7 @@ export async function getRoomTypes() {
 	} catch (error) {
 		throw new Error("Error fetching room types")
 	}
+
 }
 ////Lấy tất cả phòng trong Database
 export async function getAllRooms()
@@ -166,6 +197,9 @@ export async function registerUser(registration) {
 		}
 	}
 }
+
+
+
 //Đăng Nhập
 export async function loginUser(login) {
 	try {

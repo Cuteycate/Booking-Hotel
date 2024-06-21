@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react"
 import moment from "moment"
 import Button from "react-bootstrap/Button"
 import { useNavigate } from "react-router-dom"
+import { Payment } from "../utils/ApiFunctions"
 
-const BookingSummary = ({ booking, payment, isFormValid, onConfirm }) => {
+const BookingSummary = ({roomId, booking, payment, isFormValid, onConfirm }) => {
 	const checkInDate = moment(booking.checkInDate)
 	const checkOutDate = moment(booking.checkOutDate)
 	const numberOfDays = checkOutDate.diff(checkInDate, "days")
@@ -11,19 +12,29 @@ const BookingSummary = ({ booking, payment, isFormValid, onConfirm }) => {
 	const [isProcessingPayment, setIsProcessingPayment] = useState(false)
 	const navigate = useNavigate()
 
-	const handleConfirmBooking = () => {
-		setIsProcessingPayment(true)
-		setTimeout(() => {
+	const handleConfirmBooking = async () => {
+		try {
+			setIsProcessingPayment(true)
+			const orderInfo = `Booking for ${booking.guestFullName} from ${checkInDate.format("MMM Do YYYY")} to ${checkOutDate.format("MMM Do YYYY")}`
+			const encodedGuestFullName = encodeURIComponent(booking.guestFullName);
+			const returnUrl = `${window.location.origin}/booking-success?roomId=${roomId}&guestFullName=${encodedGuestFullName}&guestEmail=${booking.guestEmail}&checkInDate=${booking.checkInDate}&checkOutDate=${booking.checkOutDate}&numOfAdults=${booking.numOfAdults}&numOfChildren=${booking.numOfChildren}`; // URl Return 
+			const vnpayUrl = await Payment(payment, orderInfo, returnUrl)
+			setIsBookingConfirmed(true)		
+			if (vnpayUrl) {
+				window.location.href = vnpayUrl // chuyen huong den trang thanh toan cua VNPay
+			}
+
+		} catch (error) {	
+			console.error("Payment error:", error)
 			setIsProcessingPayment(false)
-			setIsBookingConfirmed(true)
-			onConfirm()
-		}, 3000)
+			navigate("/booking-success", { state: { error: error.message } })
+		}
 	}
 
 	useEffect(() => {
-		if (isBookingConfirmed) {
-			navigate("/booking-success")
-		}
+		//if (isBookingConfirmed) {
+		//	navigate("/booking-success")
+		//}
 	}, [isBookingConfirmed, navigate])
 
 	return (
@@ -44,7 +55,7 @@ const BookingSummary = ({ booking, payment, isFormValid, onConfirm }) => {
 					Ngày Check-Out: <strong>{moment(booking.checkOutDate).format("MMM Do YYYY")}</strong>
 				</p>
 				<p>
-					Number of Days Booked: <strong>{numberOfDays}</strong>
+					Số ngày đặt: <strong>{numberOfDays}</strong>
 				</p>
 
 				<div>
@@ -60,7 +71,7 @@ const BookingSummary = ({ booking, payment, isFormValid, onConfirm }) => {
 				{payment > 0 ? (
 					<>
 						<p>
-							Tổng Số Tiền: <strong>${payment}</strong>
+							Tổng Số Tiền: <strong>{payment} VND</strong>
 						</p>
 
 						{isFormValid && !isBookingConfirmed ? (

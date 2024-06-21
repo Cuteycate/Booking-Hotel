@@ -237,6 +237,7 @@ const BookingForm = () => {
                 <div className="col-md-4">
                     {isSubmitted && (
                         <BookingSummary
+                            roomId={roomId}
                             booking={booking}
                             payment={calculatePayment()}
                             onConfirm={handleFormSubmit}
