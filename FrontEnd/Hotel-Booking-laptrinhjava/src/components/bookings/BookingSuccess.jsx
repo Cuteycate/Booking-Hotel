@@ -9,7 +9,6 @@ const BookingSuccess = () => {
   const [transactionStatus, setTransactionStatus] = useState("");
   const [confirmationCode, setConfirmationCode] = useState("");
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
-
   const vnp_Amount = searchParams.get("vnp_Amount") || "";
   const vnp_BankCode = searchParams.get("vnp_BankCode") || "";
   const vnp_PayDate = searchParams.get("vnp_PayDate") || "";
@@ -30,7 +29,7 @@ const BookingSuccess = () => {
           checkInDate: searchParams.get("checkInDate"),
           checkOutDate: searchParams.get("checkOutDate"),
           numOfAdults: searchParams.get("numOfAdults"),
-          numOfChildren: searchParams.get("numOfChildren"),
+          numofChildren: searchParams.get("numOfChildren"),
           paymentInfo: {
             amount: amountInDong,
             bankCode: vnp_BankCode,
@@ -38,6 +37,7 @@ const BookingSuccess = () => {
             transactionNo: vnp_TransactionNo
           }
         };
+
         const roomId = searchParams.get("roomId");
         if (transactionStatus === "00" && !isProcessingPayment ) {
           handleFormSubmit(roomId, bookingData);
@@ -53,6 +53,7 @@ const BookingSuccess = () => {
   const handleFormSubmit = async (roomId, bookingData) => {
     try {    
       const response = await bookRoom(roomId, bookingData);
+      console.log("Current booking state:", bookingData);
       setConfirmationCode(response);
     } catch (error) {
       console.error("Failed to save booking:", error);
@@ -72,7 +73,7 @@ const BookingSuccess = () => {
             <h3 className="text-success">Booking Success!</h3>
             <p className="text-success">Amount: {amountInDong} VND </p>
             <p className="text-success">Bank Code: {vnp_BankCode}</p>
-            <p className="text-success">Pay Date: {vnp_PayDate}</p>
+            <p className="text-success">Pay Date: {vnp_PayDate}</p>            
             <p className="text-success">Transaction No: {vnp_TransactionNo}</p>
             <p className="text-success">Confirmation Code: {confirmationCode}</p>
           </div>
