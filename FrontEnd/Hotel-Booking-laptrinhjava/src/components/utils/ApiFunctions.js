@@ -408,5 +408,17 @@ export async function getBlogById(id) {
         throw new Error(error.response.data.message || 'Error fetching blog');
     }
 }
+//Lấy Tất cả User
 
+
+export async function getAllUsers() {
+    try {
+        const response = await api.get('/users/all', {
+            headers: getHeader()
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response.data.message || 'Error fetching users');
+    }
+}
 

@@ -211,7 +211,7 @@ const UpdateBlog = () => {
                             </Form.Group>
                             <div className="d-grid d-md-flex mt-3 justify-content-md-end">
                                 <Button variant="primary" type="submit" className="me-md-2">Submit</Button>
-                                <Link to="/blog-listing" className="btn btn-secondary">Cancel</Link>
+                                <Link to="/admin/blogs" className="btn btn-secondary">Cancel</Link>
                             </div>
                         </Form>
                     </div>

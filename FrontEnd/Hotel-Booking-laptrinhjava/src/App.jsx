@@ -10,7 +10,7 @@ import Home from "./components/home/Home"
 import Footer from "./components/layout/Footer"
 import Navbar from "./components/layout/Navbar"
 import RoomListing from "./components/room/RoomListing"
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Admin from "./components/admin/Admin";
 import CheckOut from "./components/bookings/CheckOut";
 import BookingSuccess from "./components/bookings/BookingSuccess";
@@ -28,49 +28,67 @@ import AddBlog from "./components/Blog/AddBlog";
 import UpdateBlog from './components/Blog/UpdateBlog';
 import BlogView from "./components/Blog/BlogView";
 import BlogList from "./components/Blog/BlogList";
+import RequireAdmin from "./components/auth/RequireAdmin";
+
+
+const AppContent = () => {
+	const location = useLocation();
+	const isAdminRoute = location.pathname.startsWith('/admin');
+  
+	// Determine if the current route is not within the admin section
+	const showNavbar = !isAdminRoute;
+  
+	return (
+	  <>
+		{showNavbar && <Navbar /> } {/* Render Navbar if not in admin section */}
+		<Routes>
+			<Route path="/" element={<Home />} />
+			<Route path="/browse-all-rooms" element={<RoomListing />} />
+			<Route
+				path="/book-room/:roomId"
+				element={
+				<RequireAuth>
+					<CheckOut />
+				</RequireAuth>
+				}
+			/>
+			<Route path="/blogs" element={<BlogList/>} />
+			<Route path="/blog-listing" element={<BlogListing />} />	
+			<Route path="/view-blog/:id" element={<BlogView/>} />
+
+			<Route path="/booking-success" element={<BookingSuccess />} />
+			<Route path="/find-booking" element={<FindBooking />} />
+
+			<Route path="/login" element={<Login />} />
+			<Route path="/register" element={<Registration />} />
+			<Route path="/profile" element={<Profile />} />
+			<Route path="/logout" element={<Logout />} />
+			<Route path="/existing-bookings" element={<Bookings />} />
+
+			{/* All admin routes */}
+			<Route
+          path="/admin/*"
+          element={
+            <RequireAdmin>
+              <Admin />
+            </RequireAdmin>
+          }
+        />
+
+		</Routes>
+		  {showNavbar && <Footer /> }
+	  </>
+	);
+  };
+
 function App() {
 	return (
 		<AuthProvider>
-			<main>
-				<Router>
-					<Navbar />
-					<Routes>
-						<Route path="/" element={<Home />} />
-						<Route path="/edit-room/:roomId" element={<EditRoom />} />
-						<Route path="/existing-rooms" element={<ExistingRoom />} />
-						<Route path="/add-room" element={<AddRoom />} />
-
-						<Route
-							path="/book-room/:roomId"
-							element={
-								<RequireAuth>
-									<CheckOut />
-								</RequireAuth>
-							}
-						/>
-						<Route path="/blog-categories" element={<BlogCategoriesListing />} />
-						<Route path="/blog-listing" element={<BlogListing />} />
-						<Route path="/add-blog" element={<AddBlog />} />
-						<Route path="/edit-blog/:id" element={<UpdateBlog/>} />
-						<Route path="/view-blog/:id" element={<BlogView/>} />
-						<Route path="/browse-all-rooms" element={<RoomListing />} />
-						<Route path="/blogs" element={<BlogList/>} />
-						<Route path="/admin" element={<Admin />} />
-						<Route path="/booking-success" element={<BookingSuccess />} />
-						<Route path="/existing-bookings" element={<Bookings />} />
-						<Route path="/find-booking" element={<FindBooking />} />
-						<Route path="/login" element={<Login />} />
-						<Route path="/register" element={<Registration />} />
-
-						<Route path="/profile" element={<Profile />} />
-						<Route path="/logout" element={<Logout />} />
-						
-					</Routes>
-				</Router>
-				<Footer />
-			</main>
+		  <Router>
+			<AppContent />
+		  </Router>
 		</AuthProvider>
-	)
+	  );
 }
 
 export default App
