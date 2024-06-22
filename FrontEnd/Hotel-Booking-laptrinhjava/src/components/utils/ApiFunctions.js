@@ -1,4 +1,5 @@
 import axios from "axios"
+import { tr } from "date-fns/locale"
 
 export const api = axios.create({
     baseURL :"http://localhost:9192"
@@ -44,6 +45,26 @@ export async function Payment(amount, orderInfo, returnUrl) {
 		throw new Error(`Error Payment room availability: ${error.message}`)
 	}
 }
+
+export async function EmailSender(confirmationCode, guestEmail){
+    try{
+        const formData = new FormData()
+        formData.append("confirmationCode", confirmationCode)
+        formData.append("guestEmail", guestEmail)
+
+        const response = await api.post("/payment/emailSender", formData, {
+            headers: getHeader()
+        })
+        return response.data;
+    }catch(error){
+        throw new Error('Error when Send Email: ${error.message}')
+    }
+}
+
+
+
+
+
 
 
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import Header from "../common/Header";
-import { bookRoom } from "../utils/ApiFunctions";
+import { bookRoom, EmailSender } from "../utils/ApiFunctions";
 
 const BookingSuccess = () => {
   const location = useLocation();
@@ -14,6 +14,8 @@ const BookingSuccess = () => {
   const vnp_PayDate = searchParams.get("vnp_PayDate") || "";
   const vnp_TransactionNo = searchParams.get("vnp_TransactionNo") || "";
   const amountInDong = vnp_Amount ? parseInt(vnp_Amount) / 100 : 0;
+  const [emailSender, setemailSender] = useState("");
+
 
   const isBookingProcessed = useRef(false);
 
@@ -55,6 +57,11 @@ const BookingSuccess = () => {
       const response = await bookRoom(roomId, bookingData);  
       console.log("Current booking state:",bookingData); 
       setConfirmationCode(response);
+
+      const email = await EmailSender(response,bookingData.guestEmail);
+      console.log("Current booking state:", response); 
+      setemailSender(email);
+
     } catch (error) {
       console.error("Failed to save booking:", error);
     }
@@ -76,6 +83,8 @@ const BookingSuccess = () => {
             <p className="text-success">Pay Date: {vnp_PayDate}</p>            
             <p className="text-success">Transaction No: {vnp_TransactionNo}</p>
             <p className="text-success">Confirmation Code: {confirmationCode}</p>
+            <p className="text-danger">Please,Wait a few seconds for the code to be sent to email </p>
+            <p className="text-success">{emailSender}</p>
           </div>
         ) : transactionStatus === "01" ? (
           <p className="text-danger">There was an error with your booking.</p>
