@@ -75,7 +75,7 @@ const BlogListing = () => {
                     <section className="mt-5 mb-5 container">
                         <div className="d-flex justify-content-between mb-3 mt-5">
                             <h2>Existing Blogs</h2>
-                            <Link to={"/add-blog"}>
+                            <Link to={"/admin/add-blog"}>
                                 <FaPlus/> Add New Blog
                             </Link>
                         </div>
@@ -118,7 +118,7 @@ const BlogListing = () => {
                                                 <Link to={`/view-blog/${blog.id}`} className="btn btn-info btn-sm me-2">
                                                     <FaEye />
                                                 </Link>
-                                                <Link to={`/edit-blog/${blog.id}`} className="btn btn-warning btn-sm me-2">
+                                                <Link to={`/admin/Update-Blog/${blog.id}`} className="btn btn-warning btn-sm me-2">
                                                     <FaEdit />
                                                 </Link>
                                                 <button

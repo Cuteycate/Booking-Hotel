@@ -256,7 +256,8 @@ h2 {
 }
 
 #root {
-  max-width: 1280px;
+  
+  height: 100%;
   margin: 0 auto;
   padding: 0rem;
   text-align: left;
