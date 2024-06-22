@@ -31,7 +31,7 @@ const BlogCarousel = () => {
     }
 
     return (
-        <section className="bg-light mb-5 mt-5 shadow">
+        <section className="mb-5 mt-5">
             <Link to={"/blogs"} className="blog-color d-block mb-3 text-decoration-none">
                 Browse all blogs
             </Link>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
 import {
   BsGrid1X2Fill, BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, 
   BsFillGearFill
@@ -8,7 +7,6 @@ import {
 import { FaRegLightbulb } from "react-icons/fa";
 import { MdAdminPanelSettings } from "react-icons/md";
 import '../admin/admin.css';
-
 import { AuthContext } from '../auth/AuthProvider';
 
 function AdminSidebar({ openSidebarToggle, OpenSidebar }) {
@@ -43,45 +41,66 @@ function AdminSidebar({ openSidebarToggle, OpenSidebar }) {
       </div>
 
       <ul className='sidebar-list'>
-        <li className='sidebar-list-item'>
-          <Link to="/admin" onClick={OpenSidebar}>
-            <BsGrid1X2Fill className='icon' /> Thống kê
-          </Link>
+        <Link to="/admin" onClick={OpenSidebar} className='sidebar-link'>
+          <li className='sidebar-list-item'>
+            <div className="sidebar-link-content">
+              <BsGrid1X2Fill className='icon' />
+              <span>Thống kê</span>
+            </div>
+          </li>
+        </Link>
+        <Link to="/admin/rooms" onClick={OpenSidebar} className='sidebar-link'>
+          <li className='sidebar-list-item'>
+            <div className="sidebar-link-content">
+              <BsFillArchiveFill className='icon' />
+              <span>Phòng</span>
+            </div>
+          </li>
+        </Link>
+        <Link to="/admin/categories-Blog" onClick={OpenSidebar} className='sidebar-link'>
+          <li className='sidebar-list-item'>
+            <div className="sidebar-link-content">
+              <BsFillGrid3X3GapFill className='icon' />
+              <span>Thể Loại Bài Viết</span>
+            </div>
+          </li>
+        </Link>
+        <Link to="/admin/Blogs" onClick={OpenSidebar} className='sidebar-link'>
+          <li className='sidebar-list-item'>
+            <div className="sidebar-link-content">
+              <BsPeopleFill className='icon' />
+              <span>Bài Viết</span>
+            </div>
+          </li>
+        </Link>
+        <Link to="/admin/users" onClick={OpenSidebar} className='sidebar-link'>
+          <li className='sidebar-list-item'>
+            <div className="sidebar-link-content">
+              <BsFillGearFill className='icon' />
+              <span>Người Dùng</span>
+            </div>
+          </li>
+        </Link>
+        <li className='sidebar-list-item' onClick={toggleTheme}>
+          <div className="sidebar-link-content">
+            <FaRegLightbulb className='icon' />
+            <span>{isDarkMode ? "Light Mode" : "Dark Mode"}</span>
+          </div>
         </li>
-        <li className='sidebar-list-item'>
-          <Link to="/admin/rooms" onClick={OpenSidebar}>
-            <BsFillArchiveFill className='icon' /> Phòng
-          </Link>
-        </li>
-        <li className='sidebar-list-item'>
-          <Link to="/admin/categories-Blog" onClick={OpenSidebar}>
-            <BsFillGrid3X3GapFill className='icon' /> Thể Loại Bài Viết
-          </Link>
-        </li>
-        <li className='sidebar-list-item'>
-          <Link to="/admin/Blogs" onClick={OpenSidebar}>
-            <BsPeopleFill className='icon' /> Bài Viết
-          </Link>
-        </li>
-        <li className='sidebar-list-item'>
-          <Link to="/admin/users" onClick={OpenSidebar}>
-            <BsFillGearFill className='icon' /> Người Dùng
-          </Link>
-        </li>
-        <li className='sidebar-list-item'>
-          <a onClick={toggleTheme}>
-            <FaRegLightbulb className='icon' /> 
-            {isDarkMode ? " Light Mode" : " Dark Mode"}
-          </a>
-        </li>
-        <li className='sidebar-list-item'>
-          <Link to="/" onClick={OpenSidebar}>
-            <BsFillGearFill className='icon' /> Quay Lại Khách Sạn
-          </Link>
-        </li>
-        <li className='sidebar-list-item'>
-          <button className='dropdown-item' onClick={handleLogoutClick}>
-            <BsFillGearFill className='icon' /> Logout
+        <Link to="/" onClick={OpenSidebar} className='sidebar-link'>
+          <li className='sidebar-list-item'>
+            <div className="sidebar-link-content">
+              <BsFillGearFill className='icon' />
+              <span>Quay Lại Khách Sạn</span>
+            </div>
+          </li>
+        </Link>
+        <li className='sidebar-list-item' onClick={handleLogoutClick}>
+          <button className='dropdown-item'>
+            <div className="sidebar-link-content">
+              <BsFillGearFill className='icon' />
+              <span>Logout</span>
+            </div>
           </button>
         </li>
       </ul>

@@ -41,6 +41,11 @@ const NavBar = () => {
                 Browse all rooms
               </NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" aria-current="page" to={"/blogs"}>
+                Blogs
+              </NavLink>
+            </li>
             {isLoggedIn && userRole === "ROLE_ADMIN" && (
 							<li className="nav-item">
 								<NavLink className="nav-link" aria-current="page" to={"/admin"}>

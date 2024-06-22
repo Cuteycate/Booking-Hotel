@@ -29,7 +29,7 @@ const RoomCarousel = () => {
     }
 
     return (
-        <section className="bg-light mb-5 mt-5 shadow">
+        <section className="mb-5 mt-5">
             <Link to={"/browse-all-rooms"} className="hotel-color d-block mb-3">
                 Browse all rooms
             </Link>

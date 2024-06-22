@@ -414,11 +414,46 @@ export async function getBlogById(id) {
 export async function getAllUsers() {
     try {
         const response = await api.get('/users/all', {
-            headers: getHeader()
+            headers: getHeader(),
+            maxRedirects: 0 // Do not follow redirects automatically
         });
+        console.log('Response data:', response.data); // Log the response data
         return response.data;
     } catch (error) {
-        throw new Error(error.response.data.message || 'Error fetching users');
+        console.error('Error fetching users:', error); // Log the error for debugging
+
+        if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.error('Response data:', error.response.data);
+            console.error('Response status:', error.response.status);
+            console.error('Response headers:', error.response.headers);
+
+            if (error.response.status === 302 && error.response.headers.location) {
+                // Handle redirection manually
+                try {
+                    const redirectedResponse = await axios.get(error.response.headers.location, {
+                        headers: getHeader()
+                    });
+                    console.log('Redirected response data:', redirectedResponse.data);
+                    return redirectedResponse.data;
+                } catch (redirectError) {
+                    console.error('Error following redirect:', redirectError);
+                    throw new Error('Error following redirect');
+                }
+            }
+
+            throw new Error(error.response.data.message || 'Error fetching users');
+        } else if (error.request) {
+            // The request was made but no response was received
+            console.error('Request data:', error.request);
+            throw new Error('No response received from server');
+        } else {
+            // Something happened in setting up the request that triggered an Error
+            console.error('Error message:', error.message);
+            throw new Error('Error in setting up request');
+        }
     }
 }
+
 

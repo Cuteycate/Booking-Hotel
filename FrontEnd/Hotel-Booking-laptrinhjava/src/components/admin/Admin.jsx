@@ -12,6 +12,7 @@ import BlogCategoriesListing from "../BlogCategory/BlogCategoriesListing";
 import BlogListing from "../Blog/BlogListing";
 import AddBlog from "../Blog/AddBlog";
 import UpdateBlog from "../Blog/UpdateBlog";
+import UserListing from "../user/UserListing";
 
 
 
@@ -49,8 +50,7 @@ const Admin = () => {
           <Route path="/categories-Blog" element={<BlogCategoriesListing />} />
 
           {/*Users Route*/}
-          
-
+          <Route path="/users" element={<UserListing />} />
           {/* Add other routes here */}
           <Route path="*" element={<AdminHome />} /> {/* Default to AdminHome if no match */}
         </Routes>
