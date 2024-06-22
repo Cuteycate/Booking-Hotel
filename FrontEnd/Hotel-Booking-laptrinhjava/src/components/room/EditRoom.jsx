@@ -8,6 +8,7 @@ const EditRoom = () => {
         photo: null,
         roomType: "",
         roomPrice: "",
+        summary: ""
     });
     const [imagePreview, setImagePreview] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
@@ -108,6 +109,19 @@ const EditRoom = () => {
                                     id="roomPrice"
                                     name="roomPrice"
                                     value={room.roomPrice}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="summary" className="form-label hotel-color">
+                                    Mô Tả Phòng
+                                </label>
+                                <textarea
+                                    required
+                                    className="form-control"
+                                    id="summary"
+                                    name="summary"
+                                    value={room.summary}
                                     onChange={handleInputChange}
                                 />
                             </div>

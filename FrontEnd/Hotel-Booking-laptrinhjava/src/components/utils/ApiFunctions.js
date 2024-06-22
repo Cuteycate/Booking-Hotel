@@ -11,12 +11,13 @@ export const getHeader = () => {
 	}
 }
 // Thêm 1 phòng mới vào database
-export async function addRoom(photo,roomType,roomPrice)
+export async function addRoom(photo,roomType,roomPrice,summary)
 {
     const formData = new FormData()
     formData.append("photo",photo)
     formData.append("roomType",roomType)
     formData.append("roomPrice",roomPrice)
+    formData.append("summary",summary)
 
     const response = await api.post("/rooms/add/new-room",formData,{
 		headers: getHeader()
@@ -96,6 +97,7 @@ export async function updateRoom(roomId,roomData)
     formData.append("roomType",roomData.roomType)
     formData.append("roomPrice",roomData.roomPrice)
     formData.append("photo",roomData.photo)
+    formData.append("summary",roomData.summary)
     const response = await api.put(`/rooms/update/${roomId}`,formData,{
 		headers: getHeader()
 	})

@@ -24,6 +24,8 @@ public class Room {
     private boolean isBooked = false;
     @Lob
     private Blob photo;
+    @Column(columnDefinition = "TEXT")
+    private String summary;
     @OneToMany(mappedBy="room", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<BookedRoom> bookings;
 

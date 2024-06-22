@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.sql.rowset.serial.SerialBlob;
-import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Blob;
@@ -24,10 +23,11 @@ public class RoomService implements IRoomService {
     private final RoomRepository roomRepository;
 
     @Override
-    public Room addNewRoom(MultipartFile file, String roomType, BigDecimal roomPrice) throws SQLException, IOException {
+    public Room addNewRoom(MultipartFile file, String roomType, BigDecimal roomPrice, String summary) throws SQLException, IOException {
         Room room = new Room();
         room.setRoomType(roomType);
         room.setRoomPrice(roomPrice);
+        room.setSummary(summary);
         if (!file.isEmpty()) {
             byte[] photoBytes = file.getBytes();
             Blob photoBlob = new SerialBlob(photoBytes);
@@ -35,9 +35,9 @@ public class RoomService implements IRoomService {
         }
         return roomRepository.save(room);
     }
+
     @Override
-    public List<String> getAllRoomTypes()
-    {
+    public List<String> getAllRoomTypes() {
         return roomRepository.findDistinctRoomTypes();
     }
 
@@ -49,11 +49,11 @@ public class RoomService implements IRoomService {
     @Override
     public byte[] getRoomPhotoByRoomId(Long roomId) throws SQLException {
         Optional<Room> theRoom = roomRepository.findById(roomId);
-        if(theRoom.isEmpty()){
+        if (theRoom.isEmpty()) {
             throw new ResourceNotFoundException("Sorry, Room not found!");
         }
         Blob photoBlob = theRoom.get().getPhoto();
-        if(photoBlob != null){
+        if (photoBlob != null) {
             return photoBlob.getBytes(1, (int) photoBlob.length());
         }
         return null;
@@ -62,15 +62,15 @@ public class RoomService implements IRoomService {
     @Override
     public void deleteRoom(Long roomId) {
         Optional<Room> theRoom = roomRepository.findById(roomId);
-        if(theRoom.isPresent()){
+        if (theRoom.isPresent()) {
             roomRepository.deleteById(roomId);
         }
     }
 
     @Override
-    public Room updateRoom(Long roomId, String roomType, BigDecimal roomPrice, byte[] photoBytes) {
-        Room room = roomRepository.findById(roomId).
-                orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy phòng"));
+    public Room updateRoom(Long roomId, String roomType, BigDecimal roomPrice, byte[] photoBytes, String summary) {
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy phòng"));
         if (roomType != null)
             room.setRoomType(roomType);
         if (roomPrice != null)
@@ -82,12 +82,14 @@ public class RoomService implements IRoomService {
                 throw new InternalServerException("Có lỗi cập nhật phòng");
             }
         }
+        if (summary != null)
+            room.setSummary(summary);
         return roomRepository.save(room);
     }
 
     @Override
     public Optional<Room> getRoomById(Long roomId) {
-        return Optional.of(roomRepository.findById(roomId).get());
+        return roomRepository.findById(roomId);
     }
 
     @Override
