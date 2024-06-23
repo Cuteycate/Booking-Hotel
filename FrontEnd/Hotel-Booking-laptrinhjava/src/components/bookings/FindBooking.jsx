@@ -1,11 +1,12 @@
 import React, { useState } from "react"
 import moment from "moment"
-import { cancelBooking, getBookingByConfirmationCode } from "../utils/ApiFunctions"
+import {EmailSender, cancelBooking, getBookingByConfirmationCode } from "../utils/ApiFunctions"
 
 const FindBooking = () => {
 	const [confirmationCode, setConfirmationCode] = useState("")
 	const [error, setError] = useState(null)
 	const [successMessage, setSuccessMessage] = useState("")
+	const [emailSender, setemailSender] = useState("");
 	const [isLoading, setIsLoading] = useState(false)
 	const [bookingInfo, setBookingInfo] = useState({
 		id: "",
@@ -68,6 +69,9 @@ const FindBooking = () => {
 			setBookingInfo(emptyBookingInfo)
 			setConfirmationCode("")
 			setError(null)
+			const email = await EmailSender(bookingInfo.bookingConfirmationCode, bookingInfo.guestEmail, bookingInfo, "cancellation");
+      		console.log("Current booking state:", bookingData); 
+			setemailSender(email);
 		} catch (error) {
 			setError(error.message)
 		}

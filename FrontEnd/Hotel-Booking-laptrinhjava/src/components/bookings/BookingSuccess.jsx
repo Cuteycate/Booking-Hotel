@@ -31,13 +31,7 @@ const BookingSuccess = () => {
           checkInDate: searchParams.get("checkInDate"),
           checkOutDate: searchParams.get("checkOutDate"),
           numOfAdults: searchParams.get("numOfAdults"),
-          numofChildren: searchParams.get("numOfChildren"),
-          paymentInfo: {
-            amount: amountInDong,
-            bankCode: vnp_BankCode,
-            payDate: vnp_PayDate,
-            transactionNo: vnp_TransactionNo
-          }
+          numofChildren: searchParams.get("numOfChildren"),    
         };
 
         const roomId = searchParams.get("roomId");
@@ -55,17 +49,19 @@ const BookingSuccess = () => {
   const handleFormSubmit = async (roomId, bookingData) => {
     try {    
       const response = await bookRoom(roomId, bookingData);  
-      console.log("Current booking state:",bookingData); 
+      console.log("Current booking state:", bookingData); 
       setConfirmationCode(response);
-
-      const email = await EmailSender(response,bookingData.guestEmail);
-      console.log("Current booking state:", response); 
+  
+      const email = await EmailSender(response, bookingData.guestEmail, bookingData, "thankYou");
+      console.log("Current booking state:", bookingData); 
       setemailSender(email);
-
+  
     } catch (error) {
       console.error("Failed to save booking:", error);
     }
   };
+  
+  
 
   const decodeURLParams = (param) => {
     return decodeURIComponent(param.replace(/\+/g, ' '));
