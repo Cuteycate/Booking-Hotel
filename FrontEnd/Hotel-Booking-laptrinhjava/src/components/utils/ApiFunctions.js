@@ -1,5 +1,6 @@
 import axios from "axios"
 import { tr } from "date-fns/locale"
+import { Form } from "react-router-dom"
 
 export const api = axios.create({
     baseURL :"http://localhost:9192"
@@ -46,27 +47,26 @@ export async function Payment(amount, orderInfo, returnUrl) {
 	}
 }
 
-export async function EmailSender(confirmationCode, guestEmail){
-    try{
-        const formData = new FormData()
-        formData.append("confirmationCode", confirmationCode)
-        formData.append("guestEmail", guestEmail)
-
-        const response = await api.post("/payment/emailSender", formData, {
-            headers: getHeader()
-        })
-        return response.data;
-    }catch(error){
-        throw new Error('Error when Send Email: ${error.message}')
+export async function EmailSender(confirmationCode, guestEmail, bookingData, emailType) {
+    try {
+      const payload = {
+        confirmationCode,
+        guestEmail,
+        bookingData,
+        emailType
+      };
+  
+      const response = await api.post("/payment/emailSender", payload, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(`Error when sending email: ${error.message}`);
     }
-}
-
-
-
-
-
-
-
+  }
+  
 
 export async function RetrunPayment() {
     try {

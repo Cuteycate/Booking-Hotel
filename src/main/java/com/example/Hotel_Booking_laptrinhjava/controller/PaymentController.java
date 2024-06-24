@@ -1,9 +1,12 @@
 package com.example.Hotel_Booking_laptrinhjava.controller;
 
+import com.example.Hotel_Booking_laptrinhjava.model.BookedRoom;
+import com.example.Hotel_Booking_laptrinhjava.model.EmailRequest;
 import com.example.Hotel_Booking_laptrinhjava.response.PaymentResponse;
 import com.example.Hotel_Booking_laptrinhjava.service.EmailService;
 import com.example.Hotel_Booking_laptrinhjava.service.VNPayService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -47,32 +50,58 @@ public class PaymentController {
     }
 
     @PostMapping("/emailSender")
-    public ResponseEntity<String> emailSender(@RequestParam("confirmationCode") String confirmationCode,
-                                              @RequestParam("guestEmail") String guestEmail) {
-        // Tiêu đề và nội dung email
-        String subject = "Your Booking Confirmation - Thank You for Choosing Us!";
-        String body = "Dear Valued Guest,\n\n" +
-                "We are thrilled to confirm your booking with us! It is our pleasure to have you as our guest and we are committed to making your stay memorable.\n\n" +
-                "Here are your booking details:\n" +
-                "Confirmation Code: " + confirmationCode + "\n\n" +
-                "Please keep this confirmation code handy for your reference.\n\n" +
-                "If you have any questions or need further assistance, do not hesitate to contact us. We are here to help you and ensure you have a wonderful experience.\n\n" +
-                "Thank you for choosing our hotel. We look forward to welcoming you soon!\n\n" +
-                "Warm regards,\n" +
-                "The Hotel Booking Team\n" +
-                "Contact Us: [Penacony Hotel Team ]\n" +
-                "Website: [Penacony Hotel]\n";
+    public ResponseEntity<String> emailSender(@RequestBody EmailRequest emailRequest) {
+        String confirmationCode = emailRequest.getConfirmationCode();
+        String guestEmail = emailRequest.getGuestEmail();
+        BookedRoom bookingData = emailRequest.getBookingData();
+        String emailType = emailRequest.getEmailType();
+
+        String subject;
+        String body;
+
+        if ("thankYou".equals(emailType)) {
+            subject = "Your Booking Confirmation - Thank You for Choosing Us!";
+            body = "Dear Valued Guest,\n\n" +
+                    "We are thrilled to confirm your booking with us! It is our pleasure to have you as our guest and we are committed to making your stay memorable.\n\n" +
+                    "Here are your booking details:\n" +
+                    "Confirmation Code: " + confirmationCode + "\n\n" +
+                    "CheckInDate: " + bookingData.getCheckInDate()+ "\n\n" +
+                    "CheckOutDate: " + bookingData.getCheckOutDate()+ "\n\n" +
+                    "NumOfAdults: " + bookingData.getNumOfAdults()+ "\n\n" +
+                    "NumOfChildren: " + bookingData.getNumofChildren()+ "\n\n" +
+                    "Please keep this confirmation code handy for your reference.\n\n" +
+                    "If you have any questions or need further assistance, do not hesitate to contact us. We are here to help you and ensure you have a wonderful experience.\n\n" +
+                    "Thank you for choosing our hotel. We look forward to welcoming you soon!\n\n" +
+                    "Warm regards,\n" +
+                    "The Hotel Booking Team\n" +
+                    "Contact Us: [Penacony Hotel Team ]\n" +
+                    "Website: [Penacony Hotel]\n";
+        } else if ("cancellation".equals(emailType)) {
+            subject = "Your Booking Cancellation - Contact Us for Refund";
+            body = "Dear Valued Guest,\n\n" +
+                    "We regret to inform you that your booking has been cancelled. If you have any questions or need assistance with your refund, please do not hesitate to contact us.\n\n" +
+                    "Here are your booking details:\n" +
+                    "Confirmation Code: " + confirmationCode + "\n\n" +
+                    "CheckInDate: " + bookingData.getCheckInDate()+ "\n\n" +
+                    "CheckOutDate: " + bookingData.getCheckOutDate()+ "\n\n" +
+                    "NumOfAdults: " + bookingData.getNumOfAdults()+ "\n\n" +
+                    "NumOfChildren: " + bookingData.getNumofChildren()+ "\n\n" +
+                    "We apologize for any inconvenience this may cause and appreciate your understanding.\n\n" +
+                    "Thank you for considering our hotel. We hope to have the opportunity to serve you in the future.\n\n" +
+                    "Warm regards,\n" +
+                    "The Hotel Booking Team\n" +
+                    "Contact Us: [Penacony Hotel Team ]\n" +
+                    "Website: [Penacony Hotel]\n";
+        } else {
+            return ResponseEntity.badRequest().body("Invalid email type");
+        }
 
         // Gửi email
         emailService.sendEmail(guestEmail, subject, body);
 
         // Trả về phản hồi cho client
-        return ResponseEntity.ok("Confirmation email sent to " + guestEmail);
+        return ResponseEntity.ok("Email sent to " + guestEmail);
     }
-
-
-
-
 
 
 }
