@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { getAllBlogs, deleteBlog } from '../utils/ApiFunctions';
 import { Col, Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FaEdit, FaEye, FaPlus, FaTrashAlt } from "react-icons/fa";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const BlogListing = () => {
     const [blogs, setBlogs] = useState([]);
@@ -10,8 +12,15 @@ const BlogListing = () => {
     const [blogsPerPage] = useState(8);
     const [isLoading, setIsLoading] = useState(false);
     const [filteredBlogs, setFilteredBlogs] = useState([]);
-    const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.state && location.state.message) {
+            toast.success(location.state.message);
+        }
+    }, [location]);
 
     useEffect(() => {
         fetchBlogs();
@@ -38,18 +47,14 @@ const BlogListing = () => {
         try {
             const result = await deleteBlog(blogId);
             if (result === "") {
-                setSuccessMessage(`Blog ${blogId} has been deleted`);
+                toast.success(`Bài Viết ${blogId} đã bị xóa !`);
                 fetchBlogs();
             } else {
                 console.error(`Error deleting blog: ${result.message}`);
             }
         } catch (error) {
-            setErrorMessage(error.message);
+            toast.error(error.message);
         }
-        setTimeout(() => {
-            setSuccessMessage("");
-            setErrorMessage("");
-        }, 3000);
     };
 
     const calculateTotalPages = (filteredBlogs, blogsPerPage, blogs) => {
@@ -63,8 +68,8 @@ const BlogListing = () => {
 
     return (
         <>
+            <ToastContainer />
             <div className="container col-md-8 col-lg-6">
-                {successMessage && <p className="alert alert-success mt-5">{successMessage}</p>}
                 {errorMessage && <p className="alert alert-danger mt-5">{errorMessage}</p>}
             </div>
 
@@ -76,7 +81,7 @@ const BlogListing = () => {
                         <div className="d-flex justify-content-between mb-3 mt-5">
                             <h2>Existing Blogs</h2>
                             <Link to={"/admin/add-blog"}>
-                                <FaPlus/> Add New Blog
+                                <FaPlus /> Add New Blog
                             </Link>
                         </div>
                         <Col md={6} className="mb-2 md-mb-0">
@@ -136,7 +141,6 @@ const BlogListing = () => {
                                 )}
                             </tbody>
                         </table>
-                        {/* Implement a paginator if necessary */}
                         <nav className="mt-3">
                             <ul className="pagination justify-content-center">
                                 {Array.from({ length: calculateTotalPages(filteredBlogs, blogsPerPage, blogs) }, (_, index) => (

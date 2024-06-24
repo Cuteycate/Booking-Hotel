@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { getAllBlogCategories, addBlogCategory, updateBlogCategory, deleteBlogCategory } from '../utils/ApiFunctions';
 import { FaEdit, FaTrashAlt, FaPlus } from "react-icons/fa";
 import Paginator from '../common/RoomPaginator';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const BlogCategoriesListing = () => {
     const [categories, setCategories] = useState([]);
     const [newCategoryName, setNewCategoryName] = useState('');
     const [editingCategory, setEditingCategory] = useState(null);
-    const [successMessage, setSuccessMessage] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const categoriesPerPage = 5;
@@ -24,76 +24,57 @@ const BlogCategoriesListing = () => {
             setCategories(result);
             setIsLoading(false);
         } catch (error) {
-            setErrorMessage(error.message);
+            toast.error(error.message);
             setIsLoading(false);
-            setTimeout(() => {
-                setErrorMessage('');
-            }, 3000);
         }
     };
 
-    const handleAddCategory = async (e) => {
+    const handleAddCategory = async () => {
         if (!newCategoryName.trim()) {
-            setErrorMessage('Tên Categories không được để trống');
-            setTimeout(() => {
-                setErrorMessage('');
-            }, 3000);
+            toast.error('Tên Categories không được để trống');
             return;
         }
         try {
             await addBlogCategory(newCategoryName);
-            setNewCategoryName('');
-            fetchCategories();
-            setSuccessMessage('Thêm Categories thành công');
+            toast.success('Thêm Categories Blog thành công');
+            setTimeout(() => {
+                setNewCategoryName('');
+                fetchCategories();
+            }, 1500);
         } catch (error) {
-            setErrorMessage(error.message);
+            toast.error(error.message);
         }
-
-        setTimeout(() => {
-            setSuccessMessage('');
-            setErrorMessage('');
-        }, 3000);
     };
 
     const handleEditCategory = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         if (!newCategoryName.trim()) {
-            setErrorMessage('Tên Categories không được để trống');
-            setTimeout(() => {
-                setErrorMessage('');
-            }, 3000);
+            toast.error('Tên Categories không được để trống');
             return;
         }
-
         try {
             await updateBlogCategory(editingCategory.id, newCategoryName);
-            setNewCategoryName('');
-            setEditingCategory(null);
-            fetchCategories();
-            setSuccessMessage('Cập nhật Categories thành công');
+            toast.success('Cập nhật Categories Blog thành công');
+            setTimeout(() => {
+                setNewCategoryName('');
+                setEditingCategory(null);
+                fetchCategories();
+            }, 1500);
         } catch (error) {
-            setErrorMessage(error.message);
+            toast.error(error.message);
         }
-
-        setTimeout(() => {
-            setSuccessMessage('');
-            setErrorMessage('');
-        }, 3000);
     };
 
     const handleDeleteCategory = async (id) => {
         try {
             await deleteBlogCategory(id);
-            fetchCategories();
-            setSuccessMessage('Category deleted successfully');
+            toast.success('Xóa Category Blog thành công');
+            setTimeout(() => {
+                fetchCategories();
+            },1500);
         } catch (error) {
-            setErrorMessage(error.message);
+            toast.error(error.message);
         }
-
-        setTimeout(() => {
-            setSuccessMessage('');
-            setErrorMessage('');
-        }, 3000);
     };
 
     const handlePageChange = (pageNumber) => {
@@ -134,8 +115,7 @@ const BlogCategoriesListing = () => {
     return (
         <>
             <div className="container col-md-8 col-lg-6">
-                {successMessage && <p className="alert alert-success mt-5">{successMessage}</p>}
-                {errorMessage && <p className="alert alert-danger mt-5">{errorMessage}</p>}
+                <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
             </div>
 
             <section className="mt-5 mb-5 container">

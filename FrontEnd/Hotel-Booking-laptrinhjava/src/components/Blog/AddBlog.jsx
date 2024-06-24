@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { addBlog, getAllBlogCategories, getUser } from '../utils/ApiFunctions';
-import { Card, Form, Button } from 'react-bootstrap';
+import { Form, Button, Card } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify';
 import { FaTimes } from 'react-icons/fa';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddBlog = () => {
     const [newBlog, setNewBlog] = useState({
@@ -17,9 +19,8 @@ const AddBlog = () => {
     });
     const [categories, setCategories] = useState([]);
     const [imagePreview, setImagePreview] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
-    const [userData, setUserData] = useState(null); 
+    const [userData, setUserData] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchUserDetails();
@@ -81,27 +82,16 @@ const AddBlog = () => {
         try {
             const success = await addBlog(newBlog);
             if (success) {
-                setSuccessMessage("Blog added successfully!");
-                setNewBlog({
-                    title: '',
-                    content: '',
-                    summary: '',
-                    photo: null,
-                    userId: '',
-                    categoryIds: []
-                });
-                setImagePreview("");
-                setErrorMessage("");
+                toast.success("Thêm Bài Viết Thành Công!");
+                setTimeout(() => {
+                    navigate('/admin/blogs', { state: { message: "Thêm Bài Viết Thành Công!" } });
+                },);
             } else {
-                setErrorMessage("Error adding blog");
+                toast.error("Có lỗi khi thêm bài viết");
             }
         } catch (error) {
-            setErrorMessage(error.message);
+            toast.error(error.message);
         }
-        setTimeout(() => {
-            setSuccessMessage("");
-            setErrorMessage("");
-        }, 3000);
     };
 
     if (!userData) {
@@ -110,12 +100,11 @@ const AddBlog = () => {
 
     return (
         <>
+            <ToastContainer />
             <section className="container mt-5 mb-5">
                 <div className="row justify-content-center">
                     <div className="col-md-8 col-lg-6">
                         <h2 className="mt-5 mb-2">Add New Blog</h2>
-                        {successMessage && <div className="alert alert-success fade show">{successMessage}</div>}
-                        {errorMessage && <div className="alert alert-danger fade show">{errorMessage}</div>}
                         <Form onSubmit={handleSubmit}>
                             <Form.Group className="mb-3" controlId="title">
                                 <Form.Label>Title</Form.Label>
@@ -150,12 +139,8 @@ const AddBlog = () => {
                                             uploadUrl: 'https://ckeditor.com/apps/ckfinder/3.5.0/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json'
                                         },
                                         extraAllowedContent: true,
-                                        resourceType: 'Images', 
+                                        resourceType: 'Images',
                                         allowedContent: true
-                                    }}
-                                    onReady={editor => {
-                                    }}
-                                    onError={(error, editor) => {
                                     }}
                                 />
                             </Form.Group>
@@ -195,7 +180,7 @@ const AddBlog = () => {
                             </Form.Group>
                             <div className="d-grid d-md-flex mt-3 justify-content-md-end">
                                 <Button variant="primary" type="submit" className="me-md-2">Submit</Button>
-                                <Link to="/blog-listing" className="btn btn-secondary">Cancel</Link>
+                                <Link to="/admin/blogs" className="btn btn-secondary">Cancel</Link>
                             </div>
                         </Form>
                     </div>

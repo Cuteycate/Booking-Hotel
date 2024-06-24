@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { updateBlog, getAllBlogCategories, getUser, getBlogById } from '../utils/ApiFunctions';
 import { Card, Form, Button } from 'react-bootstrap';
 import { FaTimes } from 'react-icons/fa';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UpdateBlog = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [blog, setBlog] = useState({
         title: '',
         content: '',
@@ -18,8 +21,6 @@ const UpdateBlog = () => {
     });
     const [categories, setCategories] = useState([]);
     const [imagePreview, setImagePreview] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -110,32 +111,29 @@ const UpdateBlog = () => {
         try {
             const success = await updateBlog(blog);
             if (success) {
-                setSuccessMessage("Blog updated successfully!");
-                setErrorMessage("");
+                toast.success("Cập Nhật Bài Viết Thành Công!");
+                setTimeout(() => {
+                    navigate("/admin/blogs", { state: { message: "Cập Nhật Bài Viết Thành Công!" } });
+                },);
             } else {
-                setErrorMessage("Error updating blog");
+                toast.error("Có lỗi khí cập nhật Bài Viết");
             }
         } catch (error) {
-            setErrorMessage(error.message);
+            toast.error(error.message);
         }
-        setTimeout(() => {
-            setSuccessMessage("");
-            setErrorMessage("");
-        }, 3000);
     };
 
     if (loading) {
-        return <p>Loading...</p>; // Render loading state while fetching data
+        return <p>Loading...</p>;
     }
 
     return (
         <>
+            <ToastContainer />
             <section className="container mt-5 mb-5">
                 <div className="row justify-content-center">
                     <div className="col-md-8 col-lg-6">
                         <h2 className="mt-5 mb-2">Update Blog</h2>
-                        {successMessage && <div className="alert alert-success fade show">{successMessage}</div>}
-                        {errorMessage && <div className="alert alert-danger fade show">{errorMessage}</div>}
                         <Form onSubmit={handleSubmit}>
                             <Form.Group className="mb-3" controlId="title">
                                 <Form.Label>Title</Form.Label>

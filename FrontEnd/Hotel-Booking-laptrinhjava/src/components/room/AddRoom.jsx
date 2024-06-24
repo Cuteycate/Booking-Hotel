@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
-import { addRoom } from "../utils/ApiFunctions"
-import RoomTypeSelector from '../common/RoomTypeSelector'
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { addRoom } from "../utils/ApiFunctions";
+import RoomTypeSelector from '../common/RoomTypeSelector';
+import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddRoom = () => {
     const [newRoom, setNewRoom] = useState({
@@ -11,8 +13,7 @@ const AddRoom = () => {
         summary: ""
     });
     const [imagePreview, setImagePreview] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
+    const navigate = useNavigate();
 
     const handleRoomInputChange = (e) => {
         const name = e.target.name;
@@ -38,31 +39,26 @@ const AddRoom = () => {
         try {
             const success = await addRoom(newRoom.photo, newRoom.roomType, newRoom.roomPrice, newRoom.summary);
             if (success !== undefined) {
-                setSuccessMessage("Thêm Phòng Thành Công  !");
+                toast.success("Thêm Phòng Thành Công!");
                 setNewRoom({ photo: null, roomType: "", roomPrice: "", summary: "" });
                 setImagePreview("");
-                setErrorMessage("");
+                setTimeout(() => {
+                    navigate("/admin/rooms", { state: { message: "Thêm Phòng Thành Công!" } });
+                },0);
             } else {
-                setErrorMessage("Có lỗi khi thêm phòng");
+                toast.error("Có lỗi khi thêm phòng");
             }
         } catch (error) {
-            setErrorMessage(error.message);
+            toast.error(error.message);
         }
-        setTimeout(() => {
-            setSuccessMessage("");
-            setErrorMessage("");
-        }, 3000);
     };
 
     return (
         <section className="container mt-5 mb-5">
+            <ToastContainer />
             <div className="row justify-content-center">
                 <div className="col-md-8 col-lg-6">
                     <h2 className="mt-5 mb-2">Thêm Phòng Mới</h2>
-                    {successMessage && (
-                        <div className="alert alert-success fade show"> {successMessage}</div>
-                    )}
-                    {errorMessage && <div className="alert alert-danger fade show"> {errorMessage}</div>}
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3">
                             <label htmlFor="roomType" className="form-label">
@@ -124,7 +120,7 @@ const AddRoom = () => {
                             )}
                         </div>
                         <div className="d-grid d-md-flex mt-2">
-                            <Link to={"/existing-rooms"} className="btn btn-outline-info ml-5">
+                            <Link to={"/admin/rooms"} className="btn btn-outline-info ml-5">
                                 Back
                             </Link>
                             <button className="btn btn-outline-primary ml-5">

@@ -29,7 +29,7 @@ import UpdateBlog from './components/Blog/UpdateBlog';
 import BlogView from "./components/Blog/BlogView";
 import BlogList from "./components/Blog/BlogList";
 import RequireAdmin from "./components/auth/RequireAdmin";
-
+import 'react-toastify/dist/ReactToastify.css';
 
 const AppContent = () => {
 	const location = useLocation();

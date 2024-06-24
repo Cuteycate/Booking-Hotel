@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { getRoomById, updateRoom } from '../utils/ApiFunctions';
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import RoomTypeSelector from '../common/RoomTypeSelector';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EditRoom = () => {
     const [room, setRoom] = useState({
@@ -11,9 +13,7 @@ const EditRoom = () => {
         summary: ""
     });
     const [imagePreview, setImagePreview] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
-
+    const navigate = useNavigate();
     const { roomId } = useParams();
 
     const handleImageChange = (e) => {
@@ -59,34 +59,29 @@ const EditRoom = () => {
         try {
             const success = await updateRoom(roomId, room);
             if (success) {
-                setSuccessMessage("Phòng cập nhật thành công !");
+                toast.success("Phòng cập nhật thành công !");
                 const updatedRoomData = await getRoomById(roomId);
                 setRoom(updatedRoomData);
                 setImagePreview(`data:image/jpeg;base64,${updatedRoomData.photo}`);
-                setErrorMessage("");
+                setTimeout(() => {
+                    navigate("/admin/rooms", { state: { message: "Phòng cập nhật thành công !" } });
+                },0);
             } else {
-                setErrorMessage("Có lỗi khi cập nhật phòng");
+                toast.error("Có lỗi khi cập nhật phòng");
             }
         } catch (error) {
             console.error(error);
-            setErrorMessage(error.message);
+            toast.error(error.message);
         }
-        setTimeout(() => {
-            setSuccessMessage("");
-            setErrorMessage("");
-        }, 3000);
     };
 
     return (
         <>
             <section className="container mt-5 mb-5">
+                <ToastContainer />
                 <div className="row justify-content-center">
                     <div className="col-md-8 col-lg-6">
                         <h2 className="mt-5 mb-2">Chỉnh sửa phòng</h2>
-                        {successMessage && (
-                            <div className="alert alert-success fade show"> {successMessage}</div>
-                        )}
-                        {errorMessage && <div className="alert alert-danger fade show"> {errorMessage}</div>}
                         <form onSubmit={handleSubmit}>
                             <div className="mb-3">
                                 <label htmlFor="roomType" className="form-label hotel-color">
@@ -146,7 +141,7 @@ const EditRoom = () => {
                                 )}
                             </div>
                             <div className="d-grid gap-2 d-md-flex mt-2">
-                                <Link to={"/existing-rooms"} className="btn btn-outline-info ml-5">
+                                <Link to={"/admin/rooms"} className="btn btn-outline-info ml-5">
                                     Back
                                 </Link>
                                 <button type="submit" className="btn btn-outline-warning">
