@@ -30,6 +30,7 @@ import BlogView from "./components/Blog/BlogView";
 import BlogList from "./components/Blog/BlogList";
 import RequireAdmin from "./components/auth/RequireAdmin";
 import 'react-toastify/dist/ReactToastify.css';
+import BookingsTable from "./components/bookings/BookingsTable";
 
 const AppContent = () => {
 	const location = useLocation();

@@ -13,6 +13,7 @@ import BlogListing from "../Blog/BlogListing";
 import AddBlog from "../Blog/AddBlog";
 import UpdateBlog from "../Blog/UpdateBlog";
 import UserListing from "../user/UserListing";
+import BookingsTable from "../bookings/BookingsTable";
 
 
 
@@ -52,6 +53,8 @@ const Admin = () => {
           {/*Users Route*/}
           <Route path="/users" element={<UserListing />} />
           {/* Add other routes here */}
+          {/*Bookings Route*/}
+          <Route path="/bookings" element={<Bookings />} />
           <Route path="*" element={<AdminHome />} /> {/* Default to AdminHome if no match */}
         </Routes>
       </div>

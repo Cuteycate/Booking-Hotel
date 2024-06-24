@@ -81,6 +81,14 @@ function AdminSidebar({ openSidebarToggle, OpenSidebar }) {
             </div>
           </li>
         </Link>
+        <Link to="/admin/bookings" onClick={OpenSidebar} className='sidebar-link'>
+          <li className='sidebar-list-item'>
+            <div className="sidebar-link-content">
+              <BsFillGearFill className='icon' />
+              <span>Danh Sách Bookings</span>
+            </div>
+          </li>
+        </Link>
         <li className='sidebar-list-item' onClick={toggleTheme}>
           <div className="sidebar-link-content">
             <FaRegLightbulb className='icon' />
