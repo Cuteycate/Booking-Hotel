@@ -370,10 +370,28 @@ h2 {
 .sidebar .card-text {
   color: black;
 }
-
+.blog-card:hover {
+  transform: scale(1.05);
+}
 .blog-card:hover .card-title {
   text-decoration: underline;
   color: rgb(169, 77, 123);
+  transform: scale(1);
+}
+.blog-card {
+  border: none;
+  background-color: transparent;
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+.blog-title {
+  font-size: 1.25rem;
+  font-family: 'Poppins', sans-serif;
+}
+.blog-img {
+  height: 250px;
+  object-fit: cover;
+  transition: transform 0.3s;
 }
 .hotel-color-hover {
   color: rgb(169, 77, 123);
@@ -391,6 +409,99 @@ h2 {
   background-color: #007bff;
   color: rgb(169, 77, 123);
 }
+
+.text-truncate-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 6em;
+}
+/* Hotel Service images and css */
+.service {
+  position: relative;
+  overflow: hidden;
+  height: 80vh; /* Adjust as needed */
+  color: white; /* Ensure text color is white */
+}
+
+.service-background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("./assets/images/Area_Golden_Hour.webp");
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: -1;
+  filter: blur(2px); /* Apply blur to the background image */
+}
+.service-background-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+
+.foreground-content {
+  position: relative;
+  z-index: 1;
+  padding: 20px; /* Adjust padding as needed */
+}
+.room-card {
+  border: none;
+  background-color: transparent;
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+
+.room-card:hover {
+    transform: scale(1.05);
+}
+
+.room-img {
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.room-card:hover .room-img {
+    transform: scale(1.1);
+}
+
+.room-price {
+    font-size: 1.25rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+}
+
+.carousel-control-prev-icon:hover,
+.carousel-control-next-icon:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.carousel-control-prev-icon {
+    background-image: url('data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23ffffff" viewBox="0 0 8 8"><path d="M5.5 0l-4 4 4 4v-8z"/></svg>');
+}
+
+.carousel-control-next-icon {
+    background-image: url('data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23ffffff" viewBox="0 0 8 8"><path d="M2.5 0l4 4-4 4v-8z"/></svg>');
+}
+
 
 
 

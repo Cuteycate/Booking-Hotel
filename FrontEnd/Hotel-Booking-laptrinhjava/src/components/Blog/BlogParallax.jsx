@@ -4,8 +4,8 @@ import { Container } from "react-bootstrap";
 const BlogParallax = () => {
     return (
         <div className="parallax-blog mb-5">
-            <Container className="text-center px-5 py-5 justify-content-center">
-                <div className="animated-texts bounceIn">
+            <Container className="text-center d-flex  justify-content-center align-items-center h-100">
+                <div className="animated-texts bounceIn text-center">
                     <h1 className="white-text">
                         Chào mừng đến với <span className="hotel-color">Penacony Hotel Blogs</span>
                     </h1>

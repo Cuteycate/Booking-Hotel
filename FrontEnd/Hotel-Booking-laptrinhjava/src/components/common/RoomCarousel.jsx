@@ -41,24 +41,21 @@ const RoomCarousel = () => {
                             <Row>
                                 {rooms.slice(index * 4, index * 4 + 4).map((room) => (
                                     <Col key={room.id} className="mb-4" xs={12} md={6} lg={3}>
-                                        <Card>
+                                        <Card className="room-card">
                                             <Link to={`/book-room/${room.id}`}>
                                                 <Card.Img
                                                     variant="top"
                                                     src={`data:image/png;base64, ${room.photo}`}
                                                     alt="Room Photo"
-                                                    className="w-100"
-                                                    style={{ height: "200px" }}
+                                                    className="room-img"
                                                 />
                                             </Link>
-                                            <Card.Body>
+                                            <Card.Body className="text-center">
                                                 <Card.Title className="hotel-color">{room.roomType}</Card.Title>
                                                 <Card.Title className="room-price">${room.roomPrice}/night</Card.Title>
-                                                <div className="flex-shrink-0">
-                                                    <Link to={`/book-room/${room.id}`} className="btn btn-hotel btn-sm">
-                                                        Book Now
-                                                    </Link>
-                                                </div>
+                                                <Link to={`/book-room/${room.id}`} className="btn btn-hotel btn-sm">
+                                                    Book Now
+                                                </Link>
                                             </Card.Body>
                                         </Card>
                                     </Col>

@@ -21,7 +21,7 @@ const RoomCard = ({ room }) => {
                     </div>
                     <div className='flex-grow-1 ml-3 px-5'>
                         <Card.Title className='hotel-color'>{room.roomType}</Card.Title>
-                        <Card.Title className='hotel-color'>{room.roomPrice}$ / Đêm</Card.Title>
+                        <Card.Title className='hotel-color'>{room.roomPrice}Đ / Đêm</Card.Title>
                         <Card.Text>{summary}</Card.Text>
                     </div>
                     <div className='flex-shrink-0 mt-3'>

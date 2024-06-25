@@ -6,6 +6,7 @@ import RoomCarousel from "../common/RoomCarousel"
 import { useLocation } from "react-router-dom"
 import RoomSearch from "../common/RoomSearch"
 import BlogCarousel from "../common/BlogCarousel"
+import Header from "../common/Header"
 const Home = () => {
 	const location = useLocation()
 

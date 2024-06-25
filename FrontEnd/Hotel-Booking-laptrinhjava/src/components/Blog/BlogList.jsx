@@ -69,8 +69,9 @@ const BlogList = () => {
     }
 
     return (
-        <Container>
+        <section>
             <BlogParallax />
+        <Container>
             <Row>
                 <Col md={9}>
                     {filteredBlogs.length === 0 ? (
@@ -138,6 +139,7 @@ const BlogList = () => {
                 </Col>
             </Row>
         </Container>
+        </section>
     );
 };
 

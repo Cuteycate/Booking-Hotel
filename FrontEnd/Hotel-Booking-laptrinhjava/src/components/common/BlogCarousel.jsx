@@ -48,20 +48,19 @@ const BlogCarousel = () => {
                                 {blogs.slice(index * 3, index * 3 + 3).map((blog) => (
                                     <Col key={blog.id} className="mb-4" xs={12} md={4}>
                                         <Link to={`/view-blog/${blog.id}`} className="text-decoration-none">
-                                            <Card className="h-100">
+                                            <Card className="blog-card h-100">
                                                 <Card.Img
                                                     variant="top"
                                                     src={`data:image/png;base64, ${blog.photo}`}
                                                     alt="Blog Photo"
-                                                    className="w-100"
-                                                    style={{ height: "200px" }}
+                                                    className="blog-img w-100"
                                                 />
                                                 <Card.Body className="d-flex flex-column">
                                                     <Card.Title className="blog-title card-title-hover">{blog.title}</Card.Title>
                                                     <Card.Subtitle className="mb-2 text-muted">
                                                         <i>{new Date(blog.createdAt).toLocaleDateString()}</i>
                                                     </Card.Subtitle>
-                                                    <Card.Text className="flex-grow-1">{blog.summary}</Card.Text>
+                                                    <Card.Text className="flex-grow-1 text-truncate-4">{blog.summary}</Card.Text>
                                                     <Card.Subtitle className="mb-2 text-muted">
                                                         <i>Author: {blog.authorFullName}</i>
                                                     </Card.Subtitle>
