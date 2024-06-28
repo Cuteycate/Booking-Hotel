@@ -22,7 +22,6 @@ const BlogList = () => {
         setIsLoading(true);
         getAllBlogs()
             .then((data) => {
-                // Sort blogs by the most recent creation date
                 const sortedBlogs = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                 setBlogs(sortedBlogs);
                 if (categoryFilter && isValidCategory(categoryFilter, sortedBlogs)) {
