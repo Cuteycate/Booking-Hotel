@@ -35,10 +35,21 @@ import BookingsTable from "./components/bookings/BookingsTable";
 const AppContent = () => {
 	const location = useLocation();
 	const isAdminRoute = location.pathname.startsWith('/admin');
-  
+	const isAuthRoute = location.pathname.startsWith('/login') || location.pathname.startsWith('/register')
 	// Determine if the current route is not within the admin section
-	const showNavbar = !isAdminRoute;
-  
+	const showNavbar = !isAdminRoute  ;
+	const showFooter = !isAuthRoute;
+
+	 // Xử lý CSS cho trang login và register
+	 React.useEffect(() => {
+        if (isAuthRoute) {
+			window.scrollTo(0, 0);
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+    }, [isAuthRoute]);
+
 	return (
 	  <>
 		{showNavbar && <Navbar /> } {/* Render Navbar if not in admin section */}
@@ -77,7 +88,7 @@ const AppContent = () => {
         />
 
 		</Routes>
-		  {showNavbar && <Footer /> }
+		  {showNavbar && showFooter && <Footer /> }
 	  </>
 	);
   };

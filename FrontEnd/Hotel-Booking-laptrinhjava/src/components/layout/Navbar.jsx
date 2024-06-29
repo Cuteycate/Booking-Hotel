@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import Logout from "../auth/Logout"
+import '../auth/LoginPage.css';
 const NavBar = () => {
   const [showAccount, setShowAccount] = useState(false);
 
@@ -10,6 +11,17 @@ const NavBar = () => {
   const isLoggedIn = localStorage.getItem("token")
 	const userRole = localStorage.getItem("userRole")
 
+  const isAuthRoute = location.pathname.startsWith('/login') || location.pathname.startsWith('/register')
+	// Determine if the current route is not within the admin section
+
+	 React.useEffect(() => {
+    if (isAuthRoute) {
+        document.body.classList.add('container-fluid');
+    } else {
+        document.body.classList.remove('container-fluid');
+        document.body.style.overflow = 'unset';
+    }
+}, [isAuthRoute]);
 
   const handleDropdownBlur = (event) => {
     if (!event.currentTarget.contains(event.relatedTarget)) {
