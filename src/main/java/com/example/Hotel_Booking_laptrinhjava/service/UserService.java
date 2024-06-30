@@ -49,7 +49,7 @@ public class UserService implements IUserService {
 
     @Override
     public User getUser(String email) {
-        return userRepository.findByEmail(email).orElseThrow(()->
-                new UsernameNotFoundException("Không tìm thấy người dùng"));
+        return userRepository.findByEmail(email).orElse(null);
     }
+
 }

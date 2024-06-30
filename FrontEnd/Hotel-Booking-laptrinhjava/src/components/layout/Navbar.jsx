@@ -1,27 +1,15 @@
 import React, { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import Logout from "../auth/Logout"
-import '../auth/LoginPage.css';
 const NavBar = () => {
   const [showAccount, setShowAccount] = useState(false);
-
+  const isAuthRoute = location.pathname.startsWith('/login') || location.pathname.startsWith('/register')
   const handleAccountClick = () => {
     setShowAccount(!showAccount);
   };
   const isLoggedIn = localStorage.getItem("token")
 	const userRole = localStorage.getItem("userRole")
 
-  const isAuthRoute = location.pathname.startsWith('/login') || location.pathname.startsWith('/register')
-	// Determine if the current route is not within the admin section
-
-	 React.useEffect(() => {
-    if (isAuthRoute) {
-        document.body.classList.add('container-fluid');
-    } else {
-        document.body.classList.remove('container-fluid');
-        document.body.style.overflow = 'unset';
-    }
-}, [isAuthRoute]);
 
   const handleDropdownBlur = (event) => {
     if (!event.currentTarget.contains(event.relatedTarget)) {
@@ -29,9 +17,22 @@ const NavBar = () => {
     }
   };
 
+  
+  const loginPageStyle = isAuthRoute
+  ? {
+      
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "cover",
+    }
+  : {
+      backgroundImage: "none",
+    };
+
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary shadow sticky-top w-100">
-      <div className="container-fluid">
+    
+  
+      <nav className="navbar navbar-expand-lg bg-body-tertiary shadow sticky-top w-100">
+      <div className="container-fluid" style={loginPageStyle} >
         <Link to={"/"} className="navbar-brand">
           <span className="hotel-color">Penacony Hotel</span>
         </Link>
@@ -99,6 +100,8 @@ const NavBar = () => {
         </div>
       </div>
     </nav>
+    
+    
   );
 };
 
