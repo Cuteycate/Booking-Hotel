@@ -1,14 +1,15 @@
 import { parseISO } from 'date-fns';
 import React, { useState, useEffect } from 'react';
 import DateSlider from '../common/DateSlider';
-
+import { Link } from "react-router-dom";
+import { FaEdit, FaEye, FaPlus, FaTrashAlt } from "react-icons/fa";
+import { TiCancel } from "react-icons/ti";
 const BookingsTable = ({ bookingInfo, handleBookingCancellation }) => {
     const [filteredBookings, setFilteredBookings] = useState([]);
 
     const filterBookings = (startDate, endDate) => {
-        let filtered = bookingInfo;
         if (startDate && endDate) {
-            filtered = bookingInfo.filter((booking) => {
+            const filtered = bookingInfo.filter((booking) => {
                 const bookingStartDate = parseISO(booking.checkInDate);
                 const bookingEndDate = parseISO(booking.checkOutDate);
                 return (
@@ -17,8 +18,10 @@ const BookingsTable = ({ bookingInfo, handleBookingCancellation }) => {
                     bookingEndDate > startDate
                 );
             });
+            setFilteredBookings(filtered);
+        } else {
+            setFilteredBookings(bookingInfo);
         }
-        setFilteredBookings(filtered);
     };
 
     useEffect(() => {
@@ -32,27 +35,23 @@ const BookingsTable = ({ bookingInfo, handleBookingCancellation }) => {
                 <p>Không có Bookings nào trong khoảng ngày này</p>
             ) : (
                 <table className="table table-bordered table-hover shadow text">
-                    <thead>
+                    <thead className="text-center">
                         <tr>
-                            <th>S/N</th>
-                            <th>ID</th>
-                            <th>Phòng_ID</th>
-                            <th>Loại_Phòng</th>
-                            <th>Ngày_Check_In</th>
-                            <th>Ngày_Check_Out</th>
-                            <th>Họ_Tên_Khách⠀⠀</th>
-                            <th>Email_Khách</th>
-                            <th>Người_Lớn</th>
-                            <th>Trẻ_Em</th>
+                            <th>Mã Booking</th>
+                            <th>ID Phòng</th>
+                            <th>Loại Phòng</th>
+                            <th>Ngày Check In</th>
+                            <th>Ngày Check Out</th>
+                            <th>Tên Khách</th>
+                            <th>Email</th>
                             <th>Tổng_Khách</th>
                             <th>Mã Code</th>
-                            <th colSpan={2}>Actions</th>
+                            <th colSpan={1}>Actions</th>
                         </tr>
                     </thead>
                     <tbody className="text-center">
-                        {filteredBookings.map((booking, index) => (
+                        {filteredBookings.map((booking) => (
                             <tr key={booking.id}>
-                                <td>{index + 1}</td>
                                 <td>{booking.id}</td>
                                 <td>{booking.room.id}</td>
                                 <td>{booking.room.roomType}</td>
@@ -60,16 +59,18 @@ const BookingsTable = ({ bookingInfo, handleBookingCancellation }) => {
                                 <td>{booking.checkOutDate}</td>
                                 <td>{booking.guestName}</td>
                                 <td>{booking.guestEmail}</td>
-                                <td>{booking.numOfAdults}</td>
-                                <td>{booking.numOfChildren}</td>
                                 <td>{booking.totalNumOfGuests}</td>
                                 <td>{booking.bookingConfirmationCode}</td>
-                                <td>
+                                <td style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
+                                    <Link to={`/admin/view-booking/${booking.id}`} className="btn btn-primary btn-sm">
+                                        <FaEye />                    
+                                    </Link>
                                     <button
-                                        className="btn btn-danger btn-sm"
+                                        className="btn btn-danger btn-sm ml-5"
                                         onClick={() => handleBookingCancellation(booking.id)}
+                                        style={{ marginLeft: '10px' }}
                                     >
-                                        Hủy Book
+                                       <TiCancel />
                                     </button>
                                 </td>
                             </tr>

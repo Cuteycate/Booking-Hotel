@@ -1,5 +1,6 @@
 package com.example.Hotel_Booking_laptrinhjava.service;
 
+import com.example.Hotel_Booking_laptrinhjava.exception.ResourceNotFoundException;
 import com.example.Hotel_Booking_laptrinhjava.model.BookedRoom;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface IBookingService {
     boolean isRoomAvailable(Long roomId, BookedRoom bookingRequest);
 
     List<BookedRoom> getBookingsByUserEmail(String email);
+
+    BookedRoom findByBookingId(Long bookingId);
 }

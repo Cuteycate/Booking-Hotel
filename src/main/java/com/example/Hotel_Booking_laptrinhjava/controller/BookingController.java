@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.time.temporal.ChronoUnit;
@@ -39,6 +40,17 @@ public class BookingController {
             bookingResponses.add(bookingResponse);
         }
         return ResponseEntity.ok(bookingResponses);
+    }
+
+    @GetMapping("/booking/{bookingId}")
+    public ResponseEntity<BookingResponse> getBookingById(@PathVariable Long bookingId) {
+        try {
+            BookedRoom booking = bookingService.findByBookingId(bookingId); // Assuming you have a method to find by booking ID
+            BookingResponse bookingResponse = getBookingResponse(booking);
+            return ResponseEntity.ok(bookingResponse);
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Or handle as per your application's error handling strategy
+        }
     }
 
 
@@ -94,7 +106,7 @@ public class BookingController {
                 booking.getCheckOutDate(),booking.getGuestFullName(),
                 booking.getGuestEmail(), booking.getNumOfAdults(),
                 booking.getNumofChildren(), booking.getTotalNumOfGuest(),
-                booking.getBookingConfirmationCode(), room);
+                booking.getBookingConfirmationCode(),booking.getTotalAmount(),room);
     }
     @PostMapping("/check-room-availability/{roomId}")
     public ResponseEntity<Boolean> checkRoomAvailability(@PathVariable Long roomId, @RequestBody BookedRoom bookingRequest) {

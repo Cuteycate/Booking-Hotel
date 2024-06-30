@@ -86,8 +86,7 @@ const UserListing = () => {
                             <thead>
                                 <tr className="text-center">
                                     <th>ID</th>
-                                    <th>First Name</th>
-                                    <th>Last Name</th>
+                                    <th>Full Name</th>                          
                                     <th>Email</th>
                                     <th>Roles</th>
                                     <th>Actions</th>
@@ -98,8 +97,7 @@ const UserListing = () => {
                                     currentUsers.map((user) => (
                                         <tr key={user.id} className="text-center">
                                             <td>{user.id}</td>
-                                            <td>{user.firstName}</td>
-                                            <td>{user.lastName}</td>
+                                            <td>{user.lastName} {user.firstName}</td>
                                             <td>{user.email}</td>
                                             <td>
                                                 {Array.isArray(user.roles) && user.roles.length > 0 ? (
@@ -116,7 +114,7 @@ const UserListing = () => {
                                                 <Link to={`/view-user/${user.id}`} className="btn btn-info btn-sm me-2">
                                                     <FaEye />
                                                 </Link>
-                                                <Link to={`/admin/Update-User/${user.id}`} className="btn btn-warning btn-sm me-2">
+                                                <Link to={`/admin/users-edit/${user.id}`} className="btn btn-warning btn-sm me-2">
                                                     <FaEdit />
                                                 </Link>
                                                 <button

@@ -108,4 +108,10 @@ public class BookingService implements IBookingService {
                                 && bookingRequest.getCheckOutDate().equals(bookingRequest.getCheckInDate()))
                 );
     }
+    @Override
+    public BookedRoom findByBookingId(Long bookingId) {
+        return bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new ResourceNotFoundException("No booking found with ID: " + bookingId));
+    }
+
 }
