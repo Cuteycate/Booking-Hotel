@@ -13,6 +13,7 @@ public class RoomResponse {
     private Long id;
     private String roomType;
     private BigDecimal roomPrice;
+    private BigDecimal discountPrice; // New field
     private Boolean isBooked;
     private String photo;
     private String summary;
@@ -25,11 +26,21 @@ public class RoomResponse {
         this.summary = summary;
     }
 
-    public RoomResponse(Long id, String roomType, BigDecimal roomPrice, boolean isBooked,
+    public RoomResponse(Long id, String roomType, BigDecimal roomPrice, BigDecimal discountPrice, String summary) {
+        this.id = id;
+        this.roomType = roomType;
+        this.roomPrice = roomPrice;
+        this.discountPrice = discountPrice;
+        this.summary = summary;
+    }
+
+    // Existing constructor
+    public RoomResponse(Long id, String roomType, BigDecimal roomPrice, BigDecimal discountPrice, boolean isBooked,
                         byte[] photoBytes, String summary) {
         this.id = id;
         this.roomType = roomType;
         this.roomPrice = roomPrice;
+        this.discountPrice = discountPrice;
         this.isBooked = isBooked;
         this.summary = summary;
         this.photo = photoBytes != null ? Base64.encodeBase64String(photoBytes) : null;

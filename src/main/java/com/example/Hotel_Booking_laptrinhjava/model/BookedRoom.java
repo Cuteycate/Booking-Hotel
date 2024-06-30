@@ -69,4 +69,11 @@ public class BookedRoom {
         BigDecimal totalAmount = roomPrice.multiply(BigDecimal.valueOf(numDays));
         this.totalAmount = totalAmount;
     }
+    public void calculateTotalAmount() {
+        LocalDate startDate = this.checkInDate;
+        LocalDate endDate = this.checkOutDate;
+        long numDays = ChronoUnit.DAYS.between(startDate, endDate);
+        BigDecimal price = (room.getDiscountPrice() != null) ? room.getDiscountPrice() : room.getRoomPrice();
+        this.totalAmount = price.multiply(BigDecimal.valueOf(numDays));
+    }
 }

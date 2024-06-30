@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom"
 import RoomSearch from "../common/RoomSearch"
 import BlogCarousel from "../common/BlogCarousel"
 import Header from "../common/Header"
+import OnSaleRoomCarousel from "../common/OnSaleRoomCarousel"
 const Home = () => {
 	const location = useLocation()
 
@@ -15,8 +16,9 @@ const Home = () => {
 	return (
 		<section>
 			<MainHeader/>
-			<div className="container">				
-				<RoomCarousel />
+			<div className="container">
+				<RoomSearch/>
+				<OnSaleRoomCarousel />
 				<Parallax />
 				<BlogCarousel />
 				<HotelService />

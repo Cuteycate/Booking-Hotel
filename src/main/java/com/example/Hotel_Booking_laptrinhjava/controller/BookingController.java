@@ -65,28 +65,19 @@ public class BookingController {
         }
     }
     @PostMapping("/room/{roomId}/booking")
-    public ResponseEntity<?> saveBooking(@PathVariable Long roomId, @RequestBody BookedRoom bookingRequest)
-    {
-        // Retrieve the room by its ID
+    public ResponseEntity<?> saveBooking(@PathVariable Long roomId, @RequestBody BookedRoom bookingRequest) {
         Optional<Room> optionalRoom = roomService.getRoomById(roomId);
-
-        // Check if the room exists
         if (optionalRoom.isPresent()) {
             Room room = optionalRoom.get();
-            BigDecimal roomPrice = room.getRoomPrice();
-
-            // Calculate the total amount using the room price
-            bookingRequest.calculateTotalAmount(roomPrice);
-
-            // Proceed with saving the booking
+            bookingRequest.setRoom(room);
+            bookingRequest.calculateTotalAmount();
             try {
                 String confirmationCode = bookingService.saveBooking(roomId, bookingRequest);
-                    return ResponseEntity.ok("Booking successful! Confirmation code: " + confirmationCode);
+                return ResponseEntity.ok("Booking successful! Confirmation code: " + confirmationCode);
             } catch (InvalidBookingRequestException e) {
                 return ResponseEntity.badRequest().body(e.getMessage());
             }
         } else {
-            // Handle the case where the room with the given ID is not found
             return ResponseEntity.notFound().build();
         }
     }

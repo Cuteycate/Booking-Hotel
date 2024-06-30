@@ -10,9 +10,12 @@ const EditRoom = () => {
         photo: null,
         roomType: "",
         roomPrice: "",
-        summary: ""
+        summary: "",
+        discountPrice: ""
     });
     const [imagePreview, setImagePreview] = useState("");
+    const [calculatedPrice, setCalculatedPrice] = useState("");
+    const [isPriceUpdated, setIsPriceUpdated] = useState(false);
     const navigate = useNavigate();
     const { roomId } = useParams();
 
@@ -22,9 +25,13 @@ const EditRoom = () => {
         setImagePreview(URL.createObjectURL(selectedImage));
     };
 
-    const handleInputChange = (event) => {
-        const { name, value } = event.target;
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
         setRoom({ ...room, [name]: value });
+        if (name === "roomPrice") {
+            const discountPercentage = parseInt(room.discountPercentage);
+            calculateDiscountedPrice(value, discountPercentage);
+        }
     };
 
     const handleRoomInputChange = (e) => {
@@ -38,16 +45,53 @@ const EditRoom = () => {
             }
         }
         setRoom({ ...room, [name]: value });
+        if (name === "roomPrice") {
+            const discountPercentage = parseInt(room.discountPercentage);
+            calculateDiscountedPrice(value, discountPercentage);
+        }
+    };
+
+    const handleDiscountChange = (e) => {
+        const discountPercentage = parseInt(e.target.value);
+        setRoom({ ...room, discountPercentage });
+        setIsPriceUpdated(true);
+        calculateDiscountedPrice(room.roomPrice, discountPercentage);
+    };
+
+    const calculateDiscountedPrice = (price, percentage) => {
+        if (!price || isNaN(price) || !percentage || isNaN(percentage)) {
+            setCalculatedPrice("");
+            return;
+        }
+        const roomPrice = parseFloat(price);
+        const discountPercentage = parseFloat(percentage) / 100;
+        const discountPrice = roomPrice - (roomPrice * discountPercentage);
+        setCalculatedPrice(discountPrice.toFixed(2));
+    };
+
+    const calculateDiscountPercentage = (roomPrice, discountPrice) => {
+        if (!roomPrice || isNaN(roomPrice) || !discountPrice || isNaN(discountPrice)) {
+            return 0;
+        }
+        const roomPriceFloat = parseFloat(roomPrice);
+        const discountPriceFloat = parseFloat(discountPrice);
+        const discountPercentage = ((roomPriceFloat - discountPriceFloat) / roomPriceFloat) * 100;
+        return discountPercentage.toFixed(2);
     };
 
     useEffect(() => {
         const fetchRoom = async () => {
             try {
                 const roomData = await getRoomById(roomId);
-                setRoom(roomData);
+                const calculatedDiscountPercentage = calculateDiscountPercentage(roomData.roomPrice, roomData.discountPrice);
+                setRoom({
+                    ...roomData,
+                    discountPercentage: calculatedDiscountPercentage
+                });
                 setImagePreview(`data:image/jpeg;base64,${roomData.photo}`);
+                setCalculatedPrice(roomData.discountPrice || "");
             } catch (error) {
-                console.error(error);
+                console.error('Error fetching room data:', error);
             }
         };
 
@@ -57,15 +101,30 @@ const EditRoom = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const success = await updateRoom(roomId, room);
+            const updatedPrice = isPriceUpdated ? calculatedPrice : room.discountPrice;
+            const roomDataToSend = {
+                ...room,
+                discountPrice: updatedPrice
+            };
+
+            // Remove discountPercentage before sending to the backend
+            delete roomDataToSend.discountPercentage;
+
+            console.log('Data to be sent:', roomDataToSend); // Debugging line
+            const success = await updateRoom(roomId, roomDataToSend);
             if (success) {
-                toast.success("Phòng cập nhật thành công !");
+                toast.success("Phòng cập nhật thành công!");
                 const updatedRoomData = await getRoomById(roomId);
-                setRoom(updatedRoomData);
+                const calculatedDiscountPercentage = calculateDiscountPercentage(updatedRoomData.roomPrice, updatedRoomData.discountPrice);
+                setRoom({
+                    ...updatedRoomData,
+                    discountPercentage: calculatedDiscountPercentage
+                });
                 setImagePreview(`data:image/jpeg;base64,${updatedRoomData.photo}`);
+                setCalculatedPrice(updatedRoomData.discountPrice || "");
                 setTimeout(() => {
-                    navigate("/admin/rooms", { state: { message: "Phòng cập nhật thành công !" } });
-                },0);
+                    navigate("/admin/rooms", { state: { message: "Phòng cập nhật thành công!" } });
+                }, 0);
             } else {
                 toast.error("Có lỗi khi cập nhật phòng");
             }
@@ -84,9 +143,7 @@ const EditRoom = () => {
                         <h2 className="mt-5 mb-2">Chỉnh sửa phòng</h2>
                         <form onSubmit={handleSubmit}>
                             <div className="mb-3">
-                                <label htmlFor="roomType" className="form-label hotel-color">
-                                    Loại Phòng
-                                </label>
+                                <label htmlFor="roomType" className="form-label">Loại Phòng</label>
                                 <div>
                                     <RoomTypeSelector
                                         handleRoomInputChange={handleRoomInputChange}
@@ -95,9 +152,7 @@ const EditRoom = () => {
                                 </div>
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="roomPrice" className="form-label hotel-color">
-                                    Giá Phòng
-                                </label>
+                                <label htmlFor="roomPrice" className="form-label">Giá Phòng</label>
                                 <input
                                     type="number"
                                     className="form-control"
@@ -108,9 +163,7 @@ const EditRoom = () => {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="summary" className="form-label hotel-color">
-                                    Mô Tả Phòng
-                                </label>
+                                <label htmlFor="summary" className="form-label">Mô Tả Phòng</label>
                                 <textarea
                                     required
                                     className="form-control"
@@ -121,9 +174,7 @@ const EditRoom = () => {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="photo" className="form-label hotel-color">
-                                    Ảnh Phòng
-                                </label>
+                                <label htmlFor="photo" className="form-label">Ảnh Phòng</label>
                                 <input
                                     type="file"
                                     className="form-control"
@@ -140,13 +191,35 @@ const EditRoom = () => {
                                     />
                                 )}
                             </div>
+                            <div className="mb-3">
+                                <label htmlFor="discountPercentage" className="form-label">Giảm giá (%)</label>
+                                <select
+                                    className="form-select"
+                                    id="discountPercentage"
+                                    name="discountPercentage"
+                                    value={room.discountPercentage}
+                                    onChange={handleDiscountChange}
+                                >
+                                    <option value="0">Không giảm giá</option>
+                                    <option value="10">10%</option>
+                                    <option value="20">20%</option>
+                                    <option value="30">30%</option>
+                                    <option value="40">40%</option>
+                                    <option value="50">50%</option>
+                                </select>
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">Giảm giá hiện tại: {room.discountPercentage}%</label>
+                            </div>
+                            {(calculatedPrice !== "" && calculatedPrice !== "0.00") && (
+                                <div className="mb-3">
+                                    <label className="form-label">Giá phòng sau khi giảm giá:</label>
+                                    <div>{calculatedPrice ? `${calculatedPrice} VNĐ` : "Chưa tính giảm giá"}</div>
+                                </div>
+                            )}
                             <div className="d-grid gap-2 d-md-flex mt-2">
-                                <Link to={"/admin/rooms"} className="btn btn-outline-info ml-5">
-                                    Back
-                                </Link>
-                                <button type="submit" className="btn btn-outline-warning">
-                                    Edit Room
-                                </button>
+                                <Link to={"/admin/rooms"} className="btn btn-outline-info ml-5">Quay lại</Link>
+                                <button type="submit" className="btn btn-outline-warning">Chỉnh sửa phòng</button>
                             </div>
                         </form>
                     </div>

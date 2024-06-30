@@ -12,7 +12,6 @@ const BlogCarousel = () => {
         setIsLoading(true);
         getAllBlogs()
             .then((data) => {
-                // Sort blogs from newest to oldest by createdAt
                 const sortedBlogs = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                 setBlogs(sortedBlogs);
                 setIsLoading(false);
@@ -32,9 +31,10 @@ const BlogCarousel = () => {
 
     return (
         <section className="mb-5 mt-5">
-            <Link to={"/blogs"} className="blog-color d-block mb-3 text-decoration-none">
-                Browse all blogs
+             <Link to="/blogs" className="btn btn-primary mb-3">
+                Browse All Blogs
             </Link>
+            
 
             <Container>
                 <Carousel
@@ -56,24 +56,18 @@ const BlogCarousel = () => {
                                                     className="blog-img w-100"
                                                 />
                                                 <Card.Body className="d-flex flex-column">
-                                                    <Card.Title className="blog-title card-title-hover">{blog.title}</Card.Title>
-                                                    <Card.Subtitle className="mb-2 text-muted">
-                                                        <i>{new Date(blog.createdAt).toLocaleDateString()}</i>
-                                                    </Card.Subtitle>
-                                                    <Card.Text className="flex-grow-1 text-truncate-4">{blog.summary}</Card.Text>
-                                                    <Card.Subtitle className="mb-2 text-muted">
-                                                        <i>Author: {blog.authorFullName}</i>
-                                                    </Card.Subtitle>
-                                                    <div className="mb-2">
-                                                        {Array.isArray(blog.categories) && blog.categories.length > 0 ? (
-                                                            blog.categories.map((category, index) => (
-                                                                <span key={index} className="badge bg-success me-1">
-                                                                    {category.categoryName}
-                                                                </span>
-                                                            ))
-                                                        ) : (
-                                                            <p>No categories</p>
-                                                        )}
+                                                    <div className="card-content-initial">
+                                                        <Card.Title className="blog-title card-title-hover bold-title">{blog.title}</Card.Title>
+                                                        <div className="card-content-hover">
+                                                        <Card.Text className="flex-grow-1">{blog.summary}</Card.Text>
+                                                        <Card.Subtitle className="mb-2 text-muted">
+                                                            <i>{new Date(blog.createdAt).toLocaleDateString()}</i>
+                                                        </Card.Subtitle>
+                                                        <Card.Subtitle className="mb-2 text-muted">
+                                                            <i>Author: {blog.authorFullName}</i>
+                                                        </Card.Subtitle>
+                                                    </div>
+                                                        <Link to={`/view-blog/${blog.id}`} className="btn btn-primary read-button">Read</Link>
                                                     </div>
                                                 </Card.Body>
                                             </Card>

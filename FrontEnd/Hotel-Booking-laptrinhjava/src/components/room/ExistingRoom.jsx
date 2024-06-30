@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getAllRooms, deleteRoom } from '../utils/ApiFunctions';
-import { Col } from "react-bootstrap";
+import { Col, Card } from "react-bootstrap";
 import RoomFilter from "../common/RoomFilter";
 import RoomPaginator from "../common/RoomPaginator";
 import { Link, useLocation } from "react-router-dom";
@@ -75,6 +75,27 @@ const ExistingRoom = () => {
         return Math.ceil(totalRooms / roomsPerPage);
     };
 
+    const renderDiscountInfo = (room) => {
+        if (room.discountPrice !== null) {
+            return (
+                <div className=" text-center">
+                    <span>{room.discountPrice} VNĐ</span>
+                    <div className="bg-success text-white rounded-pill p-2" style={{ width: 'fit-content', fontSize: '0.9rem', margin: 'auto' }}>
+                        <strong>Giảm giá</strong><br />
+                    </div>
+                </div>
+            );
+        } else {
+            return (
+                <div className="mt-3 text-center">
+                    <div className="bg-danger text-white rounded-pill p-2" style={{ width: 'fit-content', fontSize: '0.9rem', margin: 'auto' }}>
+                        <strong>Không giảm giá</strong>
+                    </div>
+                </div>
+            );
+        }
+    };
+
     const indexOfLastRoom = currentPage * roomsPerPage;
     const indexOfFirstRoom = indexOfLastRoom - roomsPerPage;
     const currentRooms = filteredRooms.slice(indexOfFirstRoom, indexOfLastRoom);
@@ -102,6 +123,7 @@ const ExistingRoom = () => {
                                     <th>ID</th>
                                     <th>Room Type</th>
                                     <th>Room Price</th>
+                                    <th>Discount</th>
                                     <th>Photo</th>
                                     <th>Actions</th>
                                 </tr>
@@ -111,7 +133,10 @@ const ExistingRoom = () => {
                                     <tr key={room.id} className="text-center">
                                         <td>{room.id}</td>
                                         <td>{room.roomType}</td>
-                                        <td>{room.roomPrice}</td>
+                                        <td>{room.roomPrice} VNĐ</td>
+                                        <td>
+                                            {renderDiscountInfo(room)}
+                                        </td>
                                         <td>
                                             {room.photo ? (
                                                 <img src={`data:image/jpeg;base64,${room.photo}`} alt="Room" style={{ width: '100px', height: '100px' }} />
