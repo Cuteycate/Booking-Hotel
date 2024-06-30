@@ -181,6 +181,34 @@ export async function getBookingByConfirmationCode(confirmationCode)
             }
     }
 }
+
+//Lấy Bookings bằng id
+
+export async function getBookingById(bookingId) {
+    try {
+        console.log("bookingid  " + bookingId);
+        const response = await api.get(`/bookings/booking/${bookingId}`, {
+            headers: getHeader()
+        });
+        return response.data;
+    } catch (error) {
+        if (error.response && error.response.data) {
+            // Handle different possible error structures
+            if (typeof error.response.data === 'string') {
+                throw new Error(error.response.data);
+            } else if (typeof error.response.data === 'object') {
+                throw new Error(JSON.stringify(error.response.data));
+            } else {
+                throw new Error('An unknown error occurred.');
+            }
+        } else {
+            throw new Error(`Có lỗi khi tìm Booking: ${error.message}`);
+        }
+    }
+}
+
+
+
 //Dùng để xóa Booking
 export async function cancelBooking(bookingId)
 {
@@ -477,4 +505,50 @@ export async function getAllUsers() {
     }
 }
 
+export async function assignUserToRole(userId, roleId) {
+    try {
+        const response = await api.post("/roles/assign-user-to-role", null, {
+            params: { userId, roleId },
+            headers: getHeader()
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(`Error assigning role to user: ${error.message}`);
+    }
+}
 
+// Remove role from user
+export async function removeUserFromRole(userId, roleId) {
+    try {
+        const response = await api.post("/roles/remove-user-from-role", null, {
+            params: { userId, roleId },
+            headers: getHeader()
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(`Error removing role from user: ${error.message}`);
+    }
+}
+
+export async function getAllRoles() {
+    try {
+        const response = await api.get("/roles/all-roles", {
+            headers: getHeader()
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(`Error fetching roles: ${error.message}`);
+    }
+}
+
+
+export async function getUserById(userId) {
+    try {
+        const response = await api.get(`/users/id/${userId}`, {
+            headers: getHeader()
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(`Error fetching user: ${error.message}`);
+    }
+}

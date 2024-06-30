@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserService implements IUserService {
@@ -51,5 +53,15 @@ public class UserService implements IUserService {
     public User getUser(String email) {
         return userRepository.findByEmail(email).orElse(null);
     }
+
+
+    @Override
+    public User getUserById(Long userId) {
+        // Implement logic to fetch user by ID from database or repository
+        // Example (assuming UserRepository or similar):
+        Optional<User> optionalUser = userRepository.findById(userId);
+        return optionalUser.orElseThrow(() -> new UsernameNotFoundException("User not found with ID: " + userId));
+    }
+
 
 }
