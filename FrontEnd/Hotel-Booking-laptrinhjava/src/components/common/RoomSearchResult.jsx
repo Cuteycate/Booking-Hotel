@@ -21,7 +21,11 @@ const RoomSearchResults = ({ results, onClearSearch }) => {
 		<>
 			{results.length > 0 ? (
 				<>
+					<div className="room-search-results-container">
 					<h5 className="text-center mt-5">Kết quả tìm kiếm</h5>
+					<Button variant="secondary" onClick={onClearSearch}>
+							Xóa Search
+						</Button>
 					<Row>
 						{paginatedResults.map((room) => (
 							<RoomCard key={room.id} room={room} />
@@ -35,10 +39,9 @@ const RoomSearchResults = ({ results, onClearSearch }) => {
 								onPageChange={handlePageChange}
 							/>
 						)}
-						<Button variant="secondary" onClick={onClearSearch}>
-							Xóa Search
-						</Button>
+						
 					</Row>
+					</div>
 				</>
 			) : (
 				<p></p>

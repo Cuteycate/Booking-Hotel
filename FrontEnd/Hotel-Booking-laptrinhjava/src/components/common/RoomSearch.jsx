@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button, Row, Col, Container } from "react-bootstrap";
 import moment from "moment";
 import { getAvailableRooms } from "../utils/ApiFunctions";
@@ -51,6 +51,7 @@ const RoomSearch = () => {
       setErrorMessage("");
     }
   };
+
   const handleClearSearch = () => {
     setSearchQuery({
       checkInDate: "",
@@ -60,16 +61,15 @@ const RoomSearch = () => {
     setAvailableRooms([]);
   };
 
-  const OverFow = 
-   {    
-      overflow: "hidden",  
-    };
-  
-
+  useEffect(() => {
+    if (availableRooms.length > 0) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [availableRooms]);
 
   return (
     <>
-      <Container className="shadow mt-n5 mb-5 py-5" >
+      <Container className="shadow mt-n5 mb-5 py-5">
         <Form onSubmit={handleSearch}>
           <Row className="justify-content-center">
             <Col xs={12} md={3}>
@@ -116,7 +116,7 @@ const RoomSearch = () => {
 
         {isLoading ? (
           <p className="mt-4">Tìm kiếm phòng hợp lệ...</p>
-        ) : availableRooms ? (
+        ) : availableRooms.length > 0 ? (
           <RoomSearchResults results={availableRooms} onClearSearch={handleClearSearch} />
         ) : (
           <p className="mt-4">Không có phòng nào phù hợp cho ngày chọn...</p>

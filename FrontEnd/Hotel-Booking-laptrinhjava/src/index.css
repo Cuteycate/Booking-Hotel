@@ -59,6 +59,12 @@ body {
   }
 }
 
+.room-search-results-container {
+  max-height: 400px; /* Chiều cao tối đa của khung kết quả */
+  overflow-y: auto; /* Thêm thanh cuộn dọc nếu nội dung vượt quá chiều cao */
+  overflow-x: hidden;
+}
+
 /* Hotel custom color */
 .btn-hotel {
   background-color: rgb(169, 77, 123);
