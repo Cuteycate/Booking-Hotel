@@ -60,9 +60,16 @@ const RoomSearch = () => {
     setAvailableRooms([]);
   };
 
+  const OverFow = 
+   {    
+      overflow: "hidden",  
+    };
+  
+
+
   return (
     <>
-      <Container className="shadow mt-n5 mb-5 py-5">
+      <Container className="shadow mt-n5 mb-5 py-5" >
         <Form onSubmit={handleSearch}>
           <Row className="justify-content-center">
             <Col xs={12} md={3}>

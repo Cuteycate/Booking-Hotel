@@ -15,8 +15,7 @@ const Home = () => {
 	return (
 		<section>
 			<MainHeader/>
-			<div className="container">
-				<RoomSearch/>
+			<div className="container">				
 				<RoomCarousel />
 				<Parallax />
 				<BlogCarousel />
