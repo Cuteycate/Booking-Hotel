@@ -99,5 +99,11 @@
     text-align: center;
     margin: 20px;
 }
-
+.btn-facebook {
+    background-color: blue;
+    border: 2px;
+    color: #fff;
+    width: 100%;
+    border-radius: 40px;
+}
 

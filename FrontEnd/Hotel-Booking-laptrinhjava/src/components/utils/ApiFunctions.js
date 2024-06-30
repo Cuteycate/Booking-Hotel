@@ -268,7 +268,7 @@ export async function loginUser(login) {
 		return null
 	}
 }
-//login user with google
+//đăng nhập bằng google
 export const loginWithGoogle = async (googleToken) => {
     try {
         const response = await api.post('/auth/google', { token: googleToken });
@@ -282,6 +282,7 @@ export const loginWithGoogle = async (googleToken) => {
         return null;
     }
 };
+//Đăng nhập bằng Facebook
 export const loginWithFacebook = async (facebookToken) => {
     try {
       const response = await api.post('/auth/facebook', { token: facebookToken });
@@ -296,7 +297,7 @@ export const loginWithFacebook = async (facebookToken) => {
     }
   };
 
-//Lấy Profile
+//Lấy Trang cá nhân người dùng
 export async function getUserProfile(userId, token) {
 	try {
 		const response = await api.get(`users/profile/${userId}`, {
@@ -318,7 +319,19 @@ export async function getUser(userId, token) {
 		throw error
 	}
 }
-/* This isthe function to delete a user */
+//cập nhât người dùng
+export async function updateUser(userId, userData) {
+    try {
+        const response = await api.put(`/users/update/${userId}`, userData, {
+            headers: getHeader()
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(`Error updating user: ${error.message}`);
+    }
+}
+
+/* Xóa Người dùng bằng userid */
 export async function deleteUser(userId) {
 	try {
 		const response = await api.delete(`/users/delete/${userId}`, {
@@ -331,7 +344,7 @@ export async function deleteUser(userId) {
 }
 
 
-/* This is the function to get user bookings by the user id */
+/* lấy booking bằng userid */
 export async function getBookingsByUserId(userId, token) {
 	try {
 		const response = await api.get(`/bookings/user/${userId}/bookings`, {
@@ -343,7 +356,7 @@ export async function getBookingsByUserId(userId, token) {
 		throw new Error("Failed to fetch bookings")
 	}
 }
-//Lấy tất cả các BlogCategories
+//Lấy tất cả các thể loại bài viết
 export async function getAllBlogCategories() {
     try {
         const result = await api.get("/blog-categories/all");
@@ -353,7 +366,7 @@ export async function getAllBlogCategories() {
     }
 }
 
-//Thêm Blog Category
+//Thêm thể loại bài viết
 export async function addBlogCategory(name) {
     const formData = new FormData();
     formData.append("name", name);
@@ -366,7 +379,7 @@ export async function addBlogCategory(name) {
         throw new Error("Error adding blog category");
     }
 }
-//Cập nhật BlogCategories
+//Cập nhật thể loại bài viết
 export async function updateBlogCategory(id, name) {
     const formData = new FormData();
     formData.append("name", name);
@@ -380,7 +393,7 @@ export async function updateBlogCategory(id, name) {
         throw new Error("Error updating blog category");
     }
 }
-//Xóa Blog Category
+//Xóa thể loại bài viết
 export async function deleteBlogCategory(id) {
     try {
         const result = await api.delete(`/blog-categories/delete/${id}`, {
@@ -391,7 +404,7 @@ export async function deleteBlogCategory(id) {
         throw new Error("Error deleting blog category");
     }
 }
-//Lấy tất cả Blogs
+//Lấy tất cả bài viết
 export async function getAllBlogs() {
     try {
         const response = await api.get("/blogs/all-blogs");
@@ -400,7 +413,7 @@ export async function getAllBlogs() {
         throw new Error(error.response.data.message || 'Error fetching blogs');
     }
 }
-//Xóa Blogs
+//Xóa bài viết
 export async function deleteBlog(blogId) {
     try {
         await api.delete(`/blogs/blog/delete/${blogId}`, {
@@ -411,7 +424,7 @@ export async function deleteBlog(blogId) {
         throw new Error(error.response.data.message || 'Error deleting blog');
     }
 }
-//Thêm Blogs
+//Thêm bài viết
 export async function addBlog(blog) {
     const formData = new FormData();
     formData.append('title', blog.title);
@@ -430,6 +443,7 @@ export async function addBlog(blog) {
         throw new Error(error.response.data.message || 'Error adding blog');
     }
 }
+//cập nhật bài viết theo id
 export async function updateBlog(blog) {
     const formData = new FormData();
     formData.append('title', blog.title);
@@ -447,7 +461,7 @@ export async function updateBlog(blog) {
         throw new Error(error.response.data.message || 'Error updating blog');
     }
 }
-//Lấy blog theo Id
+//Lấy bài viết theo Id
 export async function getBlogById(id) {
     try {
         const response = await api.get(`/blogs/blog/${id}`, {
@@ -458,29 +472,27 @@ export async function getBlogById(id) {
         throw new Error(error.response.data.message || 'Error fetching blog');
     }
 }
+
 //Lấy Tất cả User
-
-
 export async function getAllUsers() {
     try {
         const response = await api.get('/users/all', {
             headers: getHeader(),
-            maxRedirects: 0 // Do not follow redirects automatically
+            maxRedirects: 0 
         });
-        console.log('Response data:', response.data); // Log the response data
+        console.log('Response data:', response.data); 
         return response.data;
     } catch (error) {
-        console.error('Error fetching users:', error); // Log the error for debugging
+        console.error('Error fetching users:', error);
 
         if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
+
             console.error('Response data:', error.response.data);
             console.error('Response status:', error.response.status);
             console.error('Response headers:', error.response.headers);
 
             if (error.response.status === 302 && error.response.headers.location) {
-                // Handle redirection manually
+                
                 try {
                     const redirectedResponse = await axios.get(error.response.headers.location, {
                         headers: getHeader()
@@ -495,17 +507,17 @@ export async function getAllUsers() {
 
             throw new Error(error.response.data.message || 'Error fetching users');
         } else if (error.request) {
-            // The request was made but no response was received
+
             console.error('Request data:', error.request);
             throw new Error('No response received from server');
         } else {
-            // Something happened in setting up the request that triggered an Error
+  
             console.error('Error message:', error.message);
             throw new Error('Error in setting up request');
         }
     }
 }
-
+//Tạo vai trò cho người dùng
 export async function assignUserToRole(userId, roleId) {
     try {
         const response = await api.post("/roles/assign-user-to-role", null, {
@@ -518,7 +530,7 @@ export async function assignUserToRole(userId, roleId) {
     }
 }
 
-// Remove role from user
+// Xóa vai trò của người dùng
 export async function removeUserFromRole(userId, roleId) {
     try {
         const response = await api.post("/roles/remove-user-from-role", null, {
@@ -530,7 +542,7 @@ export async function removeUserFromRole(userId, roleId) {
         throw new Error(`Error removing role from user: ${error.message}`);
     }
 }
-
+//Lấy tất cả Vai trò 
 export async function getAllRoles() {
     try {
         const response = await api.get("/roles/all-roles", {
@@ -542,7 +554,7 @@ export async function getAllRoles() {
     }
 }
 
-
+//Lấy thông tin người dùng bằng Id
 export async function getUserById(userId) {
     try {
         const response = await api.get(`/users/id/${userId}`, {

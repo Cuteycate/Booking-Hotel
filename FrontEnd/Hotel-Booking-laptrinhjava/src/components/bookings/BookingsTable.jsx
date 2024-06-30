@@ -37,14 +37,15 @@ const BookingsTable = ({ bookingInfo, handleBookingCancellation }) => {
                 <table className="table table-bordered table-hover shadow text">
                     <thead className="text-center">
                         <tr>
-                            <th>Mã Booking</th>
+                            <th>Mã Đơn</th>
                             <th>ID Phòng</th>
                             <th>Loại Phòng</th>
                             <th>Ngày Check In</th>
                             <th>Ngày Check Out</th>
                             <th>Tên Khách</th>
                             <th>Email</th>
-                            <th>Tổng_Khách</th>
+                            <th>Số khách</th>
+                            <th>Giá Tiền</th>
                             <th>Mã Code</th>
                             <th colSpan={1}>Actions</th>
                         </tr>
@@ -60,6 +61,7 @@ const BookingsTable = ({ bookingInfo, handleBookingCancellation }) => {
                                 <td>{booking.guestName}</td>
                                 <td>{booking.guestEmail}</td>
                                 <td>{booking.totalNumOfGuests}</td>
+                                <td>{booking.totalAmount}</td>
                                 <td>{booking.bookingConfirmationCode}</td>
                                 <td style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
                                     <Link to={`/admin/view-booking/${booking.id}`} className="btn btn-primary btn-sm">

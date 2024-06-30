@@ -63,5 +63,17 @@ public class UserService implements IUserService {
         return optionalUser.orElseThrow(() -> new UsernameNotFoundException("User not found with ID: " + userId));
     }
 
+    @Transactional
+    @Override
+    public User updateUser(Long userId, User userDetails) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found with ID: " + userId));
+        user.setFirstName(userDetails.getFirstName());
+        user.setLastName(userDetails.getLastName());
+        user.setEmail(userDetails.getEmail());
+        if (userDetails.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
+        }
+        return userRepository.save(user);
+    }
 
 }

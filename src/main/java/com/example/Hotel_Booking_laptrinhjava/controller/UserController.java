@@ -57,6 +57,16 @@ public class UserController {
         }
     }
 
+    @PutMapping("/update/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and #id == principal.id)")
+    public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody User userDetails) {
+        try {
+            User updatedUser = userService.updateUser(id, userDetails);
+            return ResponseEntity.ok(updatedUser);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating user: " + e.getMessage());
+        }
+    }
 
 
 }
