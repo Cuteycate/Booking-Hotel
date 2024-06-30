@@ -23,10 +23,11 @@ public class RoomService implements IRoomService {
     private final RoomRepository roomRepository;
 
     @Override
-    public Room addNewRoom(MultipartFile file, String roomType, BigDecimal roomPrice, String summary) throws SQLException, IOException {
+    public Room addNewRoom(MultipartFile file, String roomType, BigDecimal roomPrice, BigDecimal discountPrice, String summary) throws SQLException, IOException {
         Room room = new Room();
         room.setRoomType(roomType);
         room.setRoomPrice(roomPrice);
+        room.setDiscountPrice(discountPrice); // Add this line
         room.setSummary(summary);
         if (!file.isEmpty()) {
             byte[] photoBytes = file.getBytes();
@@ -68,22 +69,19 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public Room updateRoom(Long roomId, String roomType, BigDecimal roomPrice, byte[] photoBytes, String summary) {
-        Room room = roomRepository.findById(roomId)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy phòng"));
-        if (roomType != null)
-            room.setRoomType(roomType);
-        if (roomPrice != null)
-            room.setRoomPrice(roomPrice);
+    public Room updateRoom(Long roomId, String roomType, BigDecimal roomPrice, BigDecimal discountPrice, byte[] photoBytes, String summary) {
+        Room room = roomRepository.findById(roomId).orElseThrow(() -> new ResourceNotFoundException("Room not found"));
+        if (roomType != null) room.setRoomType(roomType);
+        if (roomPrice != null) room.setRoomPrice(roomPrice);
+        if (discountPrice != null) room.setDiscountPrice(discountPrice);
         if (photoBytes != null && photoBytes.length > 0) {
             try {
                 room.setPhoto(new SerialBlob(photoBytes));
-            } catch (SQLException ex) {
-                throw new InternalServerException("Có lỗi cập nhật phòng");
+            } catch (SQLException e) {
+                throw new InternalServerException("Error updating room photo");
             }
         }
-        if (summary != null)
-            room.setSummary(summary);
+        if (summary != null) room.setSummary(summary);
         return roomRepository.save(room);
     }
 

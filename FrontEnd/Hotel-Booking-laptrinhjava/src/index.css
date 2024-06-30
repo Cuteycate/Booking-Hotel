@@ -102,6 +102,57 @@ body {
   background-size: cover;
   height: 60vh;
 }
+.parallax-room {
+  position: relative;
+  background-image: url("./assets/images/RoomParallax.jpg");
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 80vh;
+}
+
+.parallax-room::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.parallax-room .container {
+  position: relative;
+  z-index: 2;
+}
+@media only screen and (max-width: 768px) {
+  .parallax-blog h1 {
+    font-size: 20px;
+  }
+}
+@media only screen and (max-width: 480px) {
+  .parallax-blog h1 {
+    font-size: 16px;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .parallax-blog h3 {
+    font-size: 20px;
+  }
+}
+@media only screen and (max-width: 480px) {
+  .parallax-blog h3 {
+    font-size: 16px;
+  }
+}
+.bold-title {
+    font-weight: bold;
+    color: black;
+    font-family: Futura PT;
+    font-size: 23px
+}
 .header {
   position: relative;
   height: 150px;
@@ -370,24 +421,43 @@ h2 {
 .sidebar .card-text {
   color: black;
 }
-.blog-card:hover {
-  transform: scale(1.05);
-}
-.blog-card:hover .card-title {
-  text-decoration: underline;
-  color: rgb(169, 77, 123);
-  transform: scale(1);
-}
 .blog-card {
-  border: none;
-  background-color: transparent;
+  position: relative;
   overflow: hidden;
-  transition: transform 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s;
+  will-change: transform; /* Hint to browser for optimization */
 }
+
+.blog-card:hover {
+  transform: translateZ(0); /* Force own rendering layer */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow instead of scaling */
+}
+
+.blog-card .card-content-initial {
+  transition: opacity 0.3s;
+}
+
+.blog-card .card-content-hover {
+  opacity: 0;
+  transition: opacity 0.3s, max-height 0.3s;
+  max-height: 0; /* Hide the content initially */
+  overflow: hidden;
+}
+
+.blog-card:hover .card-content-hover {
+  opacity: 1;
+  max-height: 500px; /* Arbitrary large value to ensure it expands fully */
+}
+
 .blog-title {
   font-size: 1.25rem;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins';
 }
+
+.read-button {
+  margin-top: 10px;
+}
+
 .blog-img {
   height: 250px;
   object-fit: cover;
@@ -422,7 +492,7 @@ h2 {
 .service {
   position: relative;
   overflow: hidden;
-  height: 80vh; /* Adjust as needed */
+  height: 90vh; /* Adjust as needed */
   color: white; /* Ensure text color is white */
 }
 
@@ -453,13 +523,41 @@ h2 {
 .foreground-content {
   position: relative;
   z-index: 1;
-  padding: 20px; /* Adjust padding as needed */
+  padding: 20px;
 }
 .room-card {
-  border: none;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   background-color: transparent;
-  overflow: hidden;
-  transition: transform 0.3s;
+  border: none;
+}
+
+.room-card .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.room-card .price-section {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 75px;
+}
+
+.room-card .discount-space {
+  height: 30px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.room-card .btn-hotel {
+  align-self: center;
+  margin-top: auto;
 }
 
 .room-card:hover {
@@ -479,6 +577,32 @@ h2 {
 .room-price {
     font-size: 1.25rem;
     font-family: 'Poppins', sans-serif;
+}
+.room-photo {
+  width: 200%;
+  max-width: 100px;
+  height: auto;
+}
+
+.room-summary {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 4.5em;
+}
+@media (max-width: 992px) {
+  .flex-column-reverse-mobile {
+      flex-direction: column-reverse;
+  }
+}
+
+.stationary-button {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .carousel-control-prev-icon,

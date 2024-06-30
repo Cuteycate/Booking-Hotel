@@ -10,6 +10,7 @@ const BookingForm = () => {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [roomPrice, setRoomPrice] = useState(0);
+    const [discountPrice, setDiscountPrice] = useState(null);
     const currentUser = localStorage.getItem("userId");
     const [booking, setBooking] = useState({
         guestFullName: "",
@@ -19,7 +20,6 @@ const BookingForm = () => {
         numOfAdults: "",
         numofChildren: ""
     });
-    
 
     const { roomId } = useParams();
     const navigate = useNavigate();
@@ -34,6 +34,7 @@ const BookingForm = () => {
         try {
             const response = await getRoomById(roomId);
             setRoomPrice(response.roomPrice);
+            setDiscountPrice(response.discountPrice);
         } catch (error) {
             throw new Error(error);
         }
@@ -47,8 +48,8 @@ const BookingForm = () => {
         const checkInDate = moment(booking.checkInDate);
         const checkOutDate = moment(booking.checkOutDate);
         const diffInDays = checkOutDate.diff(checkInDate, "days");
-        const paymentPerDay = roomPrice ? roomPrice : 0;
-        return diffInDays * paymentPerDay;
+        const priceToUse = discountPrice ? discountPrice : roomPrice;
+        return diffInDays * priceToUse;
     };
 
     const isGuestCountValid = () => {

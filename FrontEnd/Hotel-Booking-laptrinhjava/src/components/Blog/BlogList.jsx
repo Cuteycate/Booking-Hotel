@@ -70,74 +70,73 @@ const BlogList = () => {
     return (
         <section>
             <BlogParallax />
-        <Container>
-            <Row>
-                <Col md={9}>
-                    {filteredBlogs.length === 0 ? (
-                        <div>No blogs with these filters</div>
-                    ) : (
-                        <>
-                            <Row xs={1} md={2} lg={3} className="g-4">
-                                {currentBlogs.map((blog) => (
-                                    <Col key={blog.id}>
-                                        <Card className="h-100 shadow-sm border-0 blog-card">
-                                            <Link to={`/view-blog/${blog.id}`} className="text-decoration-none">
-                                                <Card.Img
-                                                    variant="top"
-                                                    src={`data:image/png;base64, ${blog.photo}`}
-                                                    alt="Blog Photo"
-                                                    className="w-100"
-                                                    style={{ height: "200px", objectFit: "cover" }}
-                                                />
-                                                <Card.Body>
-                                                    <Card.Title className="mb-2 card-title black-text">
-                                                        {blog.title}
-                                                    </Card.Title>
-                                                    <Card.Text className="mb-3 card-summary black-text">
-                                                        {blog.summary}
-                                                    </Card.Text>
-                                                </Card.Body>
-                                                <Card.Footer className="text-muted">
-                                                    <small>
-                                                        <i>
-                                                            {new Date(blog.createdAt).toLocaleDateString()} | {blog.authorFullName}
-                                                        </i>
-                                                    </small>
-                                                </Card.Footer>
-                                                <div className="mt-2">
-                                                    {blog.categories.length > 0 ? (
-                                                        blog.categories.map(
-                                                            (category, index) => (
-                                                                <span
-                                                                    key={index}
-                                                                    className="badge bg-success me-1"
-                                                                >
-                                                                    {category.categoryName}
-                                                                </span>
+            <Container>
+                <Row>
+                    <Col md={9}>
+                        {filteredBlogs.length === 0 ? (
+                            <div>No blogs with these filters</div>
+                        ) : (
+                            <>
+                                <Row xs={1} md={2} lg={3} className="g-4">
+                                    {currentBlogs.map((blog) => (
+                                        <Col key={blog.id}>
+                                            <Card className="h-100 shadow-sm border-0 blog-card">
+                                                <Link to={`/view-blog/${blog.id}`} className="text-decoration-none">
+                                                    <Card.Img
+                                                        variant="top"
+                                                        src={`data:image/png;base64, ${blog.photo}`}
+                                                        alt="Blog Photo"
+                                                        className="w-100 blog-img"
+                                                    />
+                                                    <Card.Body>
+                                                        <Card.Title className="mb-2 card-title card-title-hover">
+                                                            {blog.title}
+                                                        </Card.Title>
+                                                        <Card.Text className="mb-3 card-summary black-text">
+                                                            {blog.summary}
+                                                        </Card.Text>
+                                                    </Card.Body>
+                                                    <Card.Footer className="text-muted">
+                                                        <small>
+                                                            <i>
+                                                                {new Date(blog.createdAt).toLocaleDateString()} | {blog.authorFullName}
+                                                            </i>
+                                                        </small>
+                                                    </Card.Footer>
+                                                    <div className="mt-2">
+                                                        {blog.categories.length > 0 ? (
+                                                            blog.categories.map(
+                                                                (category, index) => (
+                                                                    <span
+                                                                        key={index}
+                                                                        className="badge bg-success me-1"
+                                                                    >
+                                                                        {category.categoryName}
+                                                                    </span>
+                                                                )
                                                             )
-                                                        )
-                                                    ) : (
-                                                        <span>No categories</span>
-                                                    )}
-                                                </div>
-                                            </Link>
-                                        </Card>
-                                    </Col>
-                                ))}
-                            </Row>
-                            <BlogPaginator
-                                currentPage={currentPage}
-                                totalPages={Math.ceil(filteredBlogs.length / blogsPerPage)}
-                                onPageChange={paginate}
-                            />
-                        </>
-                    )}
-                </Col>
-                <Col md={3}>
-                    <CategoryFilter data={blogs} setFilteredData={setFilteredBlogs} />
-                </Col>
-            </Row>
-        </Container>
+                                                        ) : (
+                                                            <span>No categories</span>
+                                                        )}
+                                                    </div>
+                                                </Link>
+                                            </Card>
+                                        </Col>
+                                    ))}
+                                </Row>
+                                <BlogPaginator
+                                    currentPage={currentPage}
+                                    totalPages={Math.ceil(filteredBlogs.length / blogsPerPage)}
+                                    onPageChange={paginate}
+                                />
+                            </>
+                        )}
+                    </Col>
+                    <Col md={3}>
+                        <CategoryFilter data={blogs} setFilteredData={setFilteredBlogs} />
+                    </Col>
+                </Row>
+            </Container>
         </section>
     );
 };

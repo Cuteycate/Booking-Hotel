@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { addRoom } from "../utils/ApiFunctions";
 import RoomTypeSelector from '../common/RoomTypeSelector';
 import { Link, useNavigate } from "react-router-dom";
@@ -10,9 +10,13 @@ const AddRoom = () => {
         photo: null,
         roomType: "",
         roomPrice: "",
-        summary: ""
+        summary: "",
+        discountPercentage: 0,
+        discountedPrice: ""
     });
     const [imagePreview, setImagePreview] = useState("");
+    const [calculatedPrice, setCalculatedPrice] = useState("");
+    const [customDiscountInput, setCustomDiscountInput] = useState(false); // State to control showing custom discount input
     const navigate = useNavigate();
 
     const handleRoomInputChange = (e) => {
@@ -34,17 +38,50 @@ const AddRoom = () => {
         setImagePreview(URL.createObjectURL(selectedImage));
     };
 
+    const handleDiscountChange = (e) => {
+        const value = e.target.value;
+        if (value === "custom") {
+            setCustomDiscountInput(true);
+        } else {
+            setCustomDiscountInput(false);
+            const discountPercentage = parseInt(value);
+            setNewRoom({ ...newRoom, discountPercentage });
+        }
+    };
+
+    const handleCustomDiscountChange = (e) => {
+        const customDiscountPercentage = parseInt(e.target.value);
+        setNewRoom({ ...newRoom, discountPercentage: customDiscountPercentage });
+    };
+
+    const calculateDiscountedPrice = (price, percentage) => {
+        if (!price || isNaN(price) || !percentage || isNaN(percentage)) {
+            setCalculatedPrice("");
+            return;
+        }
+        const roomPrice = parseFloat(price);
+        const discountPercentage = parseFloat(percentage) / 100;
+        const discountedPrice = roomPrice - (roomPrice * discountPercentage);
+        setCalculatedPrice(discountedPrice.toFixed(2));
+    };
+
+    useEffect(() => {
+        calculateDiscountedPrice(newRoom.roomPrice, newRoom.discountPercentage);
+    }, [newRoom.roomPrice, newRoom.discountPercentage]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const success = await addRoom(newRoom.photo, newRoom.roomType, newRoom.roomPrice, newRoom.summary);
+            const { photo, roomType, roomPrice, summary, calculatedPrice } = newRoom;
+            const success = await addRoom(photo, roomType, roomPrice, summary, calculatedPrice);
             if (success !== undefined) {
                 toast.success("Thêm Phòng Thành Công!");
-                setNewRoom({ photo: null, roomType: "", roomPrice: "", summary: "" });
+                setNewRoom({ photo: null, roomType: "", roomPrice: "", summary: "", discountedPrice: "" });
                 setImagePreview("");
+                setCalculatedPrice(""); // Reset calculated price
                 setTimeout(() => {
                     navigate("/admin/rooms", { state: { message: "Thêm Phòng Thành Công!" } });
-                },0);
+                }, 0);
             } else {
                 toast.error("Có lỗi khi thêm phòng");
             }
@@ -119,9 +156,52 @@ const AddRoom = () => {
                                 />
                             )}
                         </div>
+                        <div className="mb-3">
+                            <label htmlFor="discountPercentage" className="form-label">
+                                Giảm giá (%)
+                            </label>
+                            <select
+                                className="form-select"
+                                id="discountPercentage"
+                                name="discountPercentage"
+                                value={newRoom.discountPercentage}
+                                onChange={handleDiscountChange}
+                            >
+                                <option value="0">Không giảm giá</option>
+                                <option value="10">10%</option>
+                                <option value="20">20%</option>
+                                <option value="30">30%</option>
+                                <option value="40">40%</option>
+                                <option value="50">50%</option>
+                                <option value="custom">Tùy chọn</option>
+                            </select>
+                        </div>
+                        {customDiscountInput && (
+                            <div className="mb-3">
+                                <label htmlFor="customDiscount" className="form-label">
+                                    Tùy chọn giảm giá (%)
+                                </label>
+                                <div className="input-group">
+                                    <input
+                                        type="number"
+                                        className="form-control"
+                                        id="customDiscount"
+                                        min="1"
+                                        max="100"
+                                        onChange={handleCustomDiscountChange}
+                                    />
+                                </div>
+                            </div>
+                        )}
+                        {(calculatedPrice !== "" && calculatedPrice !== "0.00") && (
+                            <div className="mb-3">
+                                <label className="form-label">Giá phòng sau khi giảm giá:</label>
+                                <div>{calculatedPrice ? `${calculatedPrice} VNĐ` : "Chưa tính giảm giá"}</div>
+                            </div>
+                        )}
                         <div className="d-grid d-md-flex mt-2">
                             <Link to={"/admin/rooms"} className="btn btn-outline-info ml-5">
-                                Back
+                                Quay lại
                             </Link>
                             <button className="btn btn-outline-primary ml-5">
                                 Lưu Phòng

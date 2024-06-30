@@ -13,21 +13,20 @@ export const getHeader = () => {
 	}
 }
 // Thêm 1 phòng mới vào database
-export async function addRoom(photo,roomType,roomPrice,summary)
-{
-    const formData = new FormData()
-    formData.append("photo",photo)
-    formData.append("roomType",roomType)
-    formData.append("roomPrice",roomPrice)
-    formData.append("summary",summary)
+export async function addRoom(photo, roomType, roomPrice, summary, discountPrice) {
+    const formData = new FormData();
+    formData.append("photo", photo);
+    formData.append("roomType", roomType);
+    formData.append("roomPrice", roomPrice);
+    formData.append("summary", summary);
+    if (discountPrice) {
+        formData.append("discountPrice", discountPrice);
+    }
 
-    const response = await api.post("/rooms/add/new-room",formData,{
-		headers: getHeader()
-	})
-    if(response.status === 201) //Tat ca deu tot
-        return true;
-    else
-        return false;
+    const response = await api.post("/rooms/add/new-room", formData, {
+        headers: getHeader()
+    });
+    return response.status === 201;
 }
 
 //Thanh Toan Payment
@@ -112,16 +111,18 @@ export async function deleteRoom(roomId)
     }
 }
 //Dùng để cập nhật phòng đang edit
-export async function updateRoom(roomId,roomData)
-{
-    const formData = new FormData()
-    formData.append("roomType",roomData.roomType)
-    formData.append("roomPrice",roomData.roomPrice)
-    formData.append("photo",roomData.photo)
-    formData.append("summary",roomData.summary)
-    const response = await api.put(`/rooms/update/${roomId}`,formData,{
-		headers: getHeader()
-	})
+export async function updateRoom(roomId, roomData) {
+    const formData = new FormData();
+    formData.append("roomType", roomData.roomType);
+    formData.append("roomPrice", roomData.roomPrice);
+    formData.append("photo", roomData.photo);
+    formData.append("summary", roomData.summary);
+    if (roomData.discountPrice) {
+        formData.append("discountPrice", roomData.discountPrice);
+    }
+    const response = await api.put(`/rooms/update/${roomId}`, formData, {
+        headers: getHeader()
+    });
     return response
 }
 // Dùng để lấy phòng bằng Id
