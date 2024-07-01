@@ -37,14 +37,17 @@ const UserEditRole = () => {
     const handleAssignRole = async () => {
         if (!selectedRole) {
             setErrorMessage("Please select a role to assign.");
+            setTimeout(() => setErrorMessage(""), 1000); // Clear error message after 1 second
             return;
         }
         try {
             await assignUserToRole(userId, selectedRole);
             setSuccessMessage(`Role assigned successfully.`);
             fetchUser(); // Refresh user roles
+            setTimeout(() => setSuccessMessage(""), 1000); // Clear success message after 1 second
         } catch (error) {
             setErrorMessage(error.message);
+            setTimeout(() => setErrorMessage(""), 1000); // Clear error message after 1 second
         }
     };
 
@@ -53,8 +56,10 @@ const UserEditRole = () => {
             await removeUserFromRole(userId, roleId);
             setSuccessMessage(`Role removed successfully.`);
             fetchUser(); // Refresh user roles
+            setTimeout(() => setSuccessMessage(""), 1000); // Clear success message after 1 second
         } catch (error) {
             setErrorMessage(error.message);
+            setTimeout(() => setErrorMessage(""), 1000); // Clear error message after 1 second
         }
     };
 
@@ -63,7 +68,7 @@ const UserEditRole = () => {
             <Row className="mb-3">
                 <Col>
                     <Link to="/admin/users" className="btn btn-outline-secondary">
-                        <i className="bi bi-arrow-left"></i> Back to Users
+                        <i className="bi bi-arrow-left"></i> Trở Về
                     </Link>
                 </Col>
             </Row>
@@ -71,10 +76,10 @@ const UserEditRole = () => {
             {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
             {user && (
                 <>
-                    <h2 className="mb-4">Edit Roles for {user.firstName} {user.lastName}</h2>
+                    <h2 className="mb-4">Chỉnh Vai Trò cho người dùng: {user.firstName} {user.lastName}</h2>
                     <Card className="mb-4">
                         <Card.Body>
-                            <Card.Title className="mb-3">Current Roles</Card.Title>
+                            <Card.Title className="mb-3">Vai Trò Hiện Tại</Card.Title>
                             {user.roles && user.roles.length > 0 ? (
                                 user.roles.map(role => (
                                     <Row key={role.id} className="mb-3">
@@ -84,27 +89,27 @@ const UserEditRole = () => {
                                             </div>
                                         </Col>
                                         <Col xs="auto">
-                                            <Button variant="outline-danger" size="sm" onClick={() => handleRemoveRole(role.id)}>Remove</Button>
+                                            <Button variant="outline-danger" size="s" onClick={() => handleRemoveRole(role.id)}>Xóa Vai Trò</Button>
                                         </Col>
                                     </Row>
                                 ))
                             ) : (
-                                <p>No roles assigned</p>
+                                <p>Không Có Vai Trò</p>
                             )}
                         </Card.Body>
                     </Card>
                     <Form.Group as={Row} className="mb-4">
-                        <Form.Label column xs="auto">Select Role to Assign</Form.Label>
+                        <Form.Label column xs="auto">Chọn Vai Trò Để Thêm vào:</Form.Label>
                         <Col>
                             <Form.Control as="select" value={selectedRole} onChange={(e) => setSelectedRole(e.target.value)}>
-                                <option value="">Select a role</option>
+                                <option value="">Chọn Vai Trò</option>
                                 {roles.map(role => (
                                     <option key={role.id} value={role.id}>{role.name}</option>
                                 ))}
                             </Form.Control>
                         </Col>
                         <Col xs="auto">
-                            <Button variant="primary" onClick={handleAssignRole}>Assign Role</Button>
+                            <Button variant="primary" onClick={handleAssignRole}>Thêm Vai Trò</Button>
                         </Col>
                     </Form.Group>
                 </>

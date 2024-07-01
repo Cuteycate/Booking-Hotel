@@ -34,7 +34,7 @@ const BookingDetail = () => {
     }, [bookingId]);
 
     if (!booking.id) {
-        return <p>Loading booking details...</p>;
+        return <p>Đang tải Chi tiết Booking</p>;
     }
 
     return (

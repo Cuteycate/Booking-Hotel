@@ -109,7 +109,7 @@ const BlogCategoriesListing = () => {
     };
 
     if (isLoading) {
-        return <div>Loading categories...</div>;
+        return <div>Đang Tải Thể Loại Bài Viết...</div>;
     }
 
     return (
@@ -120,7 +120,7 @@ const BlogCategoriesListing = () => {
 
             <section className="mt-5 mb-5 container">
                 <div className="d-flex justify-content-between mb-3 mt-5">
-                    <h2>Blog Categories</h2>
+                    <h2>Thể Loại Bài Viết</h2>
                 </div>
                 <div className="mb-3">
                     <input
@@ -128,14 +128,14 @@ const BlogCategoriesListing = () => {
                         className="form-control"
                         value={newCategoryName}
                         onChange={(e) => setNewCategoryName(e.target.value)}
-                        placeholder="Enter category name"
+                        placeholder="Nhập tên thể loại"
                     />
                     <button className="btn btn-primary mt-2" onClick={editingCategory ? handleEditCategory : handleAddCategory}>
-                        {editingCategory ? 'Update Category' : <><FaPlus /> Add Category</>}
+                        {editingCategory ? 'Cập Nhật Thể Loại' : <><FaPlus /> Thêm Thể Loại</>}
                     </button>
                     {editingCategory && (
                         <button className="btn btn-secondary mt-2 ml-2" onClick={() => { setEditingCategory(null); setNewCategoryName(''); }}>
-                            Cancel
+                            Hủy
                         </button>
                     )}
                 </div>

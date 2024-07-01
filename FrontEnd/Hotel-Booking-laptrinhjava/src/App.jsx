@@ -14,7 +14,6 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from "react-route
 import Admin from "./components/admin/Admin";
 import CheckOut from "./components/bookings/CheckOut";
 import BookingSuccess from "./components/bookings/BookingSuccess";
-import Bookings from "./components/room/Bookings";
 import FindBooking from "./components/bookings/FindBooking"
 import Login from "./components/auth/Login";
 import Registration from "./components/auth/Registration";
@@ -31,6 +30,7 @@ import BlogList from "./components/Blog/BlogList";
 import RequireAdmin from "./components/auth/RequireAdmin";
 import 'react-toastify/dist/ReactToastify.css';
 import BookingsTable from "./components/bookings/BookingsTable";
+import Bookings from "./components/room/Bookings";
 
 const AppContent = () => {
 	const location = useLocation();
@@ -75,7 +75,7 @@ const AppContent = () => {
 			<Route path="/register" element={<Registration />} />
 			<Route path="/profile" element={<Profile />} />
 			<Route path="/logout" element={<Logout />} />
-			<Route path="/existing-bookings" element={<Bookings />} />
+			
 
 			{/* All admin routes */}
 			<Route

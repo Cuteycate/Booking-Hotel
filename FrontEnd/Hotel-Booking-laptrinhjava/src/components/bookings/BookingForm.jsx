@@ -102,7 +102,7 @@ const BookingForm = () => {
             <div className="row">
                 <div className="col-md-6">
                     <div className="card card-body mt-5">
-                        <h4 className="card-title">Reserve Room</h4>
+                        <h4 className="card-title">Đặt Phòng</h4>
 
                         <Form noValidate validated={validated} onSubmit={handleSubmit}>
                             <Form.Group>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getAllRooms, deleteRoom } from '../utils/ApiFunctions';
-import { Col, Card } from "react-bootstrap";
+import {Row, Col, Card } from "react-bootstrap";
 import RoomFilter from "../common/RoomFilter";
 import RoomPaginator from "../common/RoomPaginator";
 import { Link, useLocation } from "react-router-dom";
@@ -104,28 +104,31 @@ const ExistingRoom = () => {
         <>
             <ToastContainer />
             {isLoading ? (
-                <p>Loading existing rooms...</p>
+                <p>Đang Tải Phòng...</p>
             ) : (
                 <>
                     <section className="mt-5 mb-5 container">
                         <div className="d-flex justify-content-between mb-3 mt-5">
-                            <h2>Existing Rooms</h2>
+                            <h2>Phòng</h2>
                             <Link to={"/admin/add-room"}>
                                 <FaPlus /> Thêm Phòng Mới
                             </Link>
                         </div>
-                        <Col md={6} className="mb-2 md-mb-0">
-                            <RoomFilter data={rooms} setFilteredData={setFilteredRooms} />
-                        </Col>
+                        <Row>
+                            <Col>
+                                <RoomFilter data={rooms} setFilteredData={setFilteredRooms} />
+                            </Col>
+                        </Row>
+                        <br/>
                         <table className="table table-bordered table-hover">
                             <thead>
                                 <tr className="text-center">
                                     <th>ID</th>
-                                    <th>Room Type</th>
-                                    <th>Room Price</th>
-                                    <th>Discount</th>
-                                    <th>Photo</th>
-                                    <th>Actions</th>
+                                    <th>Thể Loại Phòng</th>
+                                    <th>Giá Phòng</th>
+                                    <th>Giảm Giá</th>
+                                    <th>Ảnh</th>
+                                    <th>Hành Động</th>
                                 </tr>
                             </thead>
                             <tbody>

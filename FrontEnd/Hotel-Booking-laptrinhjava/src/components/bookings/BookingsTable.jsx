@@ -31,6 +31,7 @@ const BookingsTable = ({ bookingInfo, handleBookingCancellation }) => {
     return (
         <section className="p-4">
             <DateSlider onDateChange={filterBookings} onFilterChange={filterBookings} />
+            <br />
             {filteredBookings.length === 0 ? (
                 <p>Không có Bookings nào trong khoảng ngày này</p>
             ) : (

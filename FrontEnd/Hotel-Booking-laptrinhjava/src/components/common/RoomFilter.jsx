@@ -40,7 +40,7 @@ const RoomFilter = ({ data, setFilteredData }) => {
                 room.roomType.toLowerCase().includes(selectedType.toLowerCase())
             );
         }
-        //Filter theo giá
+        // Filter theo giá
         if (priceRange.max === 6000000) {
             filteredRooms = filteredRooms.filter(
                 (room) => calculateRoomPrice(room) >= priceRange.min
@@ -52,14 +52,14 @@ const RoomFilter = ({ data, setFilteredData }) => {
                     calculateRoomPrice(room) <= priceRange.max
             );
         }
-        //Filter theo giảm giá hay không
+        // Filter theo giảm giá hay không
         if (discountedFilter === "discounted") {
             filteredRooms = filteredRooms.filter((room) => room.discountPrice !== null);
         } else if (discountedFilter === "not_discounted") {
             filteredRooms = filteredRooms.filter((room) => room.discountPrice === null);
         }
 
-        // Filter theo giá
+        // Sắp xếp theo giá
         if (sortOrder === "asc") {
             filteredRooms.sort((a, b) => calculateRoomPrice(a) - calculateRoomPrice(b));
         } else if (sortOrder === "desc") {
@@ -84,76 +84,82 @@ const RoomFilter = ({ data, setFilteredData }) => {
     const roomTypes = [...new Set(data.map((room) => room.roomType))];
 
     return (
-        <div>
-            <div className="input-group mb-3">
-                <span className="input-group-text" id="room-type-filter">
-                    Filter loại phòng
-                </span>
-                <select
-                    className="form-select"
-                    aria-label="room type filter"
-                    value={filter}
-                    onChange={handleSelectChange}
-                >
-                    <option value="">Chọn loại phòng muốn Filter</option>
-                    {roomTypes.map((type, index) => (
-                        <option key={index} value={type}>
-                            {type}
-                        </option>
-                    ))}
-                </select>
-            </div>
-            <div className="input-group mb-3">
-                <span className="input-group-text" id="discount-status-filter">
-                    Filter trạng thái giảm giá
-                </span>
-                <select
-                    className="form-select"
-                    aria-label="discounted filter"
-                    value={discountedFilter}
-                    onChange={handleDiscountedChange}
-                >
-                    <option value="">Tất cả phòng</option>
-                    <option value="discounted">Phòng giảm giá</option>
-                    <option value="not_discounted">Phòng không giảm giá</option>
-                </select>
-            </div>
-            <div className="input-group mb-3">
-                <span className="input-group-text" id="sort-order">
-                    Sắp xếp theo giá
-                </span>
-                <select
-                    className="form-select"
-                    aria-label="sort order"
-                    value={sortOrder}
-                    onChange={handleSortChange}
-                >
-                    <option value="asc">Thấp đến cao</option>
-                    <option value="desc">Cao đến thấp</option>
-                </select>
-            </div>
-            <div className="mb-3">
-                <h5>
-                    Phòng trong khoảng: {priceRange.min.toLocaleString()} Đ -{" "}
-                    {priceRange.max >= 6000000
-                        ? "6000000+ Đ"
-                        : priceRange.max.toLocaleString() + " Đ"}
-                </h5>
-                <label className="form-label">Filter by Price</label>
-                <div className="mt-2">
-                    <InputRange
-                        maxValue={6000000}
-                        minValue={200000}
-                        step={10000}
-                        value={priceRange}
-                        onChange={handlePriceChange}
-                        formatLabel={() => null}
-                    />
+        <div className="container">
+            <div className="row g-3">
+                <div className="col-md-6">
+                    <div className="input-group">
+                        <span className="input-group-text" id="room-type-filter">
+                            Filter loại phòng
+                        </span>
+                        <select
+                            className="form-select"
+                            aria-label="room type filter"
+                            value={filter}
+                            onChange={handleSelectChange}
+                        >
+                            <option value="">Chọn loại phòng muốn Filter</option>
+                            {roomTypes.map((type, index) => (
+                                <option key={index} value={type}>
+                                    {type}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="input-group mt-3">
+                        <span className="input-group-text" id="discount-status-filter">
+                            Filter trạng thái giảm giá
+                        </span>
+                        <select
+                            className="form-select"
+                            aria-label="discounted filter"
+                            value={discountedFilter}
+                            onChange={handleDiscountedChange}
+                        >
+                            <option value="">Tất cả phòng</option>
+                            <option value="discounted">Phòng giảm giá</option>
+                            <option value="not_discounted">Phòng không giảm giá</option>
+                        </select>
+                    </div>
+                    <div className="input-group mt-3">
+                        <span className="input-group-text" id="sort-order">
+                            Sắp xếp theo giá
+                        </span>
+                        <select
+                            className="form-select"
+                            aria-label="sort order"
+                            value={sortOrder}
+                            onChange={handleSortChange}
+                        >
+                            <option value="asc">Thấp đến cao</option>
+                            <option value="desc">Cao đến thấp</option>
+                        </select>
+                    </div>
+                </div>
+                <div className="col-md-6">
+                <div className="card p-3">
+                    <h5 className="card-title mb-3">
+                        Phòng trong khoảng: {priceRange.min.toLocaleString()} Đ -{" "}
+                        {priceRange.max >= 6000000 ? "6000000+ VNĐ" : priceRange.max.toLocaleString() + " VNĐ"}
+                    </h5>
+                    <div className="mb-3">
+                        <InputRange
+                            maxValue={6000000}
+                            minValue={200000}
+                            step={10000}
+                            value={priceRange}
+                            onChange={handlePriceChange}
+                            formatLabel={() => null}
+                        />
+                    </div>
+                    <div className="d-grid">
+                        <button className="btn btn-hotel" type="button" onClick={clearFilter}>
+                            Xóa Filter
+                        </button>
+                    </div>
                 </div>
             </div>
-            <button className="btn btn-hotel" type="button" onClick={clearFilter}>
-                Xóa Filter
-            </button>
+
+            </div>
         </div>
     );
 };

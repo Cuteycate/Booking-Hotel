@@ -95,7 +95,7 @@ const AddBlog = () => {
     };
 
     if (!userData) {
-        return <p>Loading user data...</p>; // Render loading state while fetching user data
+        return <p>Tải Dữ Liệu Người Dùng...</p>; // Render loading state while fetching user data
     }
 
     return (
@@ -104,10 +104,10 @@ const AddBlog = () => {
             <section className="container mt-5 mb-5">
                 <div className="row justify-content-center">
                     <div className="col-md-8 col-lg-6">
-                        <h2 className="mt-5 mb-2">Add New Blog</h2>
+                        <h2 className="mt-5 mb-2">Thêm 1 Bài Viết Mới</h2>
                         <Form onSubmit={handleSubmit}>
                             <Form.Group className="mb-3" controlId="title">
-                                <Form.Label>Title</Form.Label>
+                                <Form.Label>Tên Bài Viết</Form.Label>
                                 <Form.Control
                                     type="text"
                                     placeholder="Enter title"
@@ -118,7 +118,7 @@ const AddBlog = () => {
                                 />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="summary">
-                                <Form.Label>Summary</Form.Label>
+                                <Form.Label>Tóm Tắt</Form.Label>
                                 <Form.Control
                                     type="text"
                                     placeholder="Enter summary"
@@ -129,7 +129,7 @@ const AddBlog = () => {
                                 />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="content">
-                                <Form.Label>Content</Form.Label>
+                                <Form.Label>Nội Dung</Form.Label>
                                 <CKEditor
                                     editor={ClassicEditor}
                                     data={newBlog.content}
@@ -145,7 +145,7 @@ const AddBlog = () => {
                                 />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="photo">
-                                <Form.Label>Photo</Form.Label>
+                                <Form.Label>Ảnh</Form.Label>
                                 <Form.Control
                                     type="file"
                                     accept="image/*"
@@ -161,7 +161,7 @@ const AddBlog = () => {
                                 )}
                             </Form.Group>
                             <Form.Group className="mb-3">
-                                <Form.Label>Select Categories</Form.Label>
+                                <Form.Label>Chọn Thể Loại Bài Viết</Form.Label>
                                 <div className="d-flex flex-wrap">
                                     {categories.map(category => (
                                         <Card
@@ -179,8 +179,8 @@ const AddBlog = () => {
                                 </div>
                             </Form.Group>
                             <div className="d-grid d-md-flex mt-3 justify-content-md-end">
-                                <Button variant="primary" type="submit" className="me-md-2">Submit</Button>
-                                <Link to="/admin/blogs" className="btn btn-secondary">Cancel</Link>
+                                <Button variant="primary" type="submit" className="me-md-2">Đăng</Button>
+                                <Link to="/admin/blogs" className="btn btn-secondary">Hủy</Link>
                             </div>
                         </Form>
                     </div>
