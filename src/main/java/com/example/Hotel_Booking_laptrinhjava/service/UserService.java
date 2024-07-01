@@ -4,6 +4,7 @@ import com.example.Hotel_Booking_laptrinhjava.exception.UserAlreadyExistsExcepti
 import com.example.Hotel_Booking_laptrinhjava.model.Role;
 import com.example.Hotel_Booking_laptrinhjava.model.User;
 import com.example.Hotel_Booking_laptrinhjava.model.VerificationToken;
+import com.example.Hotel_Booking_laptrinhjava.repository.BookingRepository;
 import com.example.Hotel_Booking_laptrinhjava.repository.RoleRepository;
 import com.example.Hotel_Booking_laptrinhjava.repository.UserRepository;
 import com.example.Hotel_Booking_laptrinhjava.repository.VerificationTokenRepository;
@@ -30,6 +31,7 @@ public class UserService implements IUserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final BookingRepository bookingRepository;
     private final VerificationTokenRepository tokenRepository;
     private final JavaMailSender mailSender;
     @Value("${app.url}")
@@ -83,15 +85,27 @@ public class UserService implements IUserService {
     @Transactional
     @Override
     public User updateUser(Long userId, User userDetails) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found with ID: " + userId));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with ID: " + userId));
+
+        // Update first name and last name
         user.setFirstName(userDetails.getFirstName());
         user.setLastName(userDetails.getLastName());
-        user.setEmail(userDetails.getEmail());
-        if (userDetails.getPassword() != null) {
-            user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
+
+        if (!user.getEmail().equals(userDetails.getEmail())) {
+            sendChangeEmail(user, userDetails.getEmail());
+            userRepository.save(user);
+            return user;
         }
-        return userRepository.save(user);
+
+        String oldEmail = user.getEmail();
+        user.setEmail(userDetails.getEmail());
+        User updatedUser = userRepository.save(user);
+        bookingRepository.updateBookingsEmail(oldEmail, userDetails.getEmail());
+        return updatedUser;
     }
+
+    //Gửi email xác thực đăng ký
     @Override
     public void sendVerificationEmail(User user) {
         String token = UUID.randomUUID().toString();
@@ -104,9 +118,7 @@ public class UserService implements IUserService {
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
             helper.setTo(user.getEmail());
-            helper.setSubject("Email Verification");
-
-            // Create the HTML content for the email
+            helper.setSubject("Xác thực Email");
             String htmlContent = "<html><body style='font-size: 16px;'>" +
                     "<div style='text-align: center;'>" +
                     "<img src='cid:penaconyLogo' style='max-width: 100%; height: auto;'/>" +
@@ -127,6 +139,7 @@ public class UserService implements IUserService {
             e.printStackTrace();
         }
     }
+    //Xác thực Email khi mới đăng nhâ
     @Override
     public boolean verifyEmail(String token) {
         Optional<VerificationToken> verificationTokenOptional = tokenRepository.findByToken(token);
@@ -139,5 +152,50 @@ public class UserService implements IUserService {
         userRepository.save(user);
         tokenRepository.delete(verificationToken);
         return true;
+    }
+    //Xác Thực Email mới
+    public boolean verifyNewEmail(String token, String newEmail) {
+        Optional<VerificationToken> verificationTokenOptional = tokenRepository.findByToken(token);
+        if (!verificationTokenOptional.isPresent()) {
+            return false;
+        }
+        VerificationToken verificationToken = verificationTokenOptional.get();
+        User user = verificationToken.getUser();
+        String oldEmail = user.getEmail();
+        user.setEmail(newEmail);
+        userRepository.save(user);
+        tokenRepository.delete(verificationToken);
+        bookingRepository.updateBookingsEmail(oldEmail, newEmail);
+        return true;
+    }
+    //Gửi email đổi Email
+    public void sendChangeEmail(User user, String newEmail) {
+        String token = UUID.randomUUID().toString();
+        VerificationToken verificationToken = new VerificationToken(token, user);
+        tokenRepository.save(verificationToken);
+        String changeEmailUrl = appUrl + "/auth/change-email?token=" + token + "&newEmail=" + newEmail;
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            helper.setTo(user.getEmail()); // send to current email
+            helper.setSubject("Xác nhận đổi Email");
+
+            String htmlContent = "<html><body style='font-size: 16px;'>" +
+                    "<div style='text-align: center;'>" +
+                    "<img src='cid:penaconyLogo' style='max-width: 100%; height: auto;'/>" +
+                    "<hr style='border: 0.5px solid #ccc; width: 80%; margin-top: 10px; margin-bottom: 10px;'/>" +
+                    "</div>" +
+                    "<p style='text-align: center;'>Xin chào mừng đến Penacony Hotel, Hãy Click link dưới đây để xác nhận đổi Email, Nếu bạn không làm việc này xin đừng nhấn vào link, xin trân trọng cảm ơn:</p>" +
+                    "<p style='text-align: center;'><a href='" + changeEmailUrl + "'>" + changeEmailUrl + "</a></p>" +
+                    "</body></html>";
+            helper.setText(htmlContent, true);
+
+            ClassPathResource imageResource = new ClassPathResource("static/images/PenaconyHotelLogo.png");
+            helper.addInline("penaconyLogo", imageResource);
+
+            mailSender.send(mimeMessage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

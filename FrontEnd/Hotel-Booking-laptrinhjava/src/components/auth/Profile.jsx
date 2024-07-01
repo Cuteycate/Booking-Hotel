@@ -1,43 +1,42 @@
-import React, { useEffect, useState } from "react";
-import { deleteUser, getBookingsByUserId, getUser, updateUser } from "../utils/ApiFunctions";
-import { useNavigate } from "react-router-dom";
-import moment from "moment";
+import React, { useEffect, useState } from 'react';
+import { deleteUser, getBookingsByUserId, getUser, updateUser, verifyNewEmail } from '../utils/ApiFunctions'; // Import necessary API functions
+import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Profile = () => {
     const [user, setUser] = useState({
-        id: "",
-        email: "",
-        firstName: "",
-        lastName: "",
-        roles: [{ id: "", name: "" }],
+        id: '',
+        email: '',
+        firstName: '',
+        lastName: '',
+        roles: [{ id: '', name: '' }],
         googleId: null
     });
 
     const [bookings, setBookings] = useState([
         {
-            id: "",
-            room: { id: "", roomType: "" },
-            checkInDate: "",
-            checkOutDate: "",
-            bookingConfirmationCode: ""
+            id: '',
+            room: { id: '', roomType: '' },
+            checkInDate: '',
+            checkOutDate: '',
+            bookingConfirmationCode: ''
         }
     ]);
 
-    const [errorMessage, setErrorMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState('');
     const [editMode, setEditMode] = useState(false); // State to manage edit mode
     const [tempUser, setTempUser] = useState({ ...user }); // State to hold temporary changes
 
     const navigate = useNavigate();
-    const userId = localStorage.getItem("userId");
-    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
                 const userData = await getUser(userId, token);
-                console.log('User Data:', userData);
                 setUser(userData);
                 setTempUser(userData); // Initialize tempUser with fetched user data
             } catch (error) {
@@ -54,7 +53,7 @@ const Profile = () => {
                 const response = await getBookingsByUserId(userId, token);
                 setBookings(response);
             } catch (error) {
-                console.error("Error fetching bookings:", error.message);
+                console.error('Error fetching bookings:', error.message);
                 setErrorMessage(error.message);
             }
         };
@@ -64,15 +63,15 @@ const Profile = () => {
 
     const handleDeleteAccount = async () => {
         const confirmed = window.confirm(
-            "Are you sure you want to delete your account? This action cannot be undone."
+            'Are you sure you want to delete your account? This action cannot be undone.'
         );
         if (confirmed) {
             try {
                 await deleteUser(userId);
-                localStorage.removeItem("token");
-                localStorage.removeItem("userId");
-                localStorage.removeItem("userRole");
-                navigate("/");
+                localStorage.removeItem('token');
+                localStorage.removeItem('userId');
+                localStorage.removeItem('userRole');
+                navigate('/');
                 window.location.reload();
             } catch (error) {
                 setErrorMessage(error.message);
@@ -91,26 +90,29 @@ const Profile = () => {
 
     const handleUpdateUser = async () => {
         if (!tempUser.firstName || !tempUser.lastName) {
-            toast.error("First name and last name cannot be blank.");
+            toast.error('First name and last name cannot be blank.');
             return;
         }
 
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(tempUser.email)) {
-            toast.error("Invalid email format.");
+            toast.error('Invalid email format.');
             return;
         }
 
         if (user.googleId && tempUser.email !== user.email) {
-            toast.error("This account is linked using Google and the email cannot be changed.");
+            toast.error('This account is linked using Google and the email cannot be changed.');
             return;
         }
 
         try {
-            const updatedUserData = await updateUser(user.id, tempUser, token);
-            setUser(updatedUserData); 
-            setTempUser(updatedUserData); 
-            toast.success("User information updated successfully.");
-
+            const updatedUserData = await updateUser(user.id, tempUser);
+            if (tempUser.email !== user.email) {
+                toast.info('Please check your current email to verify the change.');
+            } else {
+                setUser(updatedUserData);
+                setTempUser(updatedUserData);
+                toast.success('User information updated successfully.');
+            }
             setEditMode(false); // Exit edit mode after successful update
         } catch (error) {
             setErrorMessage(error.message);
@@ -130,7 +132,7 @@ const Profile = () => {
             <ToastContainer />
             {errorMessage && <p className="text-danger">{errorMessage}</p>}
             {user ? (
-                <div className="card p-5 mt-5" style={{ backgroundColor: "whitesmoke" }}>
+                <div className="card p-5 mt-5" style={{ backgroundColor: 'whitesmoke' }}>
                     <h4 className="card-title text-center">User Information</h4>
                     <div className="card-body">
                         <div className="col-md-10 mx-auto">
@@ -142,7 +144,7 @@ const Profile = () => {
                                                 src="https://themindfulaimanifesto.org/wp-content/uploads/2020/09/male-placeholder-image.jpeg"
                                                 alt="Profile"
                                                 className="rounded-circle"
-                                                style={{ width: "150px", height: "150px", objectFit: "cover" }}
+                                                style={{ width: '150px', height: '150px', objectFit: 'cover' }}
                                             />
                                         </div>
                                     </div>
@@ -286,14 +288,11 @@ const Profile = () => {
                                                 <td>{booking.id}</td>
                                                 <td>{booking.room.id}</td>
                                                 <td>{booking.room.roomType}</td>
-                                                <td>{moment(booking.checkInDate).format("DD-MM-YYYY")}</td>
-                                                <td>{moment(booking.checkOutDate).format("DD-MM-YYYY")}</td>
+                                                <td>{moment(booking.checkInDate).format('DD-MM-YYYY')}</td>
+                                                <td>{moment(booking.checkOutDate).format('DD-MM-YYYY')}</td>
                                                 <td>{booking.bookingConfirmationCode}</td>
                                                 <td>
-                                                    {moment(booking.checkOutDate).diff(
-                                                        moment(booking.checkInDate),
-                                                        "days"
-                                                    )}
+                                                    {moment(booking.checkOutDate).diff(moment(booking.checkInDate), 'days')}
                                                 </td>
                                             </tr>
                                         ))}

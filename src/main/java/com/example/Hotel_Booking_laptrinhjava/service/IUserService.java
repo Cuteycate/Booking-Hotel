@@ -22,4 +22,6 @@ public interface IUserService {
     void sendVerificationEmail(User user);
 
     boolean verifyEmail(String token);
+
+    boolean verifyNewEmail(String token, String newEmail);
 }

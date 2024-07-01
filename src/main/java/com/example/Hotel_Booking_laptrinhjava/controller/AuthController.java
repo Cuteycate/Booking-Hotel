@@ -50,6 +50,16 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid token");
         }
     }
+    @GetMapping("/change-email")
+    public ResponseEntity<String> verifyNewEmail(@RequestParam("token") String token, @RequestParam("newEmail") String newEmail) {
+        if (userService.verifyNewEmail(token, newEmail)) {
+            return ResponseEntity.ok("New email verified successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid token");
+        }
+    }
+
+
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest request) {
