@@ -18,4 +18,8 @@ public interface IUserService {
 
     @Transactional
     User updateUser(Long userId, User userDetails);
+
+    void sendVerificationEmail(User user);
+
+    boolean verifyEmail(String token);
 }

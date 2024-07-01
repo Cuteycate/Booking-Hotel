@@ -17,10 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -35,32 +32,45 @@ public class AuthController {
     private final GoogleService googleService;
     private final FacebookService facebookService;
 
-    @PostMapping("/register-user")
-    public ResponseEntity<?> registerUser(@RequestBody User user){
-        try{
+    @PostMapping("/register")
+    public ResponseEntity<String> registerUser(@RequestBody User user) {
+        try {
             userService.registerUser(user);
-            return ResponseEntity.ok("Registration successful!");
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+            return ResponseEntity.ok("User registered successfully and verification email sent");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error registering user: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/verify-email")
+    public ResponseEntity<String> verifyEmail(@RequestParam("token") String token) {
+        if (userService.verifyEmail(token)) {
+            return ResponseEntity.ok("Email verified successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid token");
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest request){
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest request) {
         Authentication authentication =
-                authenticationManager
-                        .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+                authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtTokenForUser(authentication);
         HotelUserDetails userDetails = (HotelUserDetails) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority).toList();
+
+        User user = userService.getUser(request.getEmail());
+        boolean isVerified = user.isVerified();
         return ResponseEntity.ok(new JwtResponse(
                 userDetails.getId(),
                 userDetails.getEmail(),
                 jwt,
-                roles));
+                roles,
+                isVerified));
     }
 
     @PostMapping("/google")
@@ -95,8 +105,10 @@ public class AuthController {
                 jwt,
                 userDetails.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
-                        .toList()));
+                        .toList(),
+                googleUser.isVerified())); // Include verification status
     }
+
     @PostMapping("/facebook")
     public ResponseEntity<?> authenticateFacebookUser(@RequestBody Map<String, String> request) {
         String facebookToken = request.get("token");
@@ -129,7 +141,7 @@ public class AuthController {
                 jwt,
                 userDetails.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
-                        .toList()));
+                        .toList(),
+                facebookUser.isVerified())); // Include verification status
     }
-
 }

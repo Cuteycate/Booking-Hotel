@@ -28,9 +28,13 @@ const Login = () => {
         e.preventDefault();
         const success = await loginUser(login);
         if (success) {
-            const token = success.token;
+            const { token, verified } = success;
             auth.handleLogin(token);
-            navigate(redirectUrl, { replace: true });
+            if (!verified) {
+                setErrorMessage("Please verify your email to complete login.");
+            } else {
+                navigate(redirectUrl, { replace: true });
+            }
         } else {
             setErrorMessage("Invalid username or password. Please try again.");
         }
@@ -38,7 +42,7 @@ const Login = () => {
             setErrorMessage("");
         }, 4000);
     };
-
+    
     const handleGoogleLoginSuccess = async (credentialResponse) => {
         console.log("Google credential response: ", credentialResponse);
         const decoded = jwtDecode(credentialResponse.credential);

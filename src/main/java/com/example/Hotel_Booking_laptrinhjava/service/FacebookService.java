@@ -31,6 +31,7 @@ public class FacebookService {
         User user = new User();
         user.setEmail(response.get("email"));
         user.setFirstName(response.get("name"));
+        user.setVerified(true);
         return user;
     }
 }

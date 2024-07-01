@@ -33,6 +33,7 @@ public class GoogleService {
                 user.setFirstName(firstName);
                 user.setPassword(null);
                 user.setLastName("");
+                user.setVerified(true);
                 return user;
             }
         } catch (Exception e) {

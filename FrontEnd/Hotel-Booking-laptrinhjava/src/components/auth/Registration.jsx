@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { registerUser } from "../utils/ApiFunctions";
+import { registerUser } from "../utils/ApiFunctions"; // Import only the registerUser function
 import { Link } from "react-router-dom";
-import '../auth/LoginPage.css'
+import '../auth/LoginPage.css';
 
 const Registration = () => {
     const [registration, setRegistration] = useState({
@@ -48,8 +48,8 @@ const Registration = () => {
         if (!validateForm()) return;
         
         try {
-            const result = await registerUser(registration);
-            setSuccessMessage(result);
+            await registerUser(registration);
+            setSuccessMessage("Registration successful. A verification email has been sent.");
             setErrorMessage("");
             setRegistration({ firstName: "", lastName: "", email: "", password: "" });
         } catch (error) {
@@ -66,93 +66,91 @@ const Registration = () => {
     return (
         <div className="login-page">
             <div className="wrapper">
-           
-           {errorMessage && <p className="alert alert-danger">{errorMessage}</p>}
-           {successMessage && <p className="alert alert-success">{successMessage}</p>}
+                {errorMessage && <p className="alert alert-danger">{errorMessage}</p>}
+                {successMessage && <p className="alert alert-success">{successMessage}</p>}
 
-           <h2>Register</h2>
-           <form onSubmit={handleRegistration}>
-               <div className="mb-3 row">
-                   <label htmlFor="firstName" className="col-sm-5 col-form-label">
-                       First Name
-                   </label>
-                   <div className="col-sm-10 input-box ">
-                       <input
-                           id="firstName"
-                           name="firstName"
-                           type="text"
-                           className="form-control"
-                           value={registration.firstName}
-                           onChange={handleInputChange}
-                       />
-                       {errors.firstName && <small className="text-danger">{errors.firstName}</small>}
-                   </div>
-               </div>
+                <h2>Register</h2>
+                <form onSubmit={handleRegistration}>
+                    <div className="mb-3 row">
+                        <label htmlFor="firstName" className="col-sm-5 col-form-label">
+                            First Name
+                        </label>
+                        <div className="col-sm-10 input-box ">
+                            <input
+                                id="firstName"
+                                name="firstName"
+                                type="text"
+                                className="form-control"
+                                value={registration.firstName}
+                                onChange={handleInputChange}
+                            />
+                            {errors.firstName && <small className="text-danger">{errors.firstName}</small>}
+                        </div>
+                    </div>
 
-               <div className="mb-3 row">
-                   <label htmlFor="lastName" className="col-sm-5 col-form-label">
-                       Last Name
-                   </label>
-                   <div className="col-sm-10 input-box">
-                       <input
-                           id="lastName"
-                           name="lastName"
-                           type="text"
-                           className="form-control"
-                           value={registration.lastName}
-                           onChange={handleInputChange}
-                       />
-                       {errors.lastName && <small className="text-danger">{errors.lastName}</small>}
-                   </div>
-               </div>
+                    <div className="mb-3 row">
+                        <label htmlFor="lastName" className="col-sm-5 col-form-label">
+                            Last Name
+                        </label>
+                        <div className="col-sm-10 input-box">
+                            <input
+                                id="lastName"
+                                name="lastName"
+                                type="text"
+                                className="form-control"
+                                value={registration.lastName}
+                                onChange={handleInputChange}
+                            />
+                            {errors.lastName && <small className="text-danger">{errors.lastName}</small>}
+                        </div>
+                    </div>
 
-               <div className="mb-3 row">
-                   <label htmlFor="email" className="col-sm-5 col-form-label">
-                       Email
-                   </label>
-                   <div className="col-sm-10 input-box">
-                       <input
-                           id="email"
-                           name="email"
-                           type="email"
-                           className="form-control"
-                           value={registration.email}
-                           onChange={handleInputChange}
-                       />
-                       {errors.email && <small className="text-danger">{errors.email}</small>}
-                   </div>
-               </div>
+                    <div className="mb-3 row">
+                        <label htmlFor="email" className="col-sm-5 col-form-label">
+                            Email
+                        </label>
+                        <div className="col-sm-10 input-box">
+                            <input
+                                id="email"
+                                name="email"
+                                type="email"
+                                className="form-control"
+                                value={registration.email}
+                                onChange={handleInputChange}
+                            />
+                            {errors.email && <small className="text-danger">{errors.email}</small>}
+                        </div>
+                    </div>
 
-               <div className="mb-3 row">
-                   <label htmlFor="password" className="col-sm-5 col-form-label">
-                       Password
-                   </label>
-                   <div className="col-sm-10 input-box">
-                       <input
-                           type="password"
-                           className="form-control"
-                           id="password"
-                           name="password"
-                           value={registration.password}
-                           onChange={handleInputChange}
-                       />
-                       {errors.password && <small className="text-danger">{errors.password}</small>}
-                   </div>
-               </div>
+                    <div className="mb-3 row">
+                        <label htmlFor="password" className="col-sm-5 col-form-label">
+                            Password
+                        </label>
+                        <div className="col-sm-10 input-box">
+                            <input
+                                type="password"
+                                className="form-control"
+                                id="password"
+                                name="password"
+                                value={registration.password}
+                                onChange={handleInputChange}
+                            />
+                            {errors.password && <small className="text-danger">{errors.password}</small>}
+                        </div>
+                    </div>
 
-               <div className="mb-3">
-                   <button type="submit" className="btn btn-hotel" style={{ marginRight: "10px" }}>
-                       Register
-                   </button>
-               </div>
-               <div className="mb-3">
-               <span style={{ marginLeft: "10px" }}>
-                       Already have an account? <Link to={"/login"}>Login</Link>
-                   </span>
-               </div>
-           </form>
-    
-   </div>
+                    <div className="mb-3">
+                        <button type="submit" className="btn btn-hotel" style={{ marginRight: "10px" }}>
+                            Register
+                        </button>
+                    </div>
+                    <div className="mb-3">
+                        <span style={{ marginLeft: "10px" }}>
+                            Already have an account? <Link to={"/login"}>Login</Link>
+                        </span>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };

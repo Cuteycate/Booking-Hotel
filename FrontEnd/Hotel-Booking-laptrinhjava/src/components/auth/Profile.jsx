@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { deleteUser, getBookingsByUserId, getUser, updateUser } from "../utils/ApiFunctions";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Profile = () => {
     const [user, setUser] = useState({
@@ -9,7 +11,8 @@ const Profile = () => {
         email: "",
         firstName: "",
         lastName: "",
-        roles: [{ id: "", name: "" }]
+        roles: [{ id: "", name: "" }],
+        googleId: null
     });
 
     const [bookings, setBookings] = useState([
@@ -22,7 +25,6 @@ const Profile = () => {
         }
     ]);
 
-    const [message, setMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [editMode, setEditMode] = useState(false); // State to manage edit mode
     const [tempUser, setTempUser] = useState({ ...user }); // State to hold temporary changes
@@ -35,6 +37,7 @@ const Profile = () => {
         const fetchUser = async () => {
             try {
                 const userData = await getUser(userId, token);
+                console.log('User Data:', userData);
                 setUser(userData);
                 setTempUser(userData); // Initialize tempUser with fetched user data
             } catch (error) {
@@ -87,15 +90,26 @@ const Profile = () => {
     };
 
     const handleUpdateUser = async () => {
+        if (!tempUser.firstName || !tempUser.lastName) {
+            toast.error("First name and last name cannot be blank.");
+            return;
+        }
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(tempUser.email)) {
+            toast.error("Invalid email format.");
+            return;
+        }
+
+        if (user.googleId && tempUser.email !== user.email) {
+            toast.error("This account is linked using Google and the email cannot be changed.");
+            return;
+        }
+
         try {
             const updatedUserData = await updateUser(user.id, tempUser, token);
             setUser(updatedUserData); 
             setTempUser(updatedUserData); 
-            setMessage("User information updated successfully.");
-
-            setTimeout(() => {
-                setMessage("");
-            }, 1000); // Message will disappear after 1 second
+            toast.success("User information updated successfully.");
 
             setEditMode(false); // Exit edit mode after successful update
         } catch (error) {
@@ -113,8 +127,8 @@ const Profile = () => {
 
     return (
         <div className="container">
+            <ToastContainer />
             {errorMessage && <p className="text-danger">{errorMessage}</p>}
-            {message && <p className="text-success">{message}</p>}
             {user ? (
                 <div className="card p-5 mt-5" style={{ backgroundColor: "whitesmoke" }}>
                     <h4 className="card-title text-center">User Information</h4>
@@ -222,6 +236,7 @@ const Profile = () => {
                                                                 className="form-control"
                                                                 value={tempUser.email}
                                                                 onChange={handleInputChange}
+                                                                disabled={user.googleId ? true : false}
                                                             />
                                                         </div>
                                                     </div>
@@ -262,39 +277,36 @@ const Profile = () => {
                                             <th scope="col">Check In Date</th>
                                             <th scope="col">Check Out Date</th>
                                             <th scope="col">Confirmation Code</th>
-                                            <th scope="col">Status</th>
+                                            <th scope="col">Days Difference</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {bookings.map((booking, index) => (
-                                            <tr key={index}>
+                                        {bookings.map((booking) => (
+                                            <tr key={booking.id}>
                                                 <td>{booking.id}</td>
                                                 <td>{booking.room.id}</td>
                                                 <td>{booking.room.roomType}</td>
-                                                <td>
-                                                    {moment(booking.checkInDate).subtract(1, "month").format("MMM Do, YYYY")}
-                                                </td>
-                                                <td>
-                                                    {moment(booking.checkOutDate)
-                                                        .subtract(1, "month")
-                                                        .format("MMM Do, YYYY")}
-                                                </td>
+                                                <td>{moment(booking.checkInDate).format("DD-MM-YYYY")}</td>
+                                                <td>{moment(booking.checkOutDate).format("DD-MM-YYYY")}</td>
                                                 <td>{booking.bookingConfirmationCode}</td>
-                                                <td className="text-success">On-going</td>
+                                                <td>
+                                                    {moment(booking.checkOutDate).diff(
+                                                        moment(booking.checkInDate),
+                                                        "days"
+                                                    )}
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
                             ) : (
-                                <p>You have not made any bookings yet.</p>
+                                <p>No bookings found for this user.</p>
                             )}
 
-                            <div className="d-flex justify-content-center">
-                                <div className="mx-2">
-                                    <button className="btn btn-danger btn-sm" onClick={handleDeleteAccount}>
-                                        Close account
-                                    </button>
-                                </div>
+                            <div className="d-flex justify-content-end">
+                                <button className="btn btn-danger" onClick={handleDeleteAccount}>
+                                    Xóa Tài Khoản
+                                </button>
                             </div>
                         </div>
                     </div>

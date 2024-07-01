@@ -241,7 +241,7 @@ export async function checkRoomAvailability(roomId, booking) {
 //Đăng Ký
 export async function registerUser(registration) {
 	try {
-		const response = await api.post("/auth/register-user", registration)
+		const response = await api.post("/auth/register", registration)
 		return response.data
 	} catch (error) {
 		if (error.reeponse && error.response.data) {
@@ -563,5 +563,23 @@ export async function getUserById(userId) {
         return response.data;
     } catch (error) {
         throw new Error(`Error fetching user: ${error.message}`);
+    }
+}
+//Gửi mail xác nhận
+export async function sendVerificationEmail(user) {
+    try {
+        const response = await api.post("/auth/send-verification", user);
+        return response.data;
+    } catch (error) {
+        throw new Error(`Error sending verification email: ${error.message}`);
+    }
+}
+// Xác nhận Email
+export async function verifyEmail(token) {
+    try {
+        const response = await api.get(`/auth/verify-email?token=${token}`);
+        return response.data;
+    } catch (error) {
+        throw new Error(`Error verifying email: ${error.message}`);
     }
 }

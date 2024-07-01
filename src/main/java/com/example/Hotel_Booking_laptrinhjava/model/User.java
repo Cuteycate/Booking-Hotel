@@ -21,7 +21,8 @@ public class User {
     private String lastName;
     private String email;
     private String password;
-    private String googleId; // Add this field to store Google user ID
+    private String googleId;
+    private boolean verified = false;
     @ManyToMany(fetch = FetchType.EAGER,
             cascade = {CascadeType.PERSIST,
                     CascadeType.MERGE, CascadeType.DETACH})
@@ -29,5 +30,4 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Collection<Role> roles = new HashSet<>();
-
 }
