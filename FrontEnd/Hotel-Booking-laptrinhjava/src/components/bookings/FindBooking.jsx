@@ -126,7 +126,7 @@ const FindBooking = () => {
 						<p>Người Lớn: {bookingInfo.numOfAdults}</p>
 						<p>Trẻ Em: {bookingInfo.numOfChildren}</p>
 						<p>Tổng số khách: {bookingInfo.totalNumOfGuests}</p>
-
+						<p>Giá Tiền: {bookingInfo.totalAmount} VNĐ</p>
 						{!isDeleted && (
 							<button
 								onClick={() => handleBookingCancellation(bookingInfo.id)}
