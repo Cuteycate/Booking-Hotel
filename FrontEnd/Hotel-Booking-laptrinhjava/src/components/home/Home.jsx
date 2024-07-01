@@ -26,8 +26,9 @@ const Home = () => {
 				<HotelService />
 				<Parallax />
 				<RoomCarousel />
-				<Information/>			
+						
 			</div>
+			<Information/>	
 		</section>
 	)
 }

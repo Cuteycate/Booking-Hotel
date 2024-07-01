@@ -15,13 +15,13 @@ const Contact = () => {
             <Container>
                 <Row>
                     <Col xs={12} md={4} className='text-center'>
-                        <h4>PHONE SUPPORT</h4>  
-                        <p> 24 HOURS A DAY</p>
+                        <h4>Số Điện Thoại</h4>  
+                        <p>Hoạt động cả ngày</p>
                         <p> +84 794382784</p>
                     </Col>
                     <Col xs={12} md={4} className='text-center'>
-                        <h4>Connect With Us</h4>
-                        <p> SOCIAL MEDIA CHANNELS</p>
+                        <h4>Liên Hệ Chúng tôi với</h4>
+                        <p>Kênh truyền thông</p>
                         <p>
                             <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
                                 <FaFacebook />
@@ -38,7 +38,7 @@ const Contact = () => {
                         </p>
                     </Col>
                     <Col xs={12} md={4} className='text-center'>
-                        <h4> Send Email</h4>
+                        <h4> Phản hồi Email</h4>
                         <button className='btn btn-success' onClick={handleShow}>Liên Hệ Với Chúng Tôi</button>                   
                     </Col>
                 </Row>
