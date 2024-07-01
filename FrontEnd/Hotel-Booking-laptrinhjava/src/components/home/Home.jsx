@@ -8,6 +8,8 @@ import RoomSearch from "../common/RoomSearch"
 import BlogCarousel from "../common/BlogCarousel"
 import Header from "../common/Header"
 import OnSaleRoomCarousel from "../common/OnSaleRoomCarousel"
+import Information from "../layout/Information"
+
 const Home = () => {
 	const location = useLocation()
 
@@ -17,13 +19,14 @@ const Home = () => {
 		<section>
 			<MainHeader/>
 			<div className="container">
-				<RoomSearch/>
+				
 				<OnSaleRoomCarousel />
 				<Parallax />
 				<BlogCarousel />
 				<HotelService />
 				<Parallax />
 				<RoomCarousel />
+				<Information/>			
 			</div>
 		</section>
 	)
