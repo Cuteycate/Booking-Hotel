@@ -31,12 +31,12 @@ const Login = () => {
             const { token, verified } = success;
             auth.handleLogin(token);
             if (!verified) {
-                setErrorMessage("Please verify your email to complete login.");
+                setErrorMessage("Xin hãy xác thực email trước khi đăng nhập.");
             } else {
                 navigate(redirectUrl, { replace: true });
             }
         } else {
-            setErrorMessage("Invalid username or password. Please try again.");
+            setErrorMessage("Tài khoản hoặc mật khẩu sai xin hãy xem lại.");
         }
         setTimeout(() => {
             setErrorMessage("");
@@ -52,7 +52,7 @@ const Login = () => {
             auth.handleLogin(token);
             navigate(redirectUrl, { replace: true });
         } else {
-            setErrorMessage("Google login failed. Please try again.");
+            setErrorMessage("Đăng nhập không thành công xin hãy thử lại.");
         }
     };
 
@@ -69,15 +69,15 @@ const Login = () => {
                     auth.handleLogin(token);
                     navigate(redirectUrl, { replace: true });
                 } else {
-                    setErrorMessage("Facebook login failed. Please try again.");
+                    setErrorMessage("Đăng nhập không thành công xin hãy thử lại.");
                 }
             } catch (error) {
-                console.error("Error during Facebook login:", error);
-                setErrorMessage("Facebook login failed. Please try again.");
+                console.error("Có lỗi khi đăng nhập facebook:", error);
+                setErrorMessage("Đăng nhập không thành công xin hãy thử lại.");
             }
         } else {
-            console.error("No access token received from Facebook.");
-            setErrorMessage("Facebook login failed. Please try again.");
+            console.error("Không nhận được access token của facebook.");
+            setErrorMessage("Đăng nhập không thành công xin hãy thử lại.");
         }
     };
     
@@ -86,7 +86,7 @@ const Login = () => {
         <div className="login-page">
             <div className="wrapper">         
                 {errorMessage && <p className="alert alert-danger">{errorMessage}</p>}
-                <h2>Login</h2>
+                <h2>Đăng Nhập</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="row mb-3">
                         <label htmlFor="email" className="col-sm-2 col-form-label">
@@ -107,7 +107,7 @@ const Login = () => {
 
                     <div className="row mb-3">
                         <label htmlFor="password" className="col-sm-2 col-form-label">
-                            Password
+                            Mật Khẩu
                         </label>
                         <div className="input-box">
                             <input
@@ -124,20 +124,20 @@ const Login = () => {
 
                     <div className="mb-3">
                         <button type="submit" className="btn btn-hotel" style={{ marginRight: "10px" }}>
-                            Login
+                            Đăng Nhập
                         </button>
                     </div>
                     
                     <div className="mb-3 register-link">
                         <span style={{ marginLeft: "10px" }}>
-                                Don't have an account yet? <Link to={"/register"}> Register</Link>
+                                Chưa có tài khoản ? <Link to={"/register"}> Đăng Ký</Link>
                             </span>
                     </div>
                     <div className=" mb-3 auth2">
                         <GoogleLogin
                             onSuccess={handleGoogleLoginSuccess}
                             onError={() => {
-                                setErrorMessage("Google login failed. Please try again.");
+                                setErrorMessage("Google Login không thành công.");
                             }}
                         />
                     </div>

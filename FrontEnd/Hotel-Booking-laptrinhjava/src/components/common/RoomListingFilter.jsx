@@ -88,7 +88,7 @@ const RoomListingFilter = ({ data, setFilteredData }) => {
             <div className="mb-3">
                 <h5>Filter theo</h5>
                 <hr />
-                <h5>Room Categories</h5>
+                <h5>Loại Phòng</h5>
                 <ul className="list-group">
                     {Object.keys(roomTypes).map((type, index) => (
                         <li
@@ -105,7 +105,7 @@ const RoomListingFilter = ({ data, setFilteredData }) => {
                         onClick={clearFilter}
                         style={{ cursor: 'pointer' }}
                     >
-                        All Rooms
+                        Tất cả phòng
                     </li>
                 </ul>
             </div>

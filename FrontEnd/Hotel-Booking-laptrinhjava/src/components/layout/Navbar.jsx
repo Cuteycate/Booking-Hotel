@@ -51,12 +51,12 @@ const NavBar = () => {
           <ul className="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll">
             <li className="nav-item">
               <NavLink className="nav-link" aria-current="page" to={"/browse-all-rooms"}>
-                Browse all rooms
+                Xem tất cả phòng
               </NavLink>
             </li>
             <li className="nav-item">
               <NavLink className="nav-link" aria-current="page" to={"/blogs"}>
-                Blogs
+                Bài Viết
               </NavLink>
             </li>
             {isLoggedIn && userRole === "ROLE_ADMIN" && (
@@ -82,7 +82,7 @@ const NavBar = () => {
                 aria-expanded={showAccount ? "true" : "false"}
                 onClick={handleAccountClick}
               >
-                Account
+                Tài Khoản
               </a>
               <ul className={`dropdown-menu ${showAccount ? "show" : ""}`} aria-labelledby="navbarDropdown">
               {isLoggedIn ? (
@@ -90,7 +90,7 @@ const NavBar = () => {
 								) : (
 									<li>
 										<Link className="dropdown-item" to={"/login"}>
-											Login
+											Đăng Nhập
 										</Link>
 									</li>
 								)}

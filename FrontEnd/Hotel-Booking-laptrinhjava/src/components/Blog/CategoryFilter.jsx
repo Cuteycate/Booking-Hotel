@@ -65,7 +65,7 @@ const CategoryFilter = ({ data, setFilteredData }) => {
     return (
         <div className="mb-3">
             <div className="mb-2">
-                <strong>Filter by Categories:</strong>
+                <strong>Filter theo loại:</strong>
             </div>
             <div className="d-flex flex-wrap">
                 {uniqueCategories.map((category, index) => (

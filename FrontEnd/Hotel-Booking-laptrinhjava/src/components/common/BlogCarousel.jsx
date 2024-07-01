@@ -23,7 +23,7 @@ const BlogCarousel = () => {
     }, []);
 
     if (isLoading) {
-        return <div className="mt-5">Loading blogs...</div>;
+        return <div className="mt-5">Đang tải Blogs...</div>;
     }
     if (errorMessage) {
         return <div className="text-danger mb-5 mt-5">Error: {errorMessage}</div>;
@@ -32,7 +32,7 @@ const BlogCarousel = () => {
     return (
         <section className="mb-5 mt-5">
              <Link to="/blogs" className="btn btn-primary mb-3">
-                Browse All Blogs
+                Xem tất cả bài viết
             </Link>
             
 
@@ -64,10 +64,10 @@ const BlogCarousel = () => {
                                                             <i>{new Date(blog.createdAt).toLocaleDateString()}</i>
                                                         </Card.Subtitle>
                                                         <Card.Subtitle className="mb-2 text-muted">
-                                                            <i>Author: {blog.authorFullName}</i>
+                                                            <i>Tác Giả: {blog.authorFullName}</i>
                                                         </Card.Subtitle>
                                                     </div>
-                                                        <Link to={`/view-blog/${blog.id}`} className="btn btn-primary read-button">Read</Link>
+                                                        <Link to={`/view-blog/${blog.id}`} className="btn btn-primary read-button">Xem Ngay</Link>
                                                     </div>
                                                 </Card.Body>
                                             </Card>

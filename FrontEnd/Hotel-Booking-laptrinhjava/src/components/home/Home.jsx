@@ -19,15 +19,14 @@ const Home = () => {
 		<section>
 			<MainHeader/>
 			<div className="container">
-				
 				<OnSaleRoomCarousel />
 				<Parallax />
 				<BlogCarousel />
 				<HotelService />
 				<Parallax />
 				<RoomCarousel />
-				<Information/>			
 			</div>
+			<Information/>	
 		</section>
 	)
 }

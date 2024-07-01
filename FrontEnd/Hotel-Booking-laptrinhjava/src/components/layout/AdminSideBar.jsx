@@ -28,7 +28,7 @@ function AdminSidebar({ openSidebarToggle, OpenSidebar }) {
 
   const handleLogoutClick = () => {
     handleLogout();
-    navigate("/", { state: { message: "You have been logged out!" } });
+    navigate("/", { state: { message: "Bạn đã đăng xuất!" } });
   };
 
   return (

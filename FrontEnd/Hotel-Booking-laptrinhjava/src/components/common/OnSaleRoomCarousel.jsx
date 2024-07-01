@@ -31,7 +31,7 @@ const OnSaleRoomCarousel = () => {
     };
 
     if (isLoading) {
-        return <div className="mt-5">Loading rooms....</div>;
+        return <div className="mt-5">Đang tải phòng....</div>;
     }
     if (errorMessage) {
         return <div className="text-danger mb-5 mt-5">Error: {errorMessage}</div>;
@@ -67,8 +67,10 @@ const OnSaleRoomCarousel = () => {
                                                     </Link>
                                                     <>
                                                         <Card.Text>
-                                                            <span className="text-muted text-decoration-line-through">${room.roomPrice}</span>
-                                                            <span className="text-warning ms-2">${room.discountPrice}/night</span>
+                                                            <span className="text-muted text-decoration-line-through">{room.roomPrice} VNĐ/Đêm</span>
+                                                        </Card.Text>
+                                                        <Card.Text>
+                                                            <span className="text-warning ms-2">{room.discountPrice} VNĐ/Đêm</span>
                                                         </Card.Text>
                                                         <Card.Text className="text-success discount-space">
                                                             {calculatePercentageOff(room.roomPrice, room.discountPrice).toFixed(0)}% off
@@ -76,7 +78,7 @@ const OnSaleRoomCarousel = () => {
                                                     </>
                                                 </div>
                                                 <Link to={`/book-room/${room.id}`} className="btn btn-hotel btn-sm mt-auto">
-                                                    Book Now
+                                                    Đặt Ngay !
                                                 </Link>
                                             </Card.Body>
                                         </Card>

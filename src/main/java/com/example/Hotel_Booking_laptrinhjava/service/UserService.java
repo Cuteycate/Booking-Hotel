@@ -97,14 +97,12 @@ public class UserService implements IUserService {
             userRepository.save(user);
             return user;
         }
-
         String oldEmail = user.getEmail();
         user.setEmail(userDetails.getEmail());
         User updatedUser = userRepository.save(user);
         bookingRepository.updateBookingsEmail(oldEmail, userDetails.getEmail());
         return updatedUser;
     }
-
     //Gửi email xác thực đăng ký
     @Override
     public void sendVerificationEmail(User user) {

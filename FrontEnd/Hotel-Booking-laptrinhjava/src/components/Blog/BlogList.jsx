@@ -60,7 +60,7 @@ const BlogList = () => {
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     if (isLoading) {
-        return <div>Loading blogs...</div>;
+        return <div>Đang tải Blogs...</div>;
     }
 
     if (error) {
@@ -74,7 +74,7 @@ const BlogList = () => {
                 <Row>
                     <Col md={9}>
                         {filteredBlogs.length === 0 ? (
-                            <div>No blogs with these filters</div>
+                            <div>Không có Blogs nào có các thể loại này !</div>
                         ) : (
                             <>
                                 <Row xs={1} md={2} lg={3} className="g-4">
@@ -116,7 +116,7 @@ const BlogList = () => {
                                                                 )
                                                             )
                                                         ) : (
-                                                            <span>No categories</span>
+                                                            <span>Không có thể loại</span>
                                                         )}
                                                     </div>
                                                 </Link>

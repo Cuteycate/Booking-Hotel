@@ -25,22 +25,22 @@ const DateSlider = ({ onDateChange, onFilterChange }) => {
     onDateChange(null, null);
     onFilterChange(null, null);
   };
+
   return (
     <>
       <div className="container">
-  <h5 className="mb-3">
-    Lọc Booking theo ngày 
-    <button className="btn btn-secondary" style={{ marginLeft: '40px' }} onClick={handleClearFilter}>
-      Xóa Bộ Lọc
-    </button>
-  </h5>
-</div>
-<DateRangePicker
-  ranges={[dateRange]}
-  onChange={handleSelect}
-  className="mb-4"
-/>
-
+        <h5 className="mb-3">
+          Lọc Booking theo ngày 
+          <button className="btn btn-secondary" style={{ marginLeft: '40px' }} onClick={handleClearFilter}>
+            Xóa Bộ Lọc
+          </button>
+        </h5>
+      </div>
+      <DateRangePicker
+        ranges={[dateRange]}
+        onChange={handleSelect}
+        className="mb-4"
+      />
     </>
   );
 };

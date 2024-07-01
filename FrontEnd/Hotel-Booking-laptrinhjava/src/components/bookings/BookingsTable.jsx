@@ -1,9 +1,9 @@
-import { parseISO } from 'date-fns';
 import React, { useState, useEffect } from 'react';
+import { parseISO } from 'date-fns';
 import DateSlider from '../common/DateSlider';
-import { Link } from "react-router-dom";
-import { FaEye } from "react-icons/fa";
-import { TiCancel } from "react-icons/ti";
+import { Link } from 'react-router-dom';
+import { FaEye } from 'react-icons/fa';
+import { TiCancel } from 'react-icons/ti';
 
 const ITEMS_PER_PAGE = 5;
 
@@ -57,7 +57,10 @@ const BookingsTable = ({ bookingInfo, handleBookingCancellation }) => {
 
     return (
         <section className="p-4">
-            <DateSlider onDateChange={(start, end) => filterBookings(start, end, searchTerm)} />
+            <DateSlider 
+                onDateChange={(start, end) => filterBookings(start, end, searchTerm)} 
+                onFilterChange={(start, end) => filterBookings(start, end, searchTerm)}
+            />
             <br />
             <input
                 type="text"
@@ -101,7 +104,7 @@ const BookingsTable = ({ bookingInfo, handleBookingCancellation }) => {
                                     <td>{booking.bookingConfirmationCode}</td>
                                     <td style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
                                         <Link to={`/admin/view-booking/${booking.id}`} className="btn btn-primary btn-sm">
-                                            <FaEye />                    
+                                            <FaEye />
                                         </Link>
                                         <button
                                             className="btn btn-danger btn-sm ml-5"

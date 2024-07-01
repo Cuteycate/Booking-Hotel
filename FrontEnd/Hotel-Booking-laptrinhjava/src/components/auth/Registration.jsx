@@ -19,20 +19,20 @@ const Registration = () => {
         const newErrors = {};
         
         if (!registration.firstName.trim()) {
-            newErrors.firstName = "First name cannot be blank.";
+            newErrors.firstName = "Tên không được để trống.";
         }
         if (!registration.lastName.trim()) {
-            newErrors.lastName = "Last name cannot be blank.";
+            newErrors.lastName = "Họ và Tên Đệm không khả dụng.";
         }
         if (!registration.email.trim()) {
-            newErrors.email = "Email cannot be blank.";
+            newErrors.email = "Email không được trống.";
         } else if (!/\S+@\S+\.\S+/.test(registration.email)) {
-            newErrors.email = "Email address is invalid.";
+            newErrors.email = "Email phải đúng cú pháp.";
         }
         if (!registration.password.trim()) {
-            newErrors.password = "Password cannot be blank.";
+            newErrors.password = "Mất khẩu không được để trống..";
         } else if (registration.password.length < 6) {
-            newErrors.password = "Password must be at least 6 characters.";
+            newErrors.password = "Mật Khẩu phải trên 6 ký tự.";
         }
 
         setErrors(newErrors);
@@ -49,12 +49,12 @@ const Registration = () => {
         
         try {
             await registerUser(registration);
-            setSuccessMessage("Registration successful. A verification email has been sent.");
+            setSuccessMessage("Đăng ký thành công, Vui lòng kiểm tra Email của bạn để xác thực.");
             setErrorMessage("");
             setRegistration({ firstName: "", lastName: "", email: "", password: "" });
         } catch (error) {
             setSuccessMessage("");
-            setErrorMessage(`Registration error: ${error.message}`);
+            setErrorMessage(`Đăng ký không thành công : ${error.message}`);
         }
         
         setTimeout(() => {
@@ -69,11 +69,11 @@ const Registration = () => {
                 {errorMessage && <p className="alert alert-danger">{errorMessage}</p>}
                 {successMessage && <p className="alert alert-success">{successMessage}</p>}
 
-                <h2>Register</h2>
+                <h2>Đăng Ký</h2>
                 <form onSubmit={handleRegistration}>
                     <div className="mb-3 row">
                         <label htmlFor="firstName" className="col-sm-5 col-form-label">
-                            First Name
+                            Tên 
                         </label>
                         <div className="col-sm-10 input-box ">
                             <input
@@ -90,7 +90,7 @@ const Registration = () => {
 
                     <div className="mb-3 row">
                         <label htmlFor="lastName" className="col-sm-5 col-form-label">
-                            Last Name
+                            Họ và Tên Đệm
                         </label>
                         <div className="col-sm-10 input-box">
                             <input
@@ -124,7 +124,7 @@ const Registration = () => {
 
                     <div className="mb-3 row">
                         <label htmlFor="password" className="col-sm-5 col-form-label">
-                            Password
+                            Mật Khẩu
                         </label>
                         <div className="col-sm-10 input-box">
                             <input
@@ -141,12 +141,12 @@ const Registration = () => {
 
                     <div className="mb-3">
                         <button type="submit" className="btn btn-hotel" style={{ marginRight: "10px" }}>
-                            Register
+                            Đăng Ký
                         </button>
                     </div>
                     <div className="mb-3">
                         <span style={{ marginLeft: "10px" }}>
-                            Already have an account? <Link to={"/login"}>Login</Link>
+                            Đã có tài khoản? <Link to={"/login"}>Đăng Nhập</Link>
                         </span>
                     </div>
                 </form>
