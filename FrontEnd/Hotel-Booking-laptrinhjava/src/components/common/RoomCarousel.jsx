@@ -38,7 +38,7 @@ const RoomCarousel = () => {
         <section className="mb-5 mt-5">
             <h2 className="text-center mb-4">Danh Sách Phòng</h2>
             <Link to="/browse-all-rooms" className="btn btn-primary mb-3">
-                Browse all rooms
+                Xem tất cả phòng
             </Link>
 
             <Container>
