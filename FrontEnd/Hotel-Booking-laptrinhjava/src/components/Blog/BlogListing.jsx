@@ -74,14 +74,14 @@ const BlogListing = () => {
             </div>
 
             {isLoading ? (
-                <p>Loading existing blogs...</p>
+                <p>Đang tải Bài viết...</p>
             ) : (
                 <>
                     <section className="mt-5 mb-5 container">
                         <div className="d-flex justify-content-between mb-3 mt-5">
-                            <h2>Existing Blogs</h2>
+                            <h2>Bài Viết</h2>
                             <Link to={"/admin/add-blog"}>
-                                <FaPlus /> Add New Blog
+                                <FaPlus /> Thêm Bài Viết Mới
                             </Link>
                         </div>
                         <Col md={6} className="mb-2 md-mb-0">
@@ -91,12 +91,12 @@ const BlogListing = () => {
                             <thead>
                                 <tr className="text-center">
                                     <th>ID</th>
-                                    <th>Title</th>
-                                    <th>Author</th>
-                                    <th>Categories</th>
-                                    <th>Created At</th>
-                                    <th>Updated At</th>
-                                    <th>Actions</th>
+                                    <th>Tên Bài Viết</th>
+                                    <th>Tác Giả</th>
+                                    <th>Thể loại</th>
+                                    <th>Tạo Vào Ngày</th>
+                                    <th>Cập Nhập Vào</th>
+                                    <th>Hành Động</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -114,7 +114,7 @@ const BlogListing = () => {
                                                         </Card>
                                                     ))
                                                 ) : (
-                                                    <p>No categories</p>
+                                                    <p>Không có thể loại</p>
                                                 )}
                                             </td>
                                             <td>{new Date(blog.createdAt).toLocaleDateString()}</td>
@@ -136,7 +136,7 @@ const BlogListing = () => {
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan="8" className="text-center">No blogs found</td>
+                                        <td colSpan="8" className="text-center">Không Tìm Thấy Bài Viết</td>
                                     </tr>
                                 )}
                             </tbody>

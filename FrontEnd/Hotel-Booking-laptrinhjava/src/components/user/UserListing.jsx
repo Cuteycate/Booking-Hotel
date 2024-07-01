@@ -72,12 +72,12 @@ const UserListing = () => {
             </div>
 
             {isLoading ? (
-                <p>Loading users...</p>
+                <p>Đang Tải Thông Tin Người Dùng...</p>
             ) : (
                 <>
                     <section className="mt-5 mb-5 container">
                         <div className="d-flex justify-content-between mb-3 mt-5">
-                            <h2>Users</h2>
+                            <h2>Người Dùng</h2>
                         </div>
                         <Col md={6} className="mb-2 md-mb-0">
                             {/* Thêm filter tại đây nếu có */}
@@ -86,10 +86,10 @@ const UserListing = () => {
                             <thead>
                                 <tr className="text-center">
                                     <th>ID</th>
-                                    <th>Full Name</th>                          
+                                    <th>Họ Và Tên</th>                          
                                     <th>Email</th>
-                                    <th>Roles</th>
-                                    <th>Actions</th>
+                                    <th>Vai Trò</th>
+                                    <th>Hành Động</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -107,7 +107,7 @@ const UserListing = () => {
                                                         </Card>
                                                     ))
                                                 ) : (
-                                                    <p>No roles</p>
+                                                    <p>Không Có Vài Trò</p>
                                                 )}
                                             </td>
                                             <td>
@@ -127,7 +127,7 @@ const UserListing = () => {
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan="6" className="text-center">No users found</td>
+                                        <td colSpan="6" className="text-center">Không Tìm Thấy Người Dùng</td>
                                     </tr>
                                 )}
                             </tbody>

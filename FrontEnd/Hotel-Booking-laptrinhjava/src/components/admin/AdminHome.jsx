@@ -1,28 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import {
-  BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, BsFillBellFill
+  BsFillGrid3X3GapFill, BsPeopleFill, BsFillBellFill
 } from 'react-icons/bs';
-import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line
-} from 'recharts';
 import '../admin/admin.css';
-import { getAllRooms, getAllBookings } from '../utils/ApiFunctions';
+import { getAllBookings } from '../utils/ApiFunctions';
 
 function AdminHome() {
-  const [rooms, setRooms] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const roomsData = await getAllRooms();
         const bookingsData = await getAllBookings();
-        setRooms(roomsData);
         setBookings(bookingsData);
       } catch (error) {
         console.error('Error fetching data:', error);
+        setError('Error fetching data');
       } finally {
         setLoading(false);
       }
@@ -31,39 +27,55 @@ function AdminHome() {
     fetchData();
   }, []);
 
-  // Calculate counts
-  const totalRooms = rooms.length;
-  const bookedRooms = bookings.filter(booking => booking.status === 'booked').length;
-  const notBookedRooms = totalRooms - bookedRooms;
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth();
+  const currentYear = currentDate.getFullYear();
+  const monthNames = ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"];
 
+  const bookingsThisMonth = bookings.filter(booking => {
+    const checkInDate = new Date(booking.checkInDate);
+    return checkInDate.getMonth() === currentMonth && checkInDate.getFullYear() === currentYear;
+  });
+
+  const guestsVisited = bookingsThisMonth.reduce((total,booking)=> total + booking.totalNumOfGuests,0);
+
+  const monthlyRevenue = bookingsThisMonth.reduce((total, booking) => total + booking.totalAmount, 0);
+
+  if (loading) {
+    return <div>Đang tải...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <main className='main-container'>
       <div className='main-title'>
-        <h3>Thống Kê</h3>
+        <h1>Thống Kê Của {monthNames[currentMonth]} Năm {currentYear}</h1>
       </div>
 
       <div className='main-cards'>
         <div className='card'>
           <div className='card-inner'>
-            <h3>Tổng Số Phòng</h3>
-            <BsFillArchiveFill className='card_icon' />
-          </div>
-          <h1>{totalRooms}</h1>
-        </div>
-        <div className='card'>
-          <div className='card-inner'>
-            <h3>Phòng Đă Đặt</h3>
+            <h2>Số lần Đặt Phòng</h2>
             <BsFillGrid3X3GapFill className='card_icon' />
           </div>
-          <h1>{bookedRooms}</h1>
+          <h1>{bookingsThisMonth.length}</h1>
         </div>
         <div className='card'>
           <div className='card-inner'>
-            <h3>Phòng Trống</h3>
+            <h2>Tổng Số Khách</h2>
             <BsPeopleFill className='card_icon' />
           </div>
-          <h1>{notBookedRooms}</h1>
+          <h1>{guestsVisited}</h1>
+        </div>
+        <div className='card'>
+          <div className='card-inner'>
+            <h2>Tổng Thu Nhập</h2>
+            <BsFillBellFill className='card_icon' />
+          </div>
+          <h1>{monthlyRevenue.toLocaleString()} VNĐ</h1>
         </div>
       </div>
     </main>
