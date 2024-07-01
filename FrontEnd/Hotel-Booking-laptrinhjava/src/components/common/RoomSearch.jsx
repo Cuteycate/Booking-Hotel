@@ -15,6 +15,7 @@ const RoomSearch = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [availableRooms, setAvailableRooms] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -32,6 +33,7 @@ const RoomSearch = () => {
     getAvailableRooms(searchQuery.checkInDate, searchQuery.checkOutDate, searchQuery.roomType)
       .then((response) => {
         setAvailableRooms(response.data);
+        setHasSearched(true);
         setTimeout(() => setIsLoading(false), 2000);
       })
       .catch((error) => {
@@ -59,6 +61,7 @@ const RoomSearch = () => {
       roomType: ""
     });
     setAvailableRooms([]);
+    setHasSearched(false);
   };
 
   useEffect(() => {
@@ -116,11 +119,13 @@ const RoomSearch = () => {
 
         {isLoading ? (
           <p className="mt-4">Tìm kiếm phòng hợp lệ...</p>
-        ) : availableRooms.length > 0 ? (
-          <RoomSearchResults results={availableRooms} onClearSearch={handleClearSearch} />
-        ) : (
-          <p className="mt-4">Không có phòng nào phù hợp cho ngày chọn...</p>
-        )}
+        ) : hasSearched ? (
+          availableRooms.length > 0 ? (
+            <RoomSearchResults results={availableRooms} onClearSearch={handleClearSearch} />
+          ) : (
+            <p className="mt-4">Không có phòng nào phù hợp cho ngày chọn...</p>
+          )
+        ) : null}
         {errorMessage && <p className="text-danger">{errorMessage}</p>}
       </Container>
     </>

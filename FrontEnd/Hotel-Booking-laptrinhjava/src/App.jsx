@@ -31,6 +31,7 @@ import BlogList from "./components/Blog/BlogList";
 import RequireAdmin from "./components/auth/RequireAdmin";
 import 'react-toastify/dist/ReactToastify.css';
 import BookingsTable from "./components/bookings/BookingsTable";
+import ContactPage from "./components/layout/ContactPage";
 
 const AppContent = () => {
 	const location = useLocation();
@@ -70,7 +71,7 @@ const AppContent = () => {
 
 			<Route path="/booking-success" element={<BookingSuccess />} />
 			<Route path="/find-booking" element={<FindBooking />} />
-
+			<Route path="/contact" element = {<ContactPage/>}/>
 			<Route path="/login" element={<Login />} />
 			<Route path="/register" element={<Registration />} />
 			<Route path="/profile" element={<Profile />} />
