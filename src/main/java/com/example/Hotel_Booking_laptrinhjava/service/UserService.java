@@ -70,8 +70,8 @@ public class UserService implements IUserService {
         user.setFirstName(userDetails.getFirstName());
         user.setLastName(userDetails.getLastName());
         user.setEmail(userDetails.getEmail());
-        if (userDetails.getPassword() != null) {
-            user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
+        if (userDetails.getPassword() != null){
+            user.setPassword(userDetails.getPassword());
         }
         return userRepository.save(user);
     }
