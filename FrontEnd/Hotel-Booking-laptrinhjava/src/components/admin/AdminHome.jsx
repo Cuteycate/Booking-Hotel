@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  BsFillGrid3X3GapFill, BsPeopleFill, BsFillBellFill
+  BsFillTrophyFill , BsPeopleFill, BsCashCoin 
 } from 'react-icons/bs';
 import '../admin/admin.css';
 import { getAllBookings } from '../utils/ApiFunctions';
@@ -59,7 +59,7 @@ function AdminHome() {
         <div className='card'>
           <div className='card-inner'>
             <h2>Số lần Đặt Phòng</h2>
-            <BsFillGrid3X3GapFill className='card_icon' />
+            <BsFillTrophyFill  className='card_icon' />
           </div>
           <h1>{bookingsThisMonth.length}</h1>
         </div>
@@ -73,7 +73,7 @@ function AdminHome() {
         <div className='card'>
           <div className='card-inner'>
             <h2>Tổng Thu Nhập</h2>
-            <BsFillBellFill className='card_icon' />
+            <BsCashCoin  className='card_icon' />
           </div>
           <h1>{monthlyRevenue.toLocaleString()} VNĐ</h1>
         </div>
