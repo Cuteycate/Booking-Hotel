@@ -40,13 +40,13 @@ const UserListing = () => {
         try {
             const result = await deleteUser(email);
             if (result === "User deleted successfully") {
-                setSuccessMessage(`User with email ${email} has been deleted`);
+                setSuccessMessage(`Người dùng với ${email} đã xóa thành công`);
                 fetchUsers();
             } else {
-                console.error(`Error deleting user: ${result.message}`);
+                console.error(`Gặp lỗi khi xóa người dùng: ${result.message}`);
             }
         } catch (error) {
-            console.error(`Error deleting user: ${error.message}`);
+            console.error(`Gặp lỗi khi xóa người dùng: ${error.message}`);
             setErrorMessage(error.message);
         }
         setTimeout(() => {

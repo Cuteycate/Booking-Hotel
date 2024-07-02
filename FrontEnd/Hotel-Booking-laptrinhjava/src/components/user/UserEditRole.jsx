@@ -36,13 +36,13 @@ const UserEditRole = () => {
 
     const handleAssignRole = async () => {
         if (!selectedRole) {
-            setErrorMessage("Please select a role to assign.");
+            setErrorMessage("Hãy chọn vai trò để thêm vào.");
             setTimeout(() => setErrorMessage(""), 1000); // Clear error message after 1 second
             return;
         }
         try {
             await assignUserToRole(userId, selectedRole);
-            setSuccessMessage(`Role assigned successfully.`);
+            setSuccessMessage(`Vai trò đã gắn thành công.`);
             fetchUser(); // Refresh user roles
             setTimeout(() => setSuccessMessage(""), 1000); // Clear success message after 1 second
         } catch (error) {
@@ -54,7 +54,7 @@ const UserEditRole = () => {
     const handleRemoveRole = async (roleId) => {
         try {
             await removeUserFromRole(userId, roleId);
-            setSuccessMessage(`Role removed successfully.`);
+            setSuccessMessage(`Vai trò đã xóa thành công.`);
             fetchUser(); // Refresh user roles
             setTimeout(() => setSuccessMessage(""), 1000); // Clear success message after 1 second
         } catch (error) {

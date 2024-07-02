@@ -4,6 +4,8 @@ import DateSlider from '../common/DateSlider';
 import { Link } from 'react-router-dom';
 import { FaEye } from 'react-icons/fa';
 import { TiCancel } from 'react-icons/ti';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ITEMS_PER_PAGE = 5;
 
@@ -50,6 +52,16 @@ const BookingsTable = ({ bookingInfo, handleBookingCancellation }) => {
         setCurrentPage(page);
     };
 
+    const handleCancelBooking = async (bookingId) => {
+        try {
+            await handleBookingCancellation(bookingId);
+            toast.success(`Booking với ID ${bookingId} đã hủy thành công.`);
+            filterBookings(null, null, searchTerm); // Refresh bookings after cancellation
+        } catch (error) {
+            toast.error(`gặp lỗi khi hủy booking với ID ${bookingId}: ${error.message}`);
+        }
+    };
+
     const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
     const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
     const currentBookings = filteredBookings.slice(indexOfFirstItem, indexOfLastItem);
@@ -57,6 +69,7 @@ const BookingsTable = ({ bookingInfo, handleBookingCancellation }) => {
 
     return (
         <section className="p-4">
+            <ToastContainer />
             <DateSlider 
                 onDateChange={(start, end) => filterBookings(start, end, searchTerm)} 
                 onFilterChange={(start, end) => filterBookings(start, end, searchTerm)}
@@ -108,7 +121,7 @@ const BookingsTable = ({ bookingInfo, handleBookingCancellation }) => {
                                         </Link>
                                         <button
                                             className="btn btn-danger btn-sm ml-5"
-                                            onClick={() => handleBookingCancellation(booking.id)}
+                                            onClick={() => handleCancelBooking(booking.id)}
                                             style={{ marginLeft: '10px' }}
                                         >
                                            <TiCancel />
