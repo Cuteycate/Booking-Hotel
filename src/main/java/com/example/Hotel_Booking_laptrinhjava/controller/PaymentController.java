@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -118,7 +119,7 @@ public class PaymentController {
         helper.setText(body, true);
 
         // Đính kèm hình ảnh inline
-        ClassPathResource imageResource = new ClassPathResource("static/images/PenaconyHotelLogo.png");
+        FileSystemResource imageResource = new FileSystemResource("src/main/resources/static/images/PenaconyHotelLogo.png");
         helper.addInline("penaconyLogo", imageResource);
 
         // Gửi email
