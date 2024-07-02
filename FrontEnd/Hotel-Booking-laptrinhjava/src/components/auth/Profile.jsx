@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { deleteUser, getBookingsByUserId, getUser, updateUser, verifyNewEmail } from '../utils/ApiFunctions'; // Import necessary API functions
+import { deleteUser, getBookingsByUserId, getUser, updateUser } from '../utils/ApiFunctions'; // Removed unnecessary imports
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import { ToastContainer, toast } from 'react-toastify';
@@ -63,7 +63,7 @@ const Profile = () => {
 
     const handleDeleteAccount = async () => {
         const confirmed = window.confirm(
-            'Are you sure you want to delete your account? This action cannot be undone.'
+            'Bạn có chắc muốn xóa tài khoản ?.'
         );
         if (confirmed) {
             try {
@@ -90,24 +90,33 @@ const Profile = () => {
 
     const handleUpdateUser = async () => {
         if (!tempUser.firstName || !tempUser.lastName) {
-            toast.error('First name and last name cannot be blank.');
+            toast.error('Họ và Tên không được để trống.');
             return;
         }
 
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(tempUser.email)) {
-            toast.error('Invalid email format.');
+            toast.error('Sai cú pháp email.');
             return;
         }
 
         if (user.googleId && tempUser.email !== user.email) {
-            toast.error('This account is linked using Google and the email cannot be changed.');
+            toast.error('Tài khoản này được link bằng google hoặc facebook nên không thể đổi.');
             return;
         }
 
         try {
             const updatedUserData = await updateUser(user.id, tempUser);
             if (tempUser.email !== user.email) {
-                toast.info('Please check your current email to verify the change.');
+                toast.info('Xin hãy kiểm tra Email để xác thực thay đổi.');
+                setUser(updatedUserData);
+                setTempUser(updatedUserData);
+                // Logout and redirect to login page after a delay
+                setTimeout(() => {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('userId');
+                    localStorage.removeItem('userRole');
+                    navigate('/login');
+                }, 3000); // Delay for 3 seconds to allow the toast to be displayed
             } else {
                 setUser(updatedUserData);
                 setTempUser(updatedUserData);
@@ -267,19 +276,19 @@ const Profile = () => {
                                 </div>
                             </div>
 
-                            <h4 className="card-title text-center">Booking History</h4>
+                            <h4 className="card-title text-center">Lịch sử đặt phòng</h4>
 
                             {bookings.length > 0 ? (
                                 <table className="table table-bordered table-hover shadow">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Booking ID</th>
-                                            <th scope="col">Room ID</th>
-                                            <th scope="col">Room Type</th>
-                                            <th scope="col">Check In Date</th>
-                                            <th scope="col">Check Out Date</th>
-                                            <th scope="col">Confirmation Code</th>
-                                            <th scope="col">Days Difference</th>
+                                            <th scope="col">ID Đặt Phòng</th>
+                                            <th scope="col">ID Phòng</th>
+                                            <th scope="col">Loại Phòng</th>
+                                            <th scope="col">Ngày Checkin</th>
+                                            <th scope="col">Ngày Checkout</th>
+                                            <th scope="col">Mã Bookings</th>
+                                            <th scope="col">Số ngày đặt</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -299,7 +308,7 @@ const Profile = () => {
                                     </tbody>
                                 </table>
                             ) : (
-                                <p>No bookings found for this user.</p>
+                                <p>Người dùng chưa đặt phòng nào.</p>
                             )}
 
                             <div className="d-flex justify-content-end">

@@ -11,6 +11,7 @@ import com.example.Hotel_Booking_laptrinhjava.repository.VerificationTokenReposi
 import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.SimpleMailMessage;
@@ -34,22 +35,27 @@ public class UserService implements IUserService {
     private final BookingRepository bookingRepository;
     private final VerificationTokenRepository tokenRepository;
     private final JavaMailSender mailSender;
+    @Autowired
+    private final RoleService roleService;
     @Value("${app.url}")
     private String appUrl;
     @Override
     public User registerUser(User user) {
-        if(userRepository.existsByEmail(user.getEmail()))
-        {
+        if (userRepository.existsByEmail(user.getEmail())) {
             throw new UserAlreadyExistsException("Email đã từng lập tài khoản");
         }
-        if(user.getPassword()!= null) {
+
+        if (user.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
+
         Role userRole = roleRepository.findByName("ROLE_USER").get();
         user.setRoles(Collections.singletonList(userRole));
         User savedUser = userRepository.save(user);
 
-        sendVerificationEmail(savedUser);
+        if (user.getGoogleId() == null) {
+            sendVerificationEmail(savedUser);
+        }
 
         return savedUser;
     }
@@ -61,11 +67,10 @@ public class UserService implements IUserService {
     @Transactional
     @Override
     public void deleteUser(String email) {
-        User theUser = getUser(email);
-        if(theUser != null)
-        {
-            userRepository.deleteByEmail(email);
-        }
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+
+        tokenRepository.deleteByUserId(user.getId());
+        userRepository.delete(user);
     }
 
     @Override
@@ -128,7 +133,6 @@ public class UserService implements IUserService {
 
             helper.setText(htmlContent, true);
 
-            // Add the inline image
             ClassPathResource imageResource = new ClassPathResource("static/images/PenaconyHotelLogo.png");
             helper.addInline("penaconyLogo", imageResource);
 
