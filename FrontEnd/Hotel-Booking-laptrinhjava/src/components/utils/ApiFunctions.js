@@ -339,7 +339,7 @@ export async function deleteUser(userId) {
 		})
 		return response.data
 	} catch (error) {
-		return error.message
+		throw new Error(`Error Delete user: ${error.message}`);
 	}
 }
 

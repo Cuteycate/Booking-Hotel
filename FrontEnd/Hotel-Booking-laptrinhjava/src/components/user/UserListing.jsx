@@ -36,11 +36,11 @@ const UserListing = () => {
         setCurrentPage(pageNumber);
     };
 
-    const handleDelete = async (userId) => {
+    const handleDelete = async (email) => {
         try {
-            const result = await deleteUser(userId);
-            if (result === "") {
-                setSuccessMessage(`User ${userId} has been deleted`);
+            const result = await deleteUser(email);
+            if (result === "User deleted successfully") {
+                setSuccessMessage(`User with email ${email} has been deleted`);
                 fetchUsers();
             } else {
                 console.error(`Error deleting user: ${result.message}`);
@@ -111,15 +111,12 @@ const UserListing = () => {
                                                 )}
                                             </td>
                                             <td>
-                                                <Link to={`/view-user/${user.id}`} className="btn btn-info btn-sm me-2">
-                                                    <FaEye />
-                                                </Link>
                                                 <Link to={`/admin/users-edit/${user.id}`} className="btn btn-warning btn-sm me-2">
                                                     <FaEdit />
                                                 </Link>
                                                 <button
                                                     className="btn btn-danger btn-sm"
-                                                    onClick={() => handleDelete(user.id)}>
+                                                    onClick={() => handleDelete(user.email)}>
                                                     <FaTrashAlt />
                                                 </button>
                                             </td>
