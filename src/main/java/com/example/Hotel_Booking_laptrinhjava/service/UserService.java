@@ -137,6 +137,7 @@ public class UserService implements IUserService {
             helper.addInline("penaconyLogo", imageResource);
 
             mailSender.send(mimeMessage);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

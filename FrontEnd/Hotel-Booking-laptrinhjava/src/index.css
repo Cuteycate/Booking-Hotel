@@ -263,7 +263,7 @@ h2 {
 .MainHeader {
   position: relative;
   width: 100%;
-  height: 75vh; /* Chiều cao của phần tử là 75% chiều cao màn hình */
+  height: 75vh; 
   overflow: hidden;
   display: flex;
   justify-content: center;
