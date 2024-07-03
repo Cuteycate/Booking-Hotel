@@ -44,19 +44,15 @@ public class UserService implements IUserService {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new UserAlreadyExistsException("Email đã từng lập tài khoản");
         }
-
         if (user.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-
         Role userRole = roleRepository.findByName("ROLE_USER").get();
         user.setRoles(Collections.singletonList(userRole));
         User savedUser = userRepository.save(user);
-
         if (user.getGoogleId() == null) {
             sendVerificationEmail(savedUser);
         }
-
         return savedUser;
     }
 

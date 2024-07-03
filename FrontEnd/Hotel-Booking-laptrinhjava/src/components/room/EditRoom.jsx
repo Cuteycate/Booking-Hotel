@@ -11,7 +11,8 @@ const EditRoom = () => {
         roomType: "",
         roomPrice: "",
         summary: "",
-        discountPrice: ""
+        discountPrice: "",
+        discountPercentage: "0"
     });
     const [imagePreview, setImagePreview] = useState("");
     const [calculatedPrice, setCalculatedPrice] = useState("");
@@ -52,10 +53,16 @@ const EditRoom = () => {
     };
 
     const handleDiscountChange = (e) => {
-        const discountPercentage = parseInt(e.target.value);
-        setRoom({ ...room, discountPercentage });
-        setIsPriceUpdated(true);
-        calculateDiscountedPrice(room.roomPrice, discountPercentage);
+        const discountPercentage = e.target.value;
+        if (discountPercentage === "") {
+            setRoom({ ...room, discountPercentage: "0" });
+            setIsPriceUpdated(false);
+            setCalculatedPrice("");
+        } else {
+            setRoom({ ...room, discountPercentage: parseInt(discountPercentage) });
+            setIsPriceUpdated(true);
+            calculateDiscountedPrice(room.roomPrice, discountPercentage);
+        }
     };
 
     const calculateDiscountedPrice = (price, percentage) => {
@@ -200,6 +207,7 @@ const EditRoom = () => {
                                     value={room.discountPercentage}
                                     onChange={handleDiscountChange}
                                 >
+                                    <option value="">Chọn mức giảm giá</option>
                                     <option value="0">Không giảm giá</option>
                                     <option value="10">10%</option>
                                     <option value="20">20%</option>
