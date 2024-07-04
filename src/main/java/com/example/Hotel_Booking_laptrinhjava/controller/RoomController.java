@@ -90,6 +90,12 @@ public class RoomController {
                 photo.getBytes() : roomService.getRoomPhotoByRoomId(roomId);
         Blob photoBlob = photoBytes != null && photoBytes.length > 0 ? new SerialBlob(photoBytes) : null;
         Room theRoom = roomService.updateRoom(roomId, roomType, roomPrice, discountPrice, photoBytes, summary);
+        if(discountPrice == null) {
+            theRoom.setDiscountPrice(null);
+        } else {
+            theRoom.setDiscountPrice(discountPrice);
+        }
+
         theRoom.setPhoto(photoBlob);
         RoomResponse roomResponse = getRoomResponse(theRoom);
         return ResponseEntity.ok(roomResponse);

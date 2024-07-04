@@ -73,7 +73,11 @@ public class RoomService implements IRoomService {
         Room room = roomRepository.findById(roomId).orElseThrow(() -> new ResourceNotFoundException("Room not found"));
         if (roomType != null) room.setRoomType(roomType);
         if (roomPrice != null) room.setRoomPrice(roomPrice);
-        if (discountPrice != null) room.setDiscountPrice(discountPrice);
+        if (discountPrice != null) {
+            room.setDiscountPrice(discountPrice);
+        } else {
+            room.setDiscountPrice(null);
+        }
         if (photoBytes != null && photoBytes.length > 0) {
             try {
                 room.setPhoto(new SerialBlob(photoBytes));

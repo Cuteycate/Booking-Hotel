@@ -54,7 +54,11 @@ const EditRoom = () => {
 
     const handleDiscountChange = (e) => {
         const discountPercentage = e.target.value;
-        if (discountPercentage === "") {
+        if (discountPercentage === "0") {
+            setRoom({ ...room, discountPercentage: "0", discountPrice: null });
+            setIsPriceUpdated(false);
+            setCalculatedPrice("");
+        } else if (discountPercentage === "") {
             setRoom({ ...room, discountPercentage: "0" });
             setIsPriceUpdated(false);
             setCalculatedPrice("");
@@ -108,7 +112,7 @@ const EditRoom = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const updatedPrice = isPriceUpdated ? calculatedPrice : room.discountPrice;
+            const updatedPrice = isPriceUpdated ? calculatedPrice : (room.discountPercentage === "0" ? null : room.discountPrice);
             const roomDataToSend = {
                 ...room,
                 discountPrice: updatedPrice
