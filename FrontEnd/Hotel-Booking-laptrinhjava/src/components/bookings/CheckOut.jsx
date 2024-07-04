@@ -67,14 +67,14 @@ const CheckOut = () => {
                         {roomInfo.discountPrice ? (
                           <>
                             <span style={{ textDecoration: "line-through", marginRight: "10px" }}>
-                              ${roomInfo.roomPrice}
+                              {roomInfo.roomPrice} VND
                             </span>
                             <span style={{ color: "red" }}>
-                              ${roomInfo.discountPrice}
+                              {roomInfo.discountPrice} VND
                             </span>
                           </>
                         ) : (
-                          <span>${roomInfo.roomPrice}</span>
+                          <span>{roomInfo.roomPrice} VND</span>
                         )}
                       </td>
                     </tr>

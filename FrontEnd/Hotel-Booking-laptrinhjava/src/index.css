@@ -1,5 +1,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Playwrite+DE+Grund:wght@100..400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
 body {
   min-height: 100vh;
   padding-bottom: 50px;
@@ -508,7 +509,7 @@ h2 {
 
 .blog-title {
   font-size: 1.25rem;
-  font-family: 'Poppins';
+  font-family: 'Oswald';
 }
 
 .read-button {
